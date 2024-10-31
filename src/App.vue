@@ -20,7 +20,7 @@ import ModelNewsContent from './components/ModelNewsContent.vue'
 import { onMounted } from 'vue'
 
 const currentComponent = ref('ModelSquareContent')
-
+//1111
 const handleNavigation = (componentName) => {
   if (componentName === 'ProfileContent') {
     currentComponent.value = ProfileContent
