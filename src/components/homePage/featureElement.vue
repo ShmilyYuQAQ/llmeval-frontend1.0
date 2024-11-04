@@ -1,0 +1,80 @@
+<template>
+    <div class="ele-container">
+        <span class="selector-row-label">{{ computedTitle }}</span>
+        <el-checkbox
+            v-model="checkAll"
+            :indeterminate="isIndeterminate"
+            @change="handleCheckAllChange"
+            style="margin-right: 30px"
+        >
+            全部
+        </el-checkbox>
+        <el-checkbox-group
+            v-model="computedChecked"
+            @change="handleCheckedChange"
+        >
+            <el-checkbox
+                v-for="option in options"
+                :key="option"
+                :label="option"
+                :value="option"
+            >
+                {{ option }}
+            </el-checkbox>
+        </el-checkbox-group>
+    </div>
+</template>
+<script>
+export default {
+    data() {
+        return {
+            isIndeterminate: true,
+            checkAll: false,
+            computedTitle: "",
+            computedChecked: [],
+            computedOptions: [],
+        };
+    },
+    props: ["title", "checked", "options"],
+
+    methods: {
+        handleCheckAllChange(val) {
+            this.computedChecked = val ? this.computedOptions : [];
+            this.isIndeterminate = false;
+        },
+        handleCheckedChange(value) {
+            const checkedCount = value.length;
+            this.checkAll = checkedCount === this.options.length;
+            this.isIndeterminate =
+                checkedCount > 0 && checkedCount < this.options.length;
+        },
+    },
+    created() {
+        this.computedTitle = this.title;
+        this.computedChecked = this.checked;
+        this.computedOptions = this.options;
+        this.isIndeterminate =
+            this.computedChecked.length > 0 &&
+            this.computedChecked.length < this.options.length;
+        this.checkAll = this.computedChecked.length === this.options.length;
+    },
+};
+</script>
+<style scoped>
+.ele-container {
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+    /* padding-bottom: 10px; */
+    align-items: center;
+    justify-content: left;
+}
+.selector-row-label {
+    display: inline-block;
+    font-size: 14px;
+    padding-left: 8px;
+    font-weight: 500;
+    margin-right: 20px;
+    width:110px;
+}
+</style>
