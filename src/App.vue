@@ -1,15 +1,17 @@
 <template>
-    <div class="container" style="background-color: rgb(244,247,255);">
-      <Homepage></Homepage>
+    <div class="container" style="background-color: rgb(244, 247, 255)">
+        <Homepage></Homepage>
+        <!-- <Guidepage></Guidepage> -->
     </div>
 </template>
 
 <script setup>
 import { onMounted, ref } from "vue";
-import Homepage from "./components/Homepage.vue";
 import ModelNewsContent from "./components/ModelNewsContent.vue";
 import ModelSquareContent from "./components/ModelSquareContent.vue";
 import ProfileContent from "./components/ProfileContent.vue";
+import Guidepage from "./components/guidePage/GuidePage.vue";
+import Homepage from "./components/Homepage.vue";
 const currentComponent = ref("ModelSquareContent");
 
 const handleNavigation = (componentName) => {
@@ -56,7 +58,7 @@ onMounted(() => {
 
 <style scoped>
 .container {
-    display: flex;
+    /* display: flex; */
     width: 100%;
 }
 

@@ -70,6 +70,7 @@ export default {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease-in-out;
     background-color: white;
+    z-index:1;
 }
 .a_container {
     width: 100%;

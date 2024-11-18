@@ -64,17 +64,23 @@ export default {
 .ele-container {
     display: flex;
     flex-direction: row;
-    margin: 10px;
+    margin-bottom: 10px;
     /* padding-bottom: 10px; */
     align-items: center;
     justify-content: left;
+    margin-left: 20px;
+    margin-right: 20px;
+    width:calc(100% - 40px);
 }
 .selector-row-label {
     display: inline-block;
     font-size: 14px;
-    padding-left: 8px;
     font-weight: 500;
     margin-right: 20px;
     width:110px;
+    font-family: "PingFang SC", "Microsoft Yahei", "Helvetica Neue", Helvetica,
+        Arial, "Hiragino Sans GB", -apple-system, sans-serif;
+    color: #27254c;
+    font-weight: 600;
 }
 </style>
