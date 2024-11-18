@@ -13,7 +13,7 @@
             />
         </div>
             <HomePageMid  style="margin-left: 200px;margin-right: 400px;margin-bottom: 50px;"/>
-        <div
+        <!-- <div
             style="
                 position: fixed;
                 width: 400px;
@@ -27,7 +27,7 @@
             "
         >
             <RightSideBar />
-        </div>
+        </div> -->
     </div>
 </template>
 

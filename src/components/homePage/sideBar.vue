@@ -11,7 +11,7 @@
         >
             <div
                 style="
-                    border-radius: 10px; /* 设置圆角为10像素 */
+                    border-radius: 10px;
                     border: 2px solid purple;
                     text-align: center;
                     font-weight: 500;

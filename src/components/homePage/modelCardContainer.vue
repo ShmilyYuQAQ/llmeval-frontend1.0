@@ -78,5 +78,6 @@ export default {
     justify-content: center;
     gap: 20px;
     align-items: center;
+    z-index:1;
 }
 </style>
