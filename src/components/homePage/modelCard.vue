@@ -36,25 +36,27 @@
             "
         >
             <span class="model-date">{{ model.date }}更新</span>
-            <a
-                :href="model.detailsUrl"
-                target="_blank"
-                class="a_details"
-                :alt="详细信息"
-                >详细信息</a
-            >
+            <button @click="goToDetail(model.name)" class="a_details">
+                详细信息
+            </button>
         </div>
     </div>
 </template>
 <script>
 // import Star from "@element-plus/icons-vue";
 export default {
-    data() {
-        return {};
-    },
-    props: ["model"],
-    // props: ['name','author','imgUrl','description','date','detailsUrl']
-};
+  props: {
+    model: {
+      type: Object,
+      required: true
+    }
+  },
+  methods: {
+    goToDetail(modelName) {
+      this.$router.push({ name: 'ModelDetail', params: { modelName } });
+    }
+  }
+}
 </script>
 <style scoped>
 .model-card {
@@ -123,7 +125,8 @@ export default {
     font-weight: 600;
 }
 .a_details {
-    font-size: 14px;
+  text-decoration: none;
+  color: inherit;
 }
 .a_details:hover {
     background-color: rgba(0, 0, 0, 0);
