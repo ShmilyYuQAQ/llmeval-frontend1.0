@@ -1,4 +1,5 @@
 <template>
+  <NavBar></NavBar>
     <div class="profile-container">
         <h2>账号信息</h2>
         <div class="profile-item">
@@ -7,7 +8,7 @@
             <button>设置</button>
         </div>
         <div class="profile-item">
-            <label for="phone">手机号码</label>
+            <label for="phone">密码</label>
             <input type="text" id="phone" name="phone">
             <button>设置</button>
         </div>
@@ -16,15 +17,12 @@
             <input type="text" id="email" name="email">
             <button>设置</button>
         </div>
-        <div class="profile-item">
-            <label for="github">GitHub账号</label>
-            <input type="text" id="github" name="github">
-            <button>设置</button>
-        </div>
     </div>
 </template>
 
 <script setup>
+import NavBar from './guidePage/NavBar.vue';
+
 </script>
 
 <style scoped>

@@ -4,6 +4,10 @@ import ModelDetail from '@/components/ModelDetail.vue'; // 确保路径正确
 const routes = [
     {
         path: "/",
+        component: () => import("@/components/Login.vue"),
+    },
+    {
+        path: "/guide",
         component: () => import("@/views/GuidePage.vue"),
     },
     {
@@ -17,7 +21,11 @@ const routes = [
     {
         path: '/model-detail',
         name: 'ModelDetail',
-        component: ModelDetail
+        component: ModelDetail,
+    },
+    {
+        path: '/ProfileContent',
+        component: () => import("@/components/ProfileContent.vue"),
     }
 ];
 
