@@ -134,8 +134,8 @@ export default {
     font-weight: 600;
 }
 .a_details {
-    font-size: 14px;
-    cursor: pointer;
+  text-decoration: none;
+  color: inherit;
 }
 .a_details:hover {
     background-color: rgba(0, 0, 0, 0);

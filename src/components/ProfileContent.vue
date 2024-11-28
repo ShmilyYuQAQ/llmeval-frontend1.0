@@ -32,6 +32,7 @@
   padding: 20px;
   flex-grow: 1;
   position: relative;
+  margin-left: 150px; /* 添加左边距，避免被导航栏遮挡 */
 }
 
 .title {
@@ -43,7 +44,8 @@
 }
 
 .profile-item {
-  margin-top: 60px; /* 确保内容不与标题重叠 */
+  margin-top: 20px; /* 设置项之间的上边距 */
+  margin-bottom: 20px; /* 设置项之间的下边距 */
 }
 
 .profile-item label {

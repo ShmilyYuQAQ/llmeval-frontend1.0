@@ -19,6 +19,7 @@ import icon3Url from '/icons/icon3.PNG?url'
 import icon4Url from '/icons/icon4.PNG?url'
 import icon5Url from '/icons/icon5.PNG?url'
 
+
 const emit = defineEmits(['navigate'])
 
 const navigate = (componentName) => {
