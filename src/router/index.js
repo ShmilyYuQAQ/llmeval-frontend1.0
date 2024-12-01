@@ -15,8 +15,9 @@ const routes = [
         component: () => import("@/views/Homepage.vue"),
     },
     {
-        path: "/news",
-        component: () => import("@/components/ModelNewsContent.vue"),
+        path: "/details/:id", // 动态路由，:id 是一个动态段
+        name: "Detail",
+        component: () => import("@/views/GuidePage.vue"),
     },
     {
         path: '/model-detail/:modelName',
@@ -33,7 +34,7 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(),
     routes,
-})
+});
 export function setup(app) {
     app.use(router);
 }

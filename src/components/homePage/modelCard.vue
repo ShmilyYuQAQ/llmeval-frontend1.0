@@ -35,37 +35,28 @@
                 max-height: 90%;
             "
         >
-            <span class="model-date">{{ model.updateTime }}更新</span>
-            <a
-                class="a_details"
-                @click="goToDetail(model.name)"
-                >详细信息</a
-            >
+            <span class="model-date">{{ model.date }}更新</span>
+            <button @click="goToDetail(model.name)" class="a_details">
+                详细信息
+            </button>
         </div>
     </div>
 </template>
 <script>
 // import Star from "@element-plus/icons-vue";
 export default {
-    data() {
-        return {
-            defaultUrl: "./images/tengxun.png",
-            openSourece_title: "开源",
-        };
-    },
-    props: ["model"],
-    computed: {
-        openSourece_title() {
-            return this.model.openSource ? "开源" : "闭源"; // 根据布尔值返回不同的字符串
-        },
-    },
-    methods:{
-        goToDetail(modelName){
-            this.$router.push({ name: 'ModelDetail', params: { modelName } })
-        }
+  props: {
+    model: {
+      type: Object,
+      required: true
     }
-    // props: ['name','author','imgUrl','description','date','detailsUrl']
-};
+  },
+  methods: {
+    goToDetail(modelName) {
+      this.$router.push({ name: 'ModelDetail', params: { modelName } });
+    }
+  }
+}
 </script>
 <style scoped>
 .model-card {
