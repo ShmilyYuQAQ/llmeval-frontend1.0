@@ -2,9 +2,10 @@
   <NavBar></NavBar>
   <div class="main-content">
     <div class="model-info-container">
+      <br>
       <div class="title">相关新闻资讯:</div>
       
-      <div class="news-item" v-for="news in newsItems" :key="news.id">
+      <div class="news-item" v-for="news in paginatedNews" :key="news.id">
         <div>
           <a :href="news.link" target="_blank" class="news-content">{{ news.content }}</a>
           <div class="news-source">{{ news.source }}</div>
@@ -13,16 +14,16 @@
       </div>
       
       <div class="pagination">
-        <button class="last-page" @click="loadLastPage">上一页</button>
-        第1页，共1页
-        <button class="next-page" @click="loadNextPage">下一页</button>
+        <button class="last-page" @click="loadLastPage" :disabled="currentPage === 1">上一页</button>
+        第{{ currentPage }}页，共{{ totalPages }}页
+        <button class="next-page" @click="loadNextPage" :disabled="currentPage === totalPages">下一页</button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import NavBar from './guidePage/NavBar.vue';
 const newsItems = ref([
   { id: 1, link: 'https://cloud.tencent.com/', content: 'vivo发布全新蓝心大模型矩阵推出30亿参数3B端侧大模型', source: '腾讯云', date: '2024-10' },
@@ -33,14 +34,29 @@ const newsItems = ref([
   { id: 6, link: 'https://search-ai.com/ranking', content: '2024年9月AI大模型排行榜 — 开搜AI免费问答搜索', source: '开搜AI', date: '2024-09' }
 ])
 
+const currentPage = ref(1);
+const pageSize = 6;
+
+const totalPages = computed(() => {
+  return Math.ceil(newsItems.value.length / pageSize);
+});
+
+const paginatedNews = computed(() => {
+  const start = (currentPage.value - 1) * pageSize;
+  const end = start + pageSize;
+  return newsItems.value.slice(start, end);
+});
+
 const loadNextPage = () => {
-  // 加载下一页的逻辑
-  console.log('加载下一页');
+  if (currentPage.value < totalPages.value) {
+    currentPage.value++;
+  }
 };
 
 const loadLastPage = () => {
-  // 加载上一页的逻辑
-  console.log('加载上一页');
+  if (currentPage.value > 1) {
+    currentPage.value--;
+  }
 };
 </script>
 

@@ -85,14 +85,16 @@ export default {
         return;
       }
       try {
-        const response = await axios.post("http://49.233.82.133/user/login/", {
+        const response = await axios.post("http://49.233.82.133:9091/user/login/", {
           userName: this.username,
           password: this.password,
         });
         const data = response.data;
         if (data.success) {
           alert("登录成功！");
-          this.$router.push("/views/GuidePage"); // 跳转到 GuidePage 页面
+          // 保存 Token 到 localStorage
+          localStorage.setItem('token', response.data.data.token);
+          this.$router.push("/guide"); // 跳转到 GuidePage 页面
         } else {
           alert(data.errorMsg || "登录失败，请检查账号和密码！");
         }
@@ -129,7 +131,7 @@ export default {
       }
       try {
         const response = await axios.post(
-          "http://49.233.82.133/user/register",
+          "http://49.233.82.133:9091/user/register/",
           { userName, email, password },
           {
             // 请求配置
