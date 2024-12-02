@@ -3,461 +3,287 @@
   <div>
     <main>
       <!-- 模型信息区 -->
-      <section id="model-info" class="model-info">
+      <section id="model-info" class="model-info" v-if="modelData">
         <div class="header">
           <div class="title">
-            <h1>通义千问2.5-代码-32B-Instruct</h1>
+            <h1>{{ modelData.data.name }}</h1>
           </div>
         </div>
 
         <div class="description">
-          <p>Qwen / Qwen2.5-Coder-32B-Instruct</p>
+          <p style="line-height: 2.0;">{{ modelData.data.description }}</p>
         </div>
 
         <div class="tags">
-          <span class="tag">文本生成</span>
-          <span class="tag">PyTorch</span>
-          <span class="tag">qwen2</span>
-          <span class="tag">开源协议：apache-2.0</span>
-          <span class="tag">英语</span>
-          <span class="tag">code</span>
-          <span class="tag">codeqwen</span>
-          <span class="tag">chat</span>
-          <span class="tag">qwen</span>
-          <span class="tag">qwen-coder</span>
+          <span class="tag">发布机构：{{ modelData.data.institution }}</span>
+          <span class="tag">{{ modelData.data.isOpenSource ? '开源' : '不开源' }}</span>
         </div>
 
         <div class="stats">
-          <p>@通义千问 提供 | 20541下载 | 2024-11-12更新</p>
+          <p>{{ modelData.data.favoritesCount }}&nbsp;&nbsp;收藏 &nbsp;&nbsp;|&nbsp;&nbsp; {{ modelData.data.releaseDate }}&nbsp;&nbsp;发布</p>
         </div>
+
         <div class="actions">
           <button class="action-button">收藏</button>
           <button class="action-button">模型试用</button>
         </div>
       </section>
-
+      <br>
+      <br>
+      <br>
       <!-- 评论区 -->
-      <section id="comments" class="comments">
-        <h2>用户反馈</h2>
-        <div>
-          <div v-clickoutside="hideReplyBtn" @click="inputFocus" class="my-reply">
-            <el-avatar class="header-img" :size="40" :src="myHeader"></el-avatar>
-            <div class="reply-info">
-              <div
-                tabindex="0"
-                contenteditable="true"
-                id="replyInput"
-                spellcheck="false"
-                placeholder="输入评论..."
-                class="reply-input"
-                @focus="showReplyBtn"
-                @input="onDivInput($event)"
-              ></div>
+      <h2 style="margin-left: 201px;">用户反馈</h2>
+      <div class="comment-section">
+        <div class="comment-input">
+          <textarea
+            v-model="newComment"
+            placeholder="说点什么吧..."
+            class="input-box"
+          ></textarea>
+          <button class="submit-button" @click="postComment">发表评论</button>
+        </div>
+        <div class="comment-list" v-if="comments.length > 0">
+          <div class="comment-item" v-for="comment in comments" :key="comment.commentId">
+            <div class="comment-content">
+              <span class="user-name">{{ comment.userId }}：</span>
+              <span class="comment-text">{{ comment.commentDetail }}</span>
             </div>
-            <div class="reply-btn-box" v-show="btnShow">
-              <el-button
-                class="reply-btn"
-                size="medium"
-                @click="sendComment"
-                type="primary"
-              >
-                发表评论
-              </el-button>
-            </div>
-          </div>
-          <div
-            v-for="(item, i) in comments"
-            :key="i"
-            class="author-title reply-father"
-          >
-            <el-avatar class="header-img" :size="40" :src="item.headImg"></el-avatar>
-            <div class="author-info">
-              <span class="author-name">{{ item.name }}</span>
-              <span class="author-time">{{ item.time }}</span>
-            </div>
-            <div class="icon-btn">
-              <span @click="showReplyInput(i, '0',item.name, item.id)">
-                <el-icon><ChatDotRound /></el-icon>&nbsp;
-                {{ item.commentNum }}&nbsp;&nbsp;
-              </span>
-              <!-- <span  @click="addlikeNumber(i, item.from, item.id)">
-              <i class="iconfont el-icon-caret-top"></i>
-              {{ item.like }}
-              </span> -->
-              <span class="xin" @click="countlikeNumber('1',i,item.id)">
-                <el-icon v-if="item.isLike"><CaretTop /></el-icon>&nbsp;
-                <el-icon v-else><CaretTop /></el-icon>&nbsp;
-                {{ item.like }}
-              </span>
-            </div>
-            <div class="talk-box">
-              <p>
-                <span class="reply">{{ item.comment }}</span>
-              </p>
-            </div>
-            <div class="reply-box">
-              <div v-for="(reply, j) in item.reply" :key="j" class="author-title">
-                <el-avatar
-                  class="header-img"
-                  :size="40"
-                  :src="reply.fromHeadImg"
-                ></el-avatar>
-                <div class="author-info">
-                  <span class="author-name">{{ reply.from }}</span>
-                  <span class="author-time">{{ reply.time }}</span>
-                </div>
-                <div class="icon-btn">
-                  <span @click="showReplyInput(i,j, reply.from, reply.id)">
-                    <el-icon><ChatDotRound /></el-icon>&nbsp;
-                    {{ reply.commentNum }}&nbsp;&nbsp;
-                  </span>
-                  <span  @click="countlikeNumber('2',i,j,reply)">
-                  <el-icon><CaretTop /></el-icon>&nbsp;
-                  {{ reply.like }}
-                  </span>
-                </div>
-                <div class="talk-box">
-                  <p>
-                    <span>回复 {{ reply.to }}:</span>
-                    <span class="reply">{{ reply.comment }}</span>
-                  </p>
-                </div>
-                <div class="reply-box"></div>
+            <div class="comment-footer">
+              <span class="comment-date">{{ comment.createTime }}</span>
+              <div class="comment-actions">
+                <span class="likes">👍 {{ comment.likes || 0 }}&nbsp;&nbsp;</span>
+                <span class="likes">👎 {{ comment.dislikes || 0 }}&nbsp;&nbsp;</span>
+                <span class="reply" @click="toggleReplyForm(comment.commentId)">回复</span>
               </div>
             </div>
-            <div v-show="_inputShow(i)" class="my-reply my-comment-reply">
-              <el-avatar class="header-img" :size="40" :src="myHeader"></el-avatar>
-              <div class="reply-info">
-                <div
-                  tabindex="0"
-                  contenteditable="true"
-                  spellcheck="false"
-                  placeholder="输入评论..."
-                  @input="onDivInput($event)"
-                  class="reply-input reply-comment-input"
-                ></div>
+            <div v-if="comment.showReplyForm" class="reply-form">
+              <textarea
+                v-model="comment.replyText"
+                placeholder="写下你的回复..."
+                class="input-box reply-input"
+              ></textarea>
+              <button class="submit-button" @click="postReply(comment.commentId, comment.deep, comment.userId)">回复</button>
+            </div>
+            <div v-for="reply in comment.replies" :key="reply.commentId" class="reply-item">
+              <div class="comment-content reply-content">
+                <span class="user-name">{{ reply.userId }}：</span>
+                <span class="comment-text">{{ reply.commentDetail }}</span>
               </div>
-              <div class="reply-btn-box">
-                <el-button
-                  class="reply-btn"
-                  size="medium"
-                  @click="sendCommentReply(i)"
-                  type="primary"
-                >
-                  发表回复
-                </el-button>
+              <div class="comment-footer reply-footer">
+                <span class="comment-date">{{ reply.createTime }}</span>
+                <div class="comment-actions">
+                  <span class="likes">👍 {{ reply.likes || 0 }}&nbsp;&nbsp;</span>
+                  <span class="likes">👎 {{ reply.dislikes || 0 }}&nbsp;&nbsp;</span>
+                  <span class="reply" @click="toggleReplyForm(reply.commentId)">回复</span>
+                </div>
+              </div>
+              <div v-if="reply.showReplyForm" class="reply-form">
+                <textarea
+                  v-model="reply.replyText"
+                  placeholder="写下你的回复..."
+                  class="input-box reply-input"
+                ></textarea>
+                <button class="submit-button" @click="postReply(reply.commentId, reply.deep, reply.userId)">回复</button>
+              </div>
+              <!-- 嵌套的 deep=2 的评论区 -->
+              <div v-for="nestedReply in reply.replies" :key="nestedReply.commentId" class="nested-reply-item">
+                <div class="comment-content nested-reply-content">
+                  <span class="user-name">{{ nestedReply.userId }} 回复 @{{ nestedReply.answerUserId }}：</span>
+                  <span class="comment-text">{{ nestedReply.commentDetail }}</span>
+                </div>
+                <div class="comment-footer nested-reply-footer">
+                  <span class="comment-date">{{ nestedReply.createTime }}</span>
+                  <div class="comment-actions">
+                    <span class="likes">👍 {{ nestedReply.likes || 0 }}&nbsp;&nbsp;</span>
+                    <span class="likes">👎 {{ nestedReply.dislikes || 0 }}&nbsp;&nbsp;</span>
+                    <span class="reply" @click="toggleReplyForm(nestedReply.commentId)">回复</span>
+                  </div>
+                </div>
+                <div v-if="nestedReply.showReplyForm" class="reply-form">
+                  <textarea
+                    v-model="nestedReply.replyText"
+                    placeholder="写下你的回复..."
+                    class="input-box reply-input"
+                  ></textarea>
+                  <button class="submit-button" @click="postReply(nestedReply.commentId, nestedReply.deep, nestedReply.userId)">回复</button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </div>
     </main>
   </div>
 </template>
 
 <script>
-import { ChatDotRound, CaretTop } from '@element-plus/icons-vue'
+import axios from 'axios'
 import NavBar from './guidePage/NavBar.vue';
-const clickoutside = {
-    // 初始化指令
-    bind(el, binding, vnode) {
-      function documentHandler(e) {
-        // 这里判断点击的元素是否是本身，是本身，则返回
-        if (el.contains(e.target)) {
-          return false
-        }
-        // 判断指令中是否绑定了函数
-        if (binding.expression) {
-          // 如果绑定了函数 则调用那个函数，此处binding.value就是handleClose方法
-          binding.value(e)
-        }
+
+export default {
+  props: ['modelName'], // 接收路由参数
+  data() {
+    return {
+      modelData: null,
+      newComment: "", // 存储输入的评论
+      comments: [],
+      modelId: 1,
+      userId: 7,
+      deep: 0,
+      answerId: null,
+      status: true,
+    }
+  },
+  async created() {
+    try {
+      const modelResponse = await axios.get(`http://49.233.82.133:9091/model/name?name=${this.modelName}`);
+      console.log('Model Response Data:', modelResponse.data);  // 输出返回的数据
+      if (modelResponse.data) {
+        this.modelData = modelResponse.data;
+      } else {
+        console.error('Received empty data from server');
+        this.modelData = { description: '暂无描述', tag: '暂无标签', institution: '无机构', isOpenSource: '未知' };
       }
-      // 给当前元素绑定个私有变量，方便在unbind中可以解除事件监听
-      el.vueClickOutside = documentHandler
-      document.addEventListener('click', documentHandler)
-    },
-    update() {},
-    unbind(el, binding) {
-      // 解除事件监听
-      document.removeEventListener('click', el.vueClickOutside)
-      delete el.vueClickOutside
-    },
-  }
-  export default {
-    name: 'ArticleComment',
-    data() {
-      return {
-        btnShow: false,
-        index: '0',
-        replyComment: '',
-        subIndex:'0',
-        myName: 'Lana Del Rey',
-        myHeader:
-          'https://ae01.alicdn.com/kf/H94c78935ffa64e7e977544d19ecebf06L.jpg',
-        myId: 19870621,
-        to: '',
-        toId: -1,
-        comments: [
-          {
-            name: 'Lana Del Rey',
-            id: 19870621,
-            headImg:
-              'https://ae01.alicdn.com/kf/H94c78935ffa64e7e977544d19ecebf06L.jpg',
-            comment: '我发布一张新专辑Norman Fucking Rockwell,大家快来听啊',
-            time: '2019年9月16日 18:43',
-            commentNum: 2,
-            like: 15,
-            isLike:false,
-            likeListId:[],//存放已点赞用户的id
-            inputShow: false,
-            reply: [
-              {
-                from: 'Taylor Swift',
-                fromId: 19891221,
-                fromHeadImg:
-                  'https://ae01.alicdn.com/kf/H94c78935ffa64e7e977544d19ecebf06L.jpg',
-                to: 'Lana Del Rey',
-                toId: 19870621,
-                comment: '我很喜欢你的新专辑！！',
-                time: '2019年9月16日 18:43',
-                commentNum: 1,
-                like: 15,
-                isLike:false,
-                likeListId:[],
-                inputShow: false,
-              },
-              {
-                from: 'Ariana Grande',
-                fromId: 1123,
-                fromHeadImg:
-                  'https://ae01.alicdn.com/kf/Hf6c0b4a7428b4edf866a9fbab75568e6U.jpg',
-                to: 'Lana Del Rey',
-                toId: 19870621,
-                comment: '别忘记宣传我们的合作单曲啊',
-                time: '2019年9月16日 18:43',
-                commentNum: 0,
-                like: 5,
-                isLike:false,
-                likeListId:[],
-                inputShow: false,
-              },
-            ],
-          },
-          {
-            name: 'Taylor Swift',
-            id: 19891221,
-            headImg:
-              'https://ae01.alicdn.com/kf/H94c78935ffa64e7e977544d19ecebf06L.jpg',
-            comment: '我发行了我的新专辑Lover',
-            time: '2019年9月16日 18:43',
-            commentNum: 1,
-            like: 5,
-            likeListId:[],
-            inputShow: false,
-            reply: [
-              {
-                from: 'Lana Del Rey',
-                fromId: 19870621,
-                fromHeadImg:
-                  'https://ae01.alicdn.com/kf/H94c78935ffa64e7e977544d19ecebf06L.jpg',
-                to: 'Taylor Swift',
-                toId: 19891221,
-                comment: '新专辑和speak now 一样棒！',
-                time: '2019年9月16日 18:43',
-                commentNum: 25,
-                like: 5,
-                isLike:false,
-                likeListId:[],
-                inputShow: false,
-              },
-            ],
-          },
-          {
-            name: 'Norman Fucking Rockwell',
-            id: 20190830,
-            headImg:
-              'https://ae01.alicdn.com/kf/Hdd856ae4c81545d2b51fa0c209f7aa28Z.jpg',
-            comment: 'Plz buy Norman Fucking Rockwell on everywhere',
-            time: '2019年9月16日 18:43',
-            commentNum: 0,
-            like: 5,
-            isLike:false,
-            likeListId:[],
-            inputShow: false,
-            reply: [],
-          },
-        ],
+
+      const commentsResponse = await axios.get(`http://49.233.82.133:9091/model/comment?modelId=${this.modelId}`);
+      console.log('Comments Response Data:', commentsResponse.data.data);  // 输出返回的数据
+      if (commentsResponse.data && commentsResponse.data.success) {
+        this.comments = commentsResponse.data.data.map(comment => ({
+          ...comment,
+          showReplyForm: false,
+          replyText: '',
+          replies: []
+        }));
+      } else {
+        console.error('Received empty comments data from server');
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      this.modelData = { description: '暂无描述', tag: '暂无标签', institution: '无机构', isOpenSource: '未知' };
+    }
+  },
+  components: { NavBar },
+  methods: {
+    // 发表评论方法（逻辑可与后端对接）
+    async postComment() {
+      if (this.newComment.trim()) {
+        try {
+          const response = await axios.post('http://49.233.82.133:9091/model/comment/add', {
+            commentDetail: this.newComment,
+            modelId: this.modelId,
+            userId: this.userId,
+            deep: 0, // 普通评论
+            answerId: this.answerId,
+            status: this.status,
+          });
+
+          if (response.data.success) {
+            console.log('Comments commit success!');
+            const newComment = {
+              commentId: response.data.data.commentId,
+              userId: response.data.data.userId, // 可换成登录用户的名字
+              commentDetail: response.data.data.commentDetail,
+              createTime: response.data.data.createTime, // 当前时间
+              likes: 0,
+              dislikes: 0,
+              showReplyForm: false,
+              replyText: '',
+              replies: []
+            };
+            this.comments.unshift(newComment);
+            this.newComment = ""; // 清空输入框
+          } else {
+            alert("发表评论失败：" + response.data.errorMsg);
+          }
+        } catch (error) {
+          console.error('Error posting comment:', error);
+          alert("发表评论失败，请稍后再试。");
+        }
+      } else {
+        alert("评论内容不能为空！");
       }
     },
-    directives: { clickoutside },
-    components: { NavBar },
-    methods: {
-      inputFocus() {
-        var replyInput = document.getElementById('replyInput')
-        replyInput.style.padding = '8px 8px'
-        replyInput.style.border = '2px solid blue'
-        replyInput.focus()
-      },
-      showReplyBtn() {
-        this.btnShow = true
-      },
-      hideReplyBtn() {
-        this.btnShow = false
-        replyInput.style.padding = '10px'
-        replyInput.style.border = 'none'
-      },
-      showReplyInput(i,j,name,id) {
-        this.comments[this.index].inputShow = false
-        this.index = i
-        this.comments[i].inputShow = true
-        this.to = name
-        this.toId = id
-        this.subIndex = j == '0' ? '0':j
-      },
-      addlikeNumber(i,id) {
-        let list = this.comments[i].likeListId
-        // console.log(i, name, id)
-        if(list.length === 0){
-          //在已经点赞的列表中未找到userId
-          this.comments[i].isLike = true
-          this.comments[i].like += 1
-          this.comments[i].likeListId.push(id)
-          console.log("点赞+1",this.comments[i].isLike,this.comments[i].like,this.comments[i].likeListId)        
-        }
-        else{
-         const index = list.indexOf(this.myId)
-         this.comments[i].isLike = false
-         this.comments[i].like -= 1
-         this.comments[i].likeListId.splice(index,1)
-         console.log("点赞-1",this.comments[i].isLike,this.comments[i].likeListId)
-        }
-        
-      },
-      countlikeNumber(type,i,j,id) {
-        const text =  type === '1' ? this.comments[i] : this.comments[i].reply[j]
-        let list = text.likeListId     
-        if(list.length === 0){
-          //在已经点赞的列表中未找到userId
-          text.isLike = true
-          text.like += 1
-          text.likeListId.push(id)
-          console.log("点赞+1",text.isLike,text.like,text.likeListId)        
-        }
-        else{
-         const index = list.indexOf(this.myId)
-         text.isLike = false
-         text.like -= 1
-         text.likeListId.splice(index,1)
-         console.log("点赞-1",text.isLike,text.likeListId)
-        }
-        
-      },
-      _inputShow(i) {
-        return this.comments[i].inputShow
-      },
-      sendComment() {
-        if (!this.replyComment) {
-          this.$message({
-            showClose: true,
-            type: 'warning',
-            message: '评论不能为空',
-          })
+    // 展开或收起回复输入框
+    toggleReplyForm(commentId) {
+      const comment = this.comments.find((c) => c.commentId === commentId);
+      if (comment) {
+        console.log('Toggling reply form for comment:', comment);
+        comment.showReplyForm = !comment.showReplyForm;
+      } else {
+        const reply = this.comments.flatMap(c => c.replies).find(r => r.commentId === commentId);
+        if (reply) {
+          console.log('Toggling reply form for reply:', reply);
+          reply.showReplyForm = !reply.showReplyForm;
         } else {
-          let a = {}
-          let input = document.getElementById('replyInput')
-          let timeNow = new Date().getTime()
-          let time = this.dateStr(timeNow)
-          a.name = this.myName
-          a.comment = this.replyComment
-          a.headImg = this.myHeader
-          a.time = time
-          a.commentNum = 0
-          a.like = 0
-          a.id = this.myId
-          a.reply = [],
-          a.isLike = false,
-          a.likeListId = [],
-          this.comments.push(a)
-          this.replyComment = ''
-          input.innerHTML = ''
+          const nestedReply = this.comments.flatMap(c => c.replies).flatMap(r => r.replies).find(nr => nr.commentId === commentId);
+          if (nestedReply) {
+            console.log('Toggling reply form for nested reply:', nestedReply);
+            nestedReply.showReplyForm = !nestedReply.showReplyForm;
+          } else {
+            console.error('Comment or reply not found:', commentId);
+          }
         }
-      },
-      sendCommentReply(i) {
-        if (!this.replyComment) {
-          this.$message({
-            showClose: true,
-            type: 'warning',
-            message: '回复不能为空',
-          })
-        } else {
-          let a = {}
-          let timeNow = new Date().getTime()
-          let time = this.dateStr(timeNow)
-          a.from = this.myName
-          a.to = this.to 
-          a.fromHeadImg = this.myHeader
-          a.comment = this.replyComment
-          a.time = time
-          a.commentNum = 0
-          a.like = 0
-          a.isLike = false
-          a.likeListId = []
-          console.log(" this.comments[i].reply+++++++++++", this.comments[i].reply,this.subIndex)
-          if(this.subIndex === '0'){
-            this.comments[i].commentNum += 1
-            }else{
-              this.comments[i].reply[this.subIndex].commentNum += 1
+      }
+    },
+    // 回复评论方法（逻辑可与后端对接）
+    async postReply(commentId, parentDeep, parentUserId) {
+      const comment = this.comments.find((c) => c.commentId === commentId);
+      const reply = this.comments.flatMap(c => c.replies).find(r => r.commentId === commentId);
+      const nestedReply = this.comments.flatMap(c => c.replies).flatMap(r => r.replies).find(nr => nr.commentId === commentId);
+      const target = comment || reply || nestedReply;
+      if (target && target.replyText && target.replyText.trim()) {
+        try {
+          const response = await axios.post('http://49.233.82.133:9091/model/comment/add', {
+            commentDetail: target.replyText,
+            modelId: this.modelId,
+            userId: this.userId,
+            deep: parentDeep + 1, // 回复评论
+            answerId: target.commentId,
+            answerUserId: parentUserId,
+            status: this.status,
+          });
+
+          if (response.data.success) {
+            console.log('Reply commit success!');
+            const newReply = {
+              commentId: response.data.data.commentId,
+              userId: response.data.data.userId, // 可换成登录用户的名字
+              commentDetail: response.data.data.commentDetail,
+              createTime: response.data.data.createTime, // 当前时间
+              likes: 0,
+              dislikes: 0,
+              showReplyForm: false,
+              replyText: '',
+              answerUserId: parentUserId
+            };
+            if (comment) {
+              comment.replies.push(newReply);
+            } else if (reply) {
+              reply.replies.push(newReply);
+            } else if (nestedReply) {
+              nestedReply.replies.push(newReply);
             }
-          this.comments[i].reply.push(a)
-          this.replyComment = ''
-          document.getElementsByClassName('reply-comment-input')[i].innerHTML =
-            ''
+            target.replyText = ""; // 清空回复框
+            target.showReplyForm = false; // 隐藏回复框
+          } else {
+            alert("回复失败：" + response.data.errorMsg);
+          }
+        } catch (error) {
+          console.error('Error posting reply:', error);
+          alert("回复失败，请稍后再试。");
         }
-      },
-      onDivInput: function (e) {
-        this.replyComment = e.target.innerHTML
-      },
-      dateStr(date) {
-        //获取js 时间戳
-        var time = new Date().getTime()
-        //去掉 js 时间戳后三位，与php 时间戳保持一致
-        time = parseInt((time - date) / 1000)
-        //存储转换值
-        var s
-        if (time < 60 * 10) {
-          //十分钟内
-          return '刚刚'
-        } else if (time < 60 * 60 && time >= 60 * 10) {
-          //超过十分钟少于1小时
-          s = Math.floor(time / 60)
-          return s + '分钟前'
-        } else if (time < 60 * 60 * 24 && time >= 60 * 60) {
-          //超过1小时少于24小时
-          s = Math.floor(time / 60 / 60)
-          return s + '小时前'
-        } else if (time < 60 * 60 * 24 * 30 && time >= 60 * 60 * 24) {
-          //超过1天少于30天内
-          s = Math.floor(time / 60 / 60 / 24)
-          return s + '天前'
-        } else {
-          //超过30天ddd
-          var date = new Date(parseInt(date))
-          return (
-            date.getFullYear() +
-            '/' +
-            (date.getMonth() + 1) +
-            '/' +
-            date.getDate()
-          )
-        }
-      },
-    },
+      } else {
+        console.error('Reply content is empty or comment not found');
+        alert("回复内容不能为空！");
+      }
+    }
   }
+}
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .model-info {
-  width: 85%;
+  width: 70%;
   margin: 0 auto;
   font-family: Arial, sans-serif;
   background-color: #f9f9f9; /* 淡色背景 */
@@ -465,7 +291,7 @@ const clickoutside = {
   border-radius: 8px;        /* 边框圆角 */
   padding: 16px;             /* 内边距 */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 轻微阴影 */
-  margin-left: 150px;
+  margin-left: 200px;
 }
 .header {
   display: flex;
@@ -543,126 +369,152 @@ const clickoutside = {
 .action-button:hover {
   background-color: #2c387e;
 }
-.comments {
-  margin-left: 150px; /* 添加左边距，确保评论区不被侧边栏遮挡 */
+
+.comment-section {
+  font-family: Arial, sans-serif;
+  width: 1045px;
+  margin: 20px auto;
+  border: 1px solid #ddd;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  margin-right: 250px;
 }
-.my-reply {
-    padding: 10px;
-    background-color: #fafbfc;
-    .header-img {
-      display: inline-block;
-      vertical-align: top;
-    }
-    .reply-info {
-      display: inline-block;
-      margin-left: 5px;
-      width: 90%;
-      //根据屏幕宽度自适应
-      @media screen and (max-width:1200px) {
-        width: 80%;
-      }
-      .reply-input {
-        border: 1px solid #ddd; 
-        min-height: 20px;
-        line-height: 22px;
-        padding: 10px 10px;
-        color: #ccc;
-        background-color: #fff;
-        border-radius: 5px;
-          // &:empty::before{
-          //   content attr(placeholder);
-          // }
-        &:empty:before {
-          content: attr(placeholder);
-        }
-        &:focus:before {
-          content: none;
-        }
-        &:focus {
-          padding: 8px 8px;
-          border: 2px solid blue;
-          box-shadow: none;
-          outline: none;
-          }
-      }
-    }
-    .reply-btn-box {
-      height: 25px;
-      // margin: 10px 0;
-      display: inline-block;
-      .reply-btn {
-        position: relative;
-        float: right;
-        margin-left: 15px;
-        // margin-right: 15px;
-        }
-      }
-  }
-  .my-comment-reply {
-    margin-left: 50px;
-    .reply-input {
-      width: flex;
-    }
-  }
-  .author-title:not(:last-child) {
-    border-bottom: 1px solid rgba(74, 136, 199, .3)
-  }
-  .reply-father {
-    padding: 10px;
-    .header-img {
-      display: inline-block;
-      vertical-align: top;
-    }
-    .author-info {
-      display: inline-block;
-      margin-left: 5px;
-      width: 60%;
-      height: 40px;
-      line-height: 20px;
-      span {
-        display: block;
-        cursor: pointer;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-      }
-      .author-name {
-        color: #000;
-        font-size: 18px;
-        font-weight: bold;
-      }
-      .author-time {
-        font-size: 14px;
-      }
-    }
-    .icon-btn {
-      width: 30%;
-      padding: 0 !important ;
-      float: right;
-      @media screen and (max-width: 1200px) {
-        width: 20%;
-        padding: 7px;
-      }
-      span {
-        cursor: pointer;
-      }
-      .iconfont {
-        margin: 0 5px;
-      }
-    }
-    .talk-box {
-      margin: 0 50px;
-      p {
-        margin: 0;
-      }
-      .reply {
-        font-size: 16px;
-        color: #000;
-      }
-    }
-    .reply-box {
-      margin: 10px 0 0 50px;
-      background-color: #efefef;
-    }
-  }
+
+.comment-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.input-box {
+  flex: 1;
+  height: 40px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  resize: none;
+  font-size: 14px;
+}
+
+.submit-button {
+  padding: 8px 16px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+
+.comment-header {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 15px;
+}
+
+.comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.comment-item {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.comment-content {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.user-name {
+  font-weight: bold;
+  color: #333;
+  margin-right: 10px;
+}
+
+.comment-text {
+  color: #555;
+}
+
+.comment-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #999;
+}
+
+.comment-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.likes,
+.dislikes,
+.reply {
+  cursor: pointer;
+}
+
+.likes:hover,
+.dislikes:hover,
+.reply:hover {
+  color: #007bff;
+}
+
+.dislikes {
+  color: #e74c3c; /* 红色用于表示“差评” */
+}
+
+.replies {
+  margin-left: 20px;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.reply-item {
+  margin-top: 8px;
+  color: #666;
+}
+
+.reply-form {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.reply-input {
+  flex: 1;
+  height: 30px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  resize: none;
+  font-size: 14px;
+}
+
+.reply-content {
+  margin-left: 20px; /* 向右移动 */
+}
+
+.reply-footer {
+  margin-left: 20px; /* 向右移动 */
+}
+
+.nested-reply-item {
+  margin-left: 40px; /* 向右移动更多 */
+}
+
+.nested-reply-content {
+  margin-left: 20px; /* 向右移动 */
+}
+
+.nested-reply-footer {
+  margin-left: 20px; /* 向右移动 */
+}
 </style>

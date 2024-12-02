@@ -19,9 +19,10 @@ const routes = [
         component: () => import("@/components/ModelNewsContent.vue"),
     },
     {
-        path: '/model-detail',
+        path: '/model-detail/:modelName',
         name: 'ModelDetail',
         component: ModelDetail,
+        props: true, // 将路由参数作为组件的 props 传递
     },
     {
         path: '/ProfileContent',

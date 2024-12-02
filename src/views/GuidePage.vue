@@ -11,7 +11,7 @@
                     <div class="image-container">
                         <img src="@/components/guidePage/images/1.png" alt="">
                     </div>
-                    <div class="sponsors-container">
+                    <!-- <div class="sponsors-container">
                         <h2>赞助商</h2>
                         <div class="sponsors-list">
                             <SponsorCard :sponsor="sponsor"></SponsorCard>
@@ -19,7 +19,7 @@
                             <SponsorCard :sponsor="sponsor"></SponsorCard>
                             <SponsorCard :sponsor="sponsor"></SponsorCard>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="cards">
                         <GuideCard v-for="formData in cardData" :key="formData.title" :cardData="formData"></GuideCard>
                     </div>
