@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import axiosInstance from "@/plugins/axios";
 import ModelCard from "./modelCard.vue";
 export default {
     components: {
@@ -43,12 +42,13 @@ export default {
                 detailsUrl:
                     "https://cloud.tencent.com/act/pro/Hunyuan-promotion",
             },
-            models: [],
             data: null,
             loading: false,
             error: null,
+            models: [],
         };
     },
+    props: ["datas"],
     methods: {
         handleCurrentChange(newPage) {
             this.pagination.currentPage = newPage;
@@ -58,30 +58,27 @@ export default {
             this.pagination.pageSize = newSize;
             this.updatePaginatedModel();
         },
-        updatePaginatedModel() {
+        updatePaginatedModel(datas = null) {
             // 根据当前页和每页大小计算需要显示的模型列表
+            if (datas !== null) {
+                this.models = datas;
+            }
             const start =
                 (this.pagination.currentPage - 1) * this.pagination.pageSize;
             const end = start + this.pagination.pageSize;
             this.paginatedModel = this.models.slice(start, end);
         },
-        async fetchData() {
-            this.loading = true;
-            try {
-                const response = await axiosInstance.get("/model/");
-                this.models = response.data.data;
-                this.totalModels = this.models.length;
-                this.updatePaginatedModel();
-            } catch (error) {
-                this.error = "Failed to fetch data";
-            } finally {
-                this.loading = false;
-            }
-            console.log("这是data", this.models);
-        },
     },
     created() {
-        this.fetchData();
+        this.models = this.datas;
+    },
+    computed: {
+        models() {
+            return this.datas;
+        },
+        totalModels() {
+            return this.models.length;
+        },
     },
 };
 </script>
