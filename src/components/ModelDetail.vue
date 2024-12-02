@@ -32,7 +32,7 @@
       <br>
       <br>
       <!-- 评论区 -->
-      <h2 style="margin-left: 201px;">用户反馈</h2>
+      <h2 style="margin-left: 203px;">用户反馈</h2>
       <div class="comment-section">
         <div class="comment-input">
           <textarea
@@ -372,13 +372,13 @@ export default {
 
 .comment-section {
   font-family: Arial, sans-serif;
-  width: 1045px;
+  width: 1070px;
   margin: 20px auto;
   border: 1px solid #ddd;
   padding: 20px;
   background-color: #fff;
   border-radius: 5px;
-  margin-right: 250px;
+  margin-right: 252px;
 }
 
 .comment-input {
