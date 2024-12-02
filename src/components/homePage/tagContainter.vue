@@ -3,19 +3,18 @@
         <div class="header-tag">
             <span class="tag-title">{{ tagTitle }}</span>
         </div>
-        <div class="tag-list"                 :style="{'--zindex': tags.length - index}">
+        <div class="tag-list" :style="{ '--zindex': tags.length - index }">
             <div
                 v-for="(tag, index) in tags"
                 :key="index"
                 class="tag"
+                @click="selectTag(tag.value)"
                 :class="{
                     'has-subtags': tag.subtags && tag.subtags.length > 0,
                 }"
             >
                 <span class="out-span">
-                    <span class="in-span" @click="selectTag(tag.value)">{{
-                        tag.text
-                    }}</span>
+                    <span class="in-span">{{ tag.text }}</span>
                 </span>
                 <div
                     v-if="tag.subtags && tag.subtags.length > 0"
@@ -50,12 +49,24 @@ export default {
     },
     methods: {
         selectTag(value) {
-            this.$emit("input", value);
-            console.log(value);
+            this.$emit('custom-event', value);
         },
         selectSubTag(value) {
-            this.$emit("input", value);
-            console.log(value);
+            this.$emit('custom-event', value);
+        },
+        async fetchData() {
+            this.loading = true;
+            try {
+                const response = await axiosInstance.get("/model/");
+                this.models = response.data.data;
+                this.totalModels = this.models.length;
+                this.updatePaginatedModel();
+            } catch (error) {
+                this.error = "Failed to fetch data";
+            } finally {
+                this.loading = false;
+            }
+            console.log("全部data", this.models);
         },
     },
 };
@@ -107,7 +118,6 @@ export default {
     margin-right: 6px;
     margin-bottom: 6px;
     transform: scale(0.92);
-
 }
 
 .out-span {
@@ -126,7 +136,7 @@ export default {
     z-index: -1;
 }
 .in-span {
-    color: #ce642e;
+    color: #3B29B3;
     background-color: #f4f6fa;
     padding: 0 6px;
     max-width: 260px;
@@ -147,10 +157,9 @@ export default {
     min-width: 100px;
     width: auto; /* 宽度自动根据子元素变化 */
     gap: 10px; /* 设置子元素之间的间距 */
-
 }
 .tag:hover .in-span {
-    background-color: #ce642e;
+    background-color: #3B29B3;;
     color: white;
 }
 

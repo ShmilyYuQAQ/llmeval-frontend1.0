@@ -20,7 +20,9 @@
             "
         >
             <p class="model-name">{{ model.name }}</p>
-            <span class="model-title">By {{ model.institution }} {{openSourece_title}}</span>
+            <span class="model-title"
+                >By {{ model.institution }} {{ openSourece_title }}</span
+            >
             <span class="model-description">{{ model.description }}</span>
         </div>
         <div
@@ -36,11 +38,7 @@
             "
         >
             <span class="model-date">{{ model.updateTime }}更新</span>
-            <a
-                class="a_details"
-                @click="goToDetail(model.name)"
-                >详细信息</a
-            >
+            <a class="a_details" @click="goToDetail(model.name)">详细信息</a>
         </div>
     </div>
 </template>
@@ -59,11 +57,11 @@ export default {
             return this.model.openSource ? "开源" : "闭源"; // 根据布尔值返回不同的字符串
         },
     },
-    methods:{
-        goToDetail(modelName){
-            this.$router.push({ name: 'ModelDetail', params: { modelName } })
-        }
-    }
+    methods: {
+        goToDetail(modelName) {
+            this.$router.push({ name: "ModelDetail", params: { modelName } });
+        },
+    },
     // props: ['name','author','imgUrl','description','date','detailsUrl']
 };
 </script>
@@ -134,10 +132,12 @@ export default {
     font-weight: 600;
 }
 .a_details {
-  text-decoration: none;
-  color: inherit;
+    color: #409eff;
+    text-decoration: none;
+    cursor: pointer;
+    font-size:14px;
 }
 .a_details:hover {
-    background-color: rgba(0, 0, 0, 0);
+    color:#95c6f7
 }
 </style>
