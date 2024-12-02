@@ -32,7 +32,7 @@
       <br>
       <br>
       <!-- 评论区 -->
-      <h2 style="margin-left: 203px;">用户反馈</h2>
+      <h2  style="margin-left: 203px;">用户反馈</h2>
       <div class="comment-section">
         <div class="comment-input">
           <textarea
@@ -121,13 +121,12 @@ import axios from 'axios'
 import NavBar from './guidePage/NavBar.vue';
 
 export default {
-  props: ['modelName'], // 接收路由参数
+  props: ['modelId'], // 接收路由参数
   data() {
     return {
       modelData: null,
       newComment: "", // 存储输入的评论
       comments: [],
-      modelId: 1,
       userId: 7,
       deep: 0,
       answerId: null,
@@ -136,7 +135,7 @@ export default {
   },
   async created() {
     try {
-      const modelResponse = await axios.get(`http://49.233.82.133:9091/model/name?name=${this.modelName}`);
+      const modelResponse = await axios.get(`http://49.233.82.133:9091/model/modelId?modelId=${this.modelId}`);
       console.log('Model Response Data:', modelResponse.data);  // 输出返回的数据
       if (modelResponse.data) {
         this.modelData = modelResponse.data;
@@ -291,7 +290,7 @@ export default {
   border-radius: 8px;        /* 边框圆角 */
   padding: 16px;             /* 内边距 */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 轻微阴影 */
-  margin-left: 200px;
+  align-items: center;
 }
 .header {
   display: flex;
@@ -372,13 +371,13 @@ export default {
 
 .comment-section {
   font-family: Arial, sans-serif;
-  width: 1070px;
+  width: 1050px;
   margin: 20px auto;
   border: 1px solid #ddd;
   padding: 20px;
   background-color: #fff;
   border-radius: 5px;
-  margin-right: 252px;
+  align-items: center;
 }
 
 .comment-input {

@@ -24,7 +24,7 @@ const routes = [
         component: () => import("@/views/GuidePage.vue"),
     },
     {
-        path: '/model-detail/:modelName',
+        path: '/model-detail/:modelId',
         name: 'ModelDetail',
         component: ModelDetail,
         props: true, // 将路由参数作为组件的 props 传递
