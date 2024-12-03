@@ -29,7 +29,7 @@ export default {
             totalModels: 0,
             pagination: {
                 currentPage: 1,
-                pageSize: 10,
+                pageSize: 12,
             },
             model: {
                 //测试数据

@@ -1,8 +1,15 @@
 <template>
     <div class="home-page-mid">
-        <FeatureSelector @custom-event="selectModel" :selected_tag="selected_tag"/>
-        <FeatureSequencer/>
-        <modelCardContainer :datas="datas" ref="modelCardContainer" ></modelCardContainer>
+        <FeatureSelector
+            @custom-event="selectModel"
+            :selected_tag="selected_tag"
+            @change="openSourceChange"
+        />
+        <FeatureSequencer />
+        <modelCardContainer
+            :datas="datas"
+            ref="modelCardContainer"
+        ></modelCardContainer>
     </div>
 </template>
 <script>
@@ -14,7 +21,8 @@ export default {
     data() {
         return {
             datas: [],
-            selected_tag:""
+            selected_tag: "",
+            originDatas: [],
         };
     },
     components: {
@@ -26,34 +34,64 @@ export default {
         async fetchData() {
             try {
                 const response = await axiosInstance.get("/model/");
-                this.datas = response.data.data;
+                this.originDatas = response.data.data; //所有模型数据
+                this.datas = response.data.data; //展示的模型数据
                 this.$refs.modelCardContainer.updatePaginatedModel(this.datas);
-            } catch (error) {
-                this.error = "Failed to fetch data";
-            }
-        },
-        async selectModel(tag){
-            try {
-                const response = await axiosInstance.get("/model/tagName/?tagName="+tag);
-                this.datas = response.data.data || [];
-                this.$refs.modelCardContainer.updatePaginatedModel(this.datas);
-                this.selected_tag = tag;
-                console.log(tag,this.datas);
+                console.log(this.datas);
             } catch (error) {
                 this.datas = [];
                 this.error = "Failed to fetch data";
             }
-        }
+        },
+        async selectModel(tag) {
+            try {
+                const response = await axiosInstance.get(
+                    "/model/tagName/?tagName=" + tag
+                );
+                this.datas = response.data.data || [];
+                this.originDatas = response.data.data || [];
+                this.$refs.modelCardContainer.updatePaginatedModel(this.datas);
+                this.selected_tag = tag;
+                console.log(tag, this.datas);
+            } catch (error) {
+                this.datas = [];
+                this.error = "Failed to fetch data";
+            }
+        },
+        filterItems(filterArray) {
+            // 根据传入的筛选条件数组来筛选items数组
+            const filteredItems = this.originDatas.filter((item) => {
+                // 如果筛选条件数组为空，则保留所有元素
+                if (filterArray.length === 0) return true;
+
+                // 如果筛选条件数组包含"开源"，则保留isOpenSource为true的元素
+                if (filterArray.includes("开源") && item.isOpenSource)
+                    return true;
+
+                // 如果筛选条件数组包含"闭源"，则保留isOpenSource为false的元素
+                if (filterArray.includes("不开源") && !item.isOpenSource)
+                    return true;
+
+                // 如果元素不满足上述任何条件，则不保留
+                return false;
+            });
+
+            return filteredItems;
+        },
+        openSourceChange(value) {
+            this.datas = this.filterItems(value)
+            this.$refs.modelCardContainer.updatePaginatedModel(this.datas);
+        },
     },
     created() {
         this.fetchData();
     },
-    watch:{
-        "models": function(newVal, oldVal){
+    watch: {
+        models: function (newVal, oldVal) {
             this.$refs.modelCardContainer.models = newVal;
             this.$refs.modelCardContainer.updatePaginatedModel();
-        }
-    }
+        },
+    },
 };
 </script>
 <style scoped>
