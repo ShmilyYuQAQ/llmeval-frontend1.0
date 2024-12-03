@@ -32,8 +32,8 @@
       <br>
       <br>
       <!-- 评论区 -->
-      <h2  style="margin-left: 203px;">用户反馈</h2>
       <div class="comment-section">
+        <h2 class="fixed-feedback">用户反馈</h2>
         <div class="comment-input">
           <textarea
             v-model="newComment"
@@ -344,6 +344,12 @@ export default {
   font-size: 12px;
 }
 
+.fixed-feedback {
+  position: absolute;
+  top: -60px; /* 根据需要调整 */
+  left: 10;
+}
+
 .stats {
   color: #999;
   font-size: 12px;
@@ -378,6 +384,7 @@ export default {
   background-color: #fff;
   border-radius: 5px;
   align-items: center;
+  position: relative
 }
 
 .comment-input {
