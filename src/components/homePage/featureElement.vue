@@ -41,12 +41,19 @@ export default {
         handleCheckAllChange(val) {
             this.computedChecked = val ? this.computedOptions : [];
             this.isIndeterminate = false;
+            console.log("现在被选中的是", this.computedChecked);
+            this.submitChange()
         },
         handleCheckedChange(value) {
             const checkedCount = value.length;
             this.checkAll = checkedCount === this.options.length;
             this.isIndeterminate =
                 checkedCount > 0 && checkedCount < this.options.length;
+            console.log("现在被选中的是", this.computedChecked);
+            this.submitChange()
+        },
+        submitChange() {
+            this.$emit("change", this.computedChecked);
         },
     },
     created() {
@@ -70,14 +77,14 @@ export default {
     justify-content: left;
     margin-left: 20px;
     margin-right: 20px;
-    width:calc(100% - 40px);
+    width: calc(100% - 40px);
 }
 .selector-row-label {
     display: inline-block;
     font-size: 14px;
     font-weight: 500;
     margin-right: 20px;
-    width:110px;
+    width: 110px;
     font-family: "PingFang SC", "Microsoft Yahei", "Helvetica Neue", Helvetica,
         Arial, "Hiragino Sans GB", -apple-system, sans-serif;
     color: #27254c;

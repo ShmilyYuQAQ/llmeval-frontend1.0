@@ -5,6 +5,7 @@
             :checked="openSourceChecked"
             :options="openSourceOptions"
             @select="parentMethod"
+            @change="submitChange"
         ></featureElement>
         <tagContainter
             :tags="tags_0"
@@ -67,7 +68,7 @@ export default {
     data() {
         return {
             openSourceTitle: "是否开源",
-            openSourceChecked: ["开源"],
+            openSourceChecked: ["开源", "不开源"],
             openSourceOptions: ["开源", "不开源"],
             nlpTitle: "自然语言处理",
             nlpChecked: ["文本分类", "文本生成"],
@@ -361,6 +362,12 @@ export default {
         selectModel(value) {
             this.$emit("custom-event", value);
         },
+        parentMethod(value){
+            console.log(value)
+        },
+        submitChange(value){
+            this.$emit("change", value)
+        }
     },
 };
 </script>

@@ -89,6 +89,9 @@ export default {
     position: relative; /* 定位伪元素 */
     display: inline-block;
 }
+.a_container:hover {
+    border: solid 1px rgb(64, 158, 255);
+}
 .img_container {
     width: 100%;
     height: 100%;
@@ -108,9 +111,6 @@ export default {
     left: 50%; /* 水平居中 */
     transform: translate(-50%, -50%); /* 使用transform进行居中 */
     transition: transform 0.5s ease;
-}
-.img_container:hover {
-    border: solid 1px rgb(64, 158, 255);
 }
 .model-name {
     font-family: PingFangSC;
