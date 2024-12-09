@@ -23,7 +23,6 @@ export default {
     },
     created(){
         this.judge[this.cardData.icon] = true
-        console.log(this.judge);
     }
 }
 </script>

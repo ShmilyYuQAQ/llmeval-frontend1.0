@@ -13,7 +13,14 @@
                 "
             />
         </div> -->
-            <HomePageMid  style="margin-left: 100px;margin-right: 100px;margin-bottom: 50px;width:calc(100% - 200px)"/>
+        <HomePageMid
+            style="
+                margin-left: 100px;
+                margin-right: 100px;
+                margin-bottom: 50px;
+                width: calc(100% - 200px);
+            "
+        />
         <!-- <div
             style="
                 position: fixed;
@@ -33,7 +40,7 @@
 </template>
 
 <script>
-import NavBar from '@/components/guidePage/NavBar.vue';
+import NavBar from "@/components/guidePage/NavBar.vue";
 import HomePageMid from "@/components/homePage/homePageMid.vue";
 import RightSideBar from "@/components/homePage/rightSideBar.vue";
 import sideBar from "@/components/homePage/sideBar.vue";
@@ -45,7 +52,7 @@ export default {
         HomePageMid,
         sideBar,
         RightSideBar,
-        NavBar
+        NavBar,
     },
     methods: {},
 };

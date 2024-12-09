@@ -67,7 +67,7 @@ export default {
 </script>
 <style scoped>
 .model-card {
-    width: 300px;
+    width: 280px;
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 5px;
