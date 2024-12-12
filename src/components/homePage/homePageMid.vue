@@ -37,6 +37,24 @@ export default {
                 this.originDatas = response.data.data; //所有模型数据
                 this.datas = response.data.data; //展示的模型数据
                 this.$refs.modelCardContainer.updatePaginatedModel(this.datas);
+                // console.log(this.datas);
+                let temp = []
+                for (let i = 0; i < this.datas.length; i++) {
+                    try {
+                        this.datas[i].model_image_path =
+                            "http://49.233.82.133:5174" +
+                            this.getSubstringAfterKeyword(
+                                this.datas[i].model_image_path,
+                                "public"
+                            );
+                        if(this.datas[i].model_image_path==="http://49.233.82.133:5174"){
+                            temp.push(i)
+                        }
+                    } catch (error) {
+                        // console.log(i)
+                    }
+                }
+                console.log(temp)
                 console.log(this.datas);
             } catch (error) {
                 this.datas = [];
@@ -56,6 +74,19 @@ export default {
             } catch (error) {
                 this.datas = [];
                 this.error = "Failed to fetch data";
+            }
+        },
+        getSubstringAfterKeyword(inputString, keyword) {
+            // 找到关键字在字符串中的位置
+            const index = inputString.indexOf(keyword);
+
+            // 如果找到了关键字
+            if (index !== -1) {
+                // 截取关键字之后的内容
+                return inputString.substring(index + keyword.length);
+            } else {
+                // 如果没有找到关键字，返回空字符串或者根据需要进行其他处理
+                return "";
             }
         },
         filterItems(filterArray) {
@@ -79,7 +110,7 @@ export default {
             return filteredItems;
         },
         openSourceChange(value) {
-            this.datas = this.filterItems(value)
+            this.datas = this.filterItems(value);
             this.$refs.modelCardContainer.updatePaginatedModel(this.datas);
         },
     },
