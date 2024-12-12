@@ -1,0 +1,37 @@
+{
+  "id": "4767974",
+  "name": "no name",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "34273197",
+      "name": "拉踩",
+      "font_class": "lacai1",
+      "unicode": "e663",
+      "unicode_decimal": 58979
+    },
+    {
+      "icon_id": "6380878",
+      "name": "点赞_块",
+      "font_class": "dianzan_kuai",
+      "unicode": "ec8c",
+      "unicode_decimal": 60556
+    },
+    {
+      "icon_id": "34273022",
+      "name": "拉踩",
+      "font_class": "lacai",
+      "unicode": "e64d",
+      "unicode_decimal": 58957
+    },
+    {
+      "icon_id": "34273024",
+      "name": "点赞",
+      "font_class": "dianzan",
+      "unicode": "e648",
+      "unicode_decimal": 58952
+    }
+  ]
+}

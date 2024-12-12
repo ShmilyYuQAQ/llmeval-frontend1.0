@@ -6,6 +6,7 @@ import App from "./App.vue";
 import './assets/fonts/inter.css';
 import "./assets/main.css";
 import { setup as setupPlugin } from './plugins';
+import "./assets/iconfont/iconfont.css";
 
 const app = createApp(App);
 setupPlugin(app);

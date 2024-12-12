@@ -191,6 +191,7 @@ h2 {
 
 .input-group {
   margin-bottom: 15px;
+  display: flex;
 }
 
 input {

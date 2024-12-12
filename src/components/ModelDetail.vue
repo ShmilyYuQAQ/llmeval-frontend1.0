@@ -17,6 +17,9 @@
         <div class="tags">
           <span class="tag">发布机构：{{ modelData.data.institution }}</span>
           <span class="tag">{{ modelData.data.isOpenSource ? '开源' : '不开源' }}</span>
+          <span class="tag" v-for="tag in tags" :key="tag.tagName" :style="tagStyles(tag.tagGrade)">
+            {{ tag.tagName }}{{ tag.tagGrade }}
+          </span>
         </div>
 
         <div class="stats">
@@ -24,7 +27,7 @@
         </div>
 
         <div class="actions">
-          <button class="action-button">收藏</button>
+          <button class="action-button" @click="toggleFavorite()">{{ isFavorited ? '取消收藏' : '收藏' }}</button>
           <button class="action-button">模型试用</button>
         </div>
       </section>
@@ -32,8 +35,8 @@
       <br>
       <br>
       <!-- 评论区 -->
-      <h2 style="margin-left: 203px;">用户反馈</h2>
       <div class="comment-section">
+        <h2 class="fixed-feedback">用户反馈</h2>
         <div class="comment-input">
           <textarea
             v-model="newComment"
@@ -45,14 +48,14 @@
         <div class="comment-list" v-if="comments.length > 0">
           <div class="comment-item" v-for="comment in comments" :key="comment.commentId">
             <div class="comment-content">
-              <span class="user-name">{{ comment.userId }}：</span>
+              <span class="user-name">{{ comment.userName }}：</span>
               <span class="comment-text">{{ comment.commentDetail }}</span>
             </div>
             <div class="comment-footer">
               <span class="comment-date">{{ comment.createTime }}</span>
               <div class="comment-actions">
-                <span class="likes">👍 {{ comment.likes || 0 }}&nbsp;&nbsp;</span>
-                <span class="likes">👎 {{ comment.dislikes || 0 }}&nbsp;&nbsp;</span>
+                <span class="likes"><view class="iconfont">&#xe648;</view> {{ comment.likes || 0 }}&nbsp;&nbsp;</span>
+                <span class="likes"><view class="iconfont">&#xe64d;</view> {{ comment.dislikes || 0 }}&nbsp;&nbsp;</span>
                 <span class="reply" @click="toggleReplyForm(comment.commentId)">回复</span>
               </div>
             </div>
@@ -64,49 +67,32 @@
               ></textarea>
               <button class="submit-button" @click="postReply(comment.commentId, comment.deep, comment.userId)">回复</button>
             </div>
-            <div v-for="reply in comment.replies" :key="reply.commentId" class="reply-item">
-              <div class="comment-content reply-content">
-                <span class="user-name">{{ reply.userId }}：</span>
-                <span class="comment-text">{{ reply.commentDetail }}</span>
-              </div>
-              <div class="comment-footer reply-footer">
-                <span class="comment-date">{{ reply.createTime }}</span>
-                <div class="comment-actions">
-                  <span class="likes">👍 {{ reply.likes || 0 }}&nbsp;&nbsp;</span>
-                  <span class="likes">👎 {{ reply.dislikes || 0 }}&nbsp;&nbsp;</span>
-                  <span class="reply" @click="toggleReplyForm(reply.commentId)">回复</span>
+            <div class="child-comments" v-if="comment.child && comment.child.length > 0">
+              <div class="comment-item" v-for="childComment in comment.child" :key="childComment.commentId">
+                <div class="comment-content">
+                  <br>
+                  <span v-if="childComment.deep === 1" class="user-name">{{ childComment.userName }}：</span>
+                  <span v-else-if="childComment.deep === 2" class="user-name">{{ childComment.userName }} 回复 @{{ childComment.answerUserName }}：</span>
+                  <span class="comment-text">{{ childComment.commentDetail }}</span>
                 </div>
-              </div>
-              <div v-if="reply.showReplyForm" class="reply-form">
+                <div class="comment-footer">
+                <span class="comment-date">{{ childComment.createTime }}</span>
+                  <div class="comment-actions">
+                    <span class="likes" @click="toggleLikeIcon(comment)">
+                      <view class="iconfont">{{ comment.liked ? '&#xec8c;' : '&#xe648;' }}</view> {{ comment.likes || 0 }}&nbsp;&nbsp;
+                    </span>
+                    <span class="likes"><view class="iconfont">&#xe64d;</view> {{ childComment.dislikes || 0 }}&nbsp;&nbsp;</span>
+                    <span class="reply" @click="toggleReplyForm(childComment.commentId)">回复</span>
+                  </div>
+                </div>
+                  <div v-if="childComment.showReplyForm" class="reply-form">
                 <textarea
-                  v-model="reply.replyText"
+                  v-model="childComment.replyText"
                   placeholder="写下你的回复..."
                   class="input-box reply-input"
                 ></textarea>
-                <button class="submit-button" @click="postReply(reply.commentId, reply.deep, reply.userId)">回复</button>
+                <button class="submit-button" @click="postReply(comment.commentId, comment.deep, comment.userId)">回复</button>
               </div>
-              <!-- 嵌套的 deep=2 的评论区 -->
-              <div v-for="nestedReply in reply.replies" :key="nestedReply.commentId" class="nested-reply-item">
-                <div class="comment-content nested-reply-content">
-                  <span class="user-name">{{ nestedReply.userId }} 回复 @{{ nestedReply.answerUserId }}：</span>
-                  <span class="comment-text">{{ nestedReply.commentDetail }}</span>
-                </div>
-                <div class="comment-footer nested-reply-footer">
-                  <span class="comment-date">{{ nestedReply.createTime }}</span>
-                  <div class="comment-actions">
-                    <span class="likes">👍 {{ nestedReply.likes || 0 }}&nbsp;&nbsp;</span>
-                    <span class="likes">👎 {{ nestedReply.dislikes || 0 }}&nbsp;&nbsp;</span>
-                    <span class="reply" @click="toggleReplyForm(nestedReply.commentId)">回复</span>
-                  </div>
-                </div>
-                <div v-if="nestedReply.showReplyForm" class="reply-form">
-                  <textarea
-                    v-model="nestedReply.replyText"
-                    placeholder="写下你的回复..."
-                    class="input-box reply-input"
-                  ></textarea>
-                  <button class="submit-button" @click="postReply(nestedReply.commentId, nestedReply.deep, nestedReply.userId)">回复</button>
-                </div>
               </div>
             </div>
           </div>
@@ -121,50 +107,108 @@ import axios from 'axios'
 import NavBar from './guidePage/NavBar.vue';
 
 export default {
-  props: ['modelName'], // 接收路由参数
+  props: ['modelId'], // 接收路由参数
   data() {
     return {
       modelData: null,
       newComment: "", // 存储输入的评论
       comments: [],
-      modelId: 1,
       userId: 7,
       deep: 0,
       answerId: null,
       status: true,
+      tags: [],
+      isFavorited: false // 存储收藏状态
     }
   },
+  
   async created() {
     try {
-      const modelResponse = await axios.get(`http://49.233.82.133:9091/model/name?name=${this.modelName}`);
-      console.log('Model Response Data:', modelResponse.data);  // 输出返回的数据
+      const modelResponse = await axios.get(`http://49.233.82.133:9091/model/modelId?modelId=${this.modelId}`);
       if (modelResponse.data) {
         this.modelData = modelResponse.data;
-      } else {
-        console.error('Received empty data from server');
-        this.modelData = { description: '暂无描述', tag: '暂无标签', institution: '无机构', isOpenSource: '未知' };
+      }
+      
+      const modelTagResponse = await axios.get(`http://49.233.82.133:9091/tag/model?modelId=${this.modelId}`);
+      if (modelTagResponse.data.success){
+        this.tags = modelTagResponse.data.data;
+      }
+      
+      // 检查用户是否已经收藏该模型
+      const favoriteResponse = await axios.get(`http://49.233.82.133:9091/user/favorites/check?userId=${this.userId}&modelId=${this.modelId}`);
+      if (favoriteResponse.data.success) {
+        this.isFavorited = favoriteResponse.data.data.isFavorited;
       }
 
-      const commentsResponse = await axios.get(`http://49.233.82.133:9091/model/comment?modelId=${this.modelId}`);
-      console.log('Comments Response Data:', commentsResponse.data.data);  // 输出返回的数据
-      if (commentsResponse.data && commentsResponse.data.success) {
-        this.comments = commentsResponse.data.data.map(comment => ({
-          ...comment,
-          showReplyForm: false,
-          replyText: '',
-          replies: []
-        }));
-      } else {
-        console.error('Received empty comments data from server');
+      const commentsResponse = await axios.get(`http://49.233.82.133:9091/model/comment/tree?modelId=${this.modelId}`);
+      if(commentsResponse.data.success){
+        this.comments = commentsResponse.data.data;
+        console.log(this.comments);
       }
+
     } catch (error) {
       console.error('Error fetching data:', error);
-      this.modelData = { description: '暂无描述', tag: '暂无标签', institution: '无机构', isOpenSource: '未知' };
     }
   },
   components: { NavBar },
+    computed: {
+    tagStyles() {
+      return (tagGrade) => {
+        switch (tagGrade) {
+          case '能力薄弱':
+            return { backgroundColor: 'rgb(180,199,231)' };
+          case '能力一般':
+            return { backgroundColor: 'rgb(143,170,220)' };
+          case '能力良好':
+            return { backgroundColor: 'rgb(59,103,188)' };
+          case '能力优秀':
+            return { backgroundColor: 'rgb(47,85,151)' };
+          case '能力卓越':
+            return { backgroundColor: 'rgb(17,55,112)' };
+          default:
+            return {};
+        }
+      };
+    }
+  },
   methods: {
-    // 发表评论方法（逻辑可与后端对接）
+      async toggleFavorite() {
+      try {
+        const url = this.isFavorited
+          ? `http://49.233.82.133:9091/user/favorites/delete?userId=${this.userId}&modelId=${this.modelId}`
+          : `http://49.233.82.133:9091/user/favorites/add?userId=${this.userId}&modelId=${this.modelId}`
+        
+        // 立即更新按钮状态
+        
+        const response = this.isFavorited
+          ? await axios.delete(url)
+          : await axios.post(url)
+        if (response.data.success) {
+          // 操作成功后，调用检查接口来确定收藏按钮的状态
+          const checkResponse = await axios.get(`http://49.233.82.133:9091/user/favorites/check?userId=${this.userId}&modelId=${this.modelId}`);
+          if (checkResponse.data.success) {
+            this.isFavorited = checkResponse.data.data.isFavorited;
+            const modelResponse = await axios.get(`http://49.233.82.133:9091/model/modelId?modelId=${this.modelId}`);
+            if (modelResponse.data) {
+              this.modelData = modelResponse.data;
+            }
+          } else {
+            alert("检查收藏状态失败：" + checkResponse.data.errorMsg);
+          }
+        } else {
+          alert("操作失败：" + response.data.errorMsg);
+          // 如果操作失败，恢复原来的状态
+          this.isFavorited = !this.isFavorited;
+        }
+      } catch (error) {
+        console.error('Error toggling favorite:', error);
+        alert("操作失败，请稍后再试。");
+        // 如果操作失败，恢复原来的状态
+        this.isFavorited = !this.isFavorited;
+      }
+    },
+
+    // 发���评论方法（逻辑可与后端对接）
     async postComment() {
       if (this.newComment.trim()) {
         try {
@@ -178,7 +222,6 @@ export default {
           });
 
           if (response.data.success) {
-            console.log('Comments commit success!');
             const newComment = {
               commentId: response.data.data.commentId,
               userId: response.data.data.userId, // 可换成登录用户的名字
@@ -203,26 +246,26 @@ export default {
         alert("评论内容不能为空！");
       }
     },
+    toggleLikeIcon(comment) {
+      comment.liked = !comment.liked;
+    },
     // 展开或收起回复输入框
     toggleReplyForm(commentId) {
-      const comment = this.comments.find((c) => c.commentId === commentId);
-      if (comment) {
-        console.log('Toggling reply form for comment:', comment);
-        comment.showReplyForm = !comment.showReplyForm;
-      } else {
-        const reply = this.comments.flatMap(c => c.replies).find(r => r.commentId === commentId);
-        if (reply) {
-          console.log('Toggling reply form for reply:', reply);
-          reply.showReplyForm = !reply.showReplyForm;
-        } else {
-          const nestedReply = this.comments.flatMap(c => c.replies).flatMap(r => r.replies).find(nr => nr.commentId === commentId);
-          if (nestedReply) {
-            console.log('Toggling reply form for nested reply:', nestedReply);
-            nestedReply.showReplyForm = !nestedReply.showReplyForm;
-          } else {
-            console.error('Comment or reply not found:', commentId);
+      const toggleForm = (comments) => {
+        for (let comment of comments) {
+          if (comment.commentId === commentId) {
+            comment.showReplyForm = !comment.showReplyForm;
+            return true;
+          }
+          if (comment.child && toggleForm(comment.child)) {
+            return true;
           }
         }
+        return false;
+      };
+
+      if (!toggleForm(this.comments)) {
+        console.error('Comment or reply not found:', commentId);
       }
     },
     // 回复评论方法（逻辑可与后端对接）
@@ -291,7 +334,7 @@ export default {
   border-radius: 8px;        /* 边框圆角 */
   padding: 16px;             /* 内边距 */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 轻微阴影 */
-  margin-left: 200px;
+  align-items: center;
 }
 .header {
   display: flex;
@@ -338,11 +381,17 @@ export default {
 }
 
 .tag {
-  background-color: #E0E0E0;
-  color: #333;
+  background-color: #655e5e;
+  color: white;
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 12px;
+}
+
+.fixed-feedback {
+  position: absolute;
+  top: -60px; /* 根据需要调整 */
+  left: 10;
 }
 
 .stats {
@@ -372,13 +421,14 @@ export default {
 
 .comment-section {
   font-family: Arial, sans-serif;
-  width: 1070px;
+  width: 70%;
   margin: 20px auto;
   border: 1px solid #ddd;
   padding: 20px;
   background-color: #fff;
   border-radius: 5px;
-  margin-right: 252px;
+  align-items: center;
+  position: relative
 }
 
 .comment-input {
@@ -516,5 +566,11 @@ export default {
 
 .nested-reply-footer {
   margin-left: 20px; /* 向右移动 */
+}
+
+.child-comments {
+  margin-left: 20px;
+  border-left: 2px solid #ccc;
+  padding-left: 10px;
 }
 </style>
