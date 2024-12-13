@@ -1,6 +1,5 @@
+import ModelDetail from '@/components/ModelDetail.vue';
 import { createRouter, createWebHistory } from "vue-router";
-import ModelDetail from '@/components/ModelDetail.vue'; // 确保路径正确
-
 const routes = [
     {
         path: "/",

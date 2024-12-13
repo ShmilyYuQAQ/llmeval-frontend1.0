@@ -103,7 +103,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios';
 import NavBar from './guidePage/NavBar.vue';
 
 export default {

@@ -48,7 +48,6 @@ export default {};
     position: relative;
     border-bottom: 1px solid #dcdfe6;
     height: 55px; /*55*/
-    width: 100%;
 }
 .header-container {
     display: flex;

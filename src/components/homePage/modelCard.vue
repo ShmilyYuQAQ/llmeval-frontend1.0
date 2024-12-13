@@ -1,11 +1,13 @@
 <template>
     <div class="model-card">
-        <a :href="model.detailsUrl" target="_blank" class="a_container">
-            <div class="img_container">
-                <img :src="defaultUrl" alt="Model Image" class="img" />
-                <!-- <el-button type="success" circle /> -->
-            </div>
-        </a>
+        <div class="img_container">
+            <img
+                :src="model.model_image_path || defaultUrl"
+                alt="Model Image"
+                class="img"
+            />
+            <!-- <el-button type="success" circle /> -->
+        </div>
         <div
             style="
                 margin-top: 10px;
@@ -67,7 +69,7 @@ export default {
 </script>
 <style scoped>
 .model-card {
-    width: 300px;
+    width: 280px;
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 5px;
@@ -81,36 +83,24 @@ export default {
     background-color: white;
     z-index: 1;
 }
-.a_container {
-    width: 100%;
-    height: 160px;
-    border-radius: 5%; /* 使容器变成圆形 */
-    overflow: hidden; /* 隐藏溢出的内容 */
-    position: relative; /* 定位伪元素 */
-    display: inline-block;
-}
-.a_container:hover {
+.img_container:hover {
     border: solid 1px rgb(64, 158, 255);
 }
 .img_container {
-    width: 100%;
-    height: 100%;
-    border-radius: 5%; /* 使容器变成圆形 */
-    overflow: hidden; /* 隐藏溢出的内容 */
-    position: relative; /* 定位伪元素 */
+    height: 20px; /* 固定高度 */
+    width: auto; /* 宽度自适应 */
+    display: flex;
+    align-items: center; /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+    overflow: hidden; /* 防止图片超出容器 */
 }
+
 .img {
-    width: 0px;
-    height: 0px;
-    min-width: 100%;
-    max-width: 100%;
-    min-height: 100%;
-    max-height: 100%;
-    position: absolute; /* 绝对定位 */
-    top: 50%; /* 垂直居中 */
-    left: 50%; /* 水平居中 */
-    transform: translate(-50%, -50%); /* 使用transform进行居中 */
-    transition: transform 0.5s ease;
+    width: auto; /* 宽度自适应 */
+    height: auto; /* 高度自适应 */
+    max-width: 100%; /* 最大宽度不超过容器 */
+    max-height: 100%; /* 最大高度不超过容器 */
+    object-fit: contain; /* 保持宽高比 */
 }
 .model-name {
     font-family: PingFangSC;
@@ -135,9 +125,9 @@ export default {
     color: #409eff;
     text-decoration: none;
     cursor: pointer;
-    font-size:14px;
+    font-size: 14px;
 }
 .a_details:hover {
-    color:#95c6f7
+    color: #95c6f7;
 }
 </style>
