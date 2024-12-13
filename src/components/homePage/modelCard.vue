@@ -87,8 +87,8 @@ export default {
     border: solid 1px rgb(64, 158, 255);
 }
 .img_container {
-    height: 160px; /* 固定高度 */
-    width: 100%; /* 宽度自适应 */
+    height: 20px; /* 固定高度 */
+    width: auto; /* 宽度自适应 */
     display: flex;
     align-items: center; /* 垂直居中 */
     justify-content: center; /* 水平居中 */

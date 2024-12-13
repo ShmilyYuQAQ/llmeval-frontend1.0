@@ -1,6 +1,5 @@
+import CommentList from '@/components/Comments/CommentList.vue';
 import { createRouter, createWebHistory } from "vue-router";
-import ModelDetail from '@/components/ModelDetail.vue'; // 确保路径正确
-
 const routes = [
     {
         path: "/",
@@ -26,7 +25,7 @@ const routes = [
     {
         path: '/model-detail/:modelId',
         name: 'ModelDetail',
-        component: ModelDetail,
+        component: CommentList,
         props: true, // 将路由参数作为组件的 props 传递
     },
     {

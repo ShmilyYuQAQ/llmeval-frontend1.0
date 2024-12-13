@@ -37,7 +37,7 @@ export default {
                 this.originDatas = response.data.data; //所有模型数据
                 this.datas = response.data.data; //展示的模型数据
                 this.$refs.modelCardContainer.updatePaginatedModel(this.datas);
-                // console.log(this.datas);
+                console.log(this.datas);
                 let temp = []
                 for (let i = 0; i < this.datas.length; i++) {
                     try {
