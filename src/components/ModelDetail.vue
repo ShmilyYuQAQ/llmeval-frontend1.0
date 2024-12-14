@@ -34,70 +34,11 @@
       <br>
       <br>
       <br>
-      <!-- 评论区 -->
-      <div class="comment-section">
-        <h2 class="fixed-feedback">用户反馈</h2>
-        <div class="comment-input">
-          <textarea
-            v-model="newComment"
-            placeholder="说点什么吧..."
-            class="input-box"
-          ></textarea>
-          <button class="submit-button" @click="postComment">发表评论</button>
-        </div>
-        <div class="comment-list" v-if="comments.length > 0">
-          <div class="comment-item" v-for="comment in comments" :key="comment.commentId">
-            <div class="comment-content">
-              <span class="user-name">{{ comment.userName }}：</span>
-              <span class="comment-text">{{ comment.commentDetail }}</span>
-            </div>
-            <div class="comment-footer">
-              <span class="comment-date">{{ comment.createTime }}</span>
-              <div class="comment-actions">
-                <span class="likes"><view class="iconfont">&#xe648;</view> {{ comment.likes || 0 }}&nbsp;&nbsp;</span>
-                <span class="likes"><view class="iconfont">&#xe64d;</view> {{ comment.dislikes || 0 }}&nbsp;&nbsp;</span>
-                <span class="reply" @click="toggleReplyForm(comment.commentId)">回复</span>
-              </div>
-            </div>
-            <div v-if="comment.showReplyForm" class="reply-form">
-              <textarea
-                v-model="comment.replyText"
-                placeholder="写下你的回复..."
-                class="input-box reply-input"
-              ></textarea>
-              <button class="submit-button" @click="postReply(comment.commentId, comment.deep, comment.userId)">回复</button>
-            </div>
-            <div class="child-comments" v-if="comment.child && comment.child.length > 0">
-              <div class="comment-item" v-for="childComment in comment.child" :key="childComment.commentId">
-                <div class="comment-content">
-                  <br>
-                  <span v-if="childComment.deep === 1" class="user-name">{{ childComment.userName }}：</span>
-                  <span v-else-if="childComment.deep === 2" class="user-name">{{ childComment.userName }} 回复 @{{ childComment.answerUserName }}：</span>
-                  <span class="comment-text">{{ childComment.commentDetail }}</span>
-                </div>
-                <div class="comment-footer">
-                <span class="comment-date">{{ childComment.createTime }}</span>
-                  <div class="comment-actions">
-                    <span class="likes" @click="toggleLikeIcon(comment)">
-                      <view class="iconfont">{{ comment.liked ? '&#xec8c;' : '&#xe648;' }}</view> {{ comment.likes || 0 }}&nbsp;&nbsp;
-                    </span>
-                    <span class="likes"><view class="iconfont">&#xe64d;</view> {{ childComment.dislikes || 0 }}&nbsp;&nbsp;</span>
-                    <span class="reply" @click="toggleReplyForm(childComment.commentId)">回复</span>
-                  </div>
-                </div>
-                  <div v-if="childComment.showReplyForm" class="reply-form">
-                <textarea
-                  v-model="childComment.replyText"
-                  placeholder="写下你的回复..."
-                  class="input-box reply-input"
-                ></textarea>
-                <button class="submit-button" @click="postReply(comment.commentId, comment.deep, comment.userId)">回复</button>
-              </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- 评论区 --> 
+        <CommentList
+        :modelId="modelId"
+      />
+
     </main>
   </div>
 </template>
@@ -105,6 +46,7 @@
 <script>
 import axios from 'axios';
 import NavBar from './guidePage/NavBar.vue';
+import CommentList from './Comments/CommentList.vue';
 
 export default {
   props: ['modelId'], // 接收路由参数
@@ -118,7 +60,7 @@ export default {
       answerId: null,
       status: true,
       tags: [],
-      isFavorited: false // 存储收藏状态
+      isFavorited: false, // 存储收藏状态
     }
   },
   
@@ -150,7 +92,7 @@ export default {
       console.error('Error fetching data:', error);
     }
   },
-  components: { NavBar },
+  components: { NavBar, CommentList },
     computed: {
     tagStyles() {
       return (tagGrade) => {
