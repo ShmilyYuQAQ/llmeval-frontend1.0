@@ -7,10 +7,10 @@
       
       <div class="news-item" v-for="news in paginatedNews" :key="news.id">
         <div>
-          <a :href="news.link" target="_blank" class="news-content">{{ news.content }}</a>
-          <div class="news-source">{{ news.source }}</div>
+          <a :href="news.url" target="_blank" class="news-content">{{ news.title }}</a>
+          <div class="news-source">{{ news.publisher }}</div>
         </div>
-        <div class="news-date">{{ news.date }}</div>
+        <div class="news-date">{{ news.publishDate }}</div>
       </div>
       
       <div class="pagination">
@@ -23,17 +23,11 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import axios from 'axios'
 import NavBar from './guidePage/NavBar.vue';
-const newsItems = ref([
-  { id: 1, link: 'https://cloud.tencent.com/', content: 'vivo发布全新蓝心大模型矩阵推出30亿参数3B端侧大模型', source: '腾讯云', date: '2024-10' },
-  { id: 2, link: 'https://equal-eval-public.com/ranking', content: 'EqualEval大模型语音能力排行榜首期揭晓！', source: 'EqualEval公能中文大模型排行榜公众号', date: '2024-09' },
-  { id: 3, link: 'https://equal-eval-public.com/ranking', content: 'EqualEval公能中文大模型排行榜发布', source: 'EqualEval公能中文大模型排行榜公众号', date: '2024-09' },
-  { id: 4, link: 'https://software.nankai.edu.cn/', content: 'EqualEval公能中文大模型排行榜发布', source: '南开大学软件学院', date: '2024-09' },
-  { id: 5, link: 'https://news.nankai.edu.cn/', content: 'EqualEval公能中文大模型排行榜发布', source: '南开新闻网', date: '2024-09' },
-  { id: 6, link: 'https://search-ai.com/ranking', content: '2024年9月AI大模型排行榜 — 开搜AI免费问答搜索', source: '开搜AI', date: '2024-09' }
-])
 
+const newsItems = ref([]);
 const currentPage = ref(1);
 const pageSize = 6;
 
@@ -58,6 +52,21 @@ const loadLastPage = () => {
     currentPage.value--;
   }
 };
+
+const fetchNews = async () => {
+  try {
+    const response = await axios.get('http://49.233.82.133:9091/modelInfo/all');
+    if (response.data.success) {
+      newsItems.value = response.data.data.sort((a, b) => new Date(b.publishDate) - new Date(a.publishDate));
+    } else {
+      console.error('Error fetching news:', response.data.errorMsg);
+    }
+  } catch (error) {
+    console.error('Error fetching news:', error);
+  }
+};
+
+onMounted(fetchNews);
 </script>
 
 <style scoped>
@@ -71,16 +80,28 @@ body {
   font-weight: bold;
   color: purple;
   margin-bottom: 20px;
-  margin-left: 300px;
+  text-align: left; /* 左对齐 */
+  width: 70%; /* 与新闻内容宽度一致 */
+  padding-left: 0px; /* 添加左侧内边距 */
+  margin: 0 auto; /* 水平居中对齐 */
+  margin-bottom: 10px;
 }
+
+.model-info-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 垂直居中对齐 */
+  width: 100%; /* 设置宽度 */
+  margin: 0 auto; /* 水平居中对齐 */
+}
+
 .news-item {
   display: flex;
   justify-content: space-between;
   padding: 15px;
   border-bottom: 1px solid #ddd;
-  width: 60%; /* 设置宽度为100% */
-  margin-left: 300px;
-  margin-right: 300px;
+  width: 70%; /* 设置宽度为70% */
+  margin: 0 auto; /* 水平居中对齐 */
 }
 .news-item:last-child {
   border-bottom: none;
@@ -110,7 +131,7 @@ body {
   margin-top: 20px;
   font-size: 14px;
   color: #888;
-  margin-left: 600px;
+
 }
 .pagination button {
   background-color: #e9ecf0;
