@@ -111,7 +111,10 @@ body {
   font-weight: bold;
   color: #333;
   text-decoration: none;
+  max-width: 80%; /* 设置最大宽度 */
+  word-wrap: break-word; /* 必要时换行 */
 }
+
 .news-content:hover {
   color: #1a73e8;
   text-decoration: underline;
@@ -124,6 +127,8 @@ body {
 .news-date {
   font-size: 14px;
   color: #666;
+  width: 13%; /* 设置固定宽度 */
+  text-align: right; /* 右对齐 */
 }
 .pagination {
   display: flex;
