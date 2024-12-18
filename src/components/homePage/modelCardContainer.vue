@@ -1,21 +1,24 @@
 <template>
-    <div class="model-card-container">
-        <ModelCard
-            v-for="(item, index) in paginatedModel"
-            :key="index"
-            :model="item"
-        ></ModelCard>
+    <div style="display: flex; justify-content: center; flex-direction: column;align-items: center;">
+        <div class="model-card-container">
+            <ModelCard
+                v-for="(item, index) in paginatedModel"
+                :key="index"
+                :model="item"
+            ></ModelCard>
+        </div>
+        <el-pagination
+            background
+            :current-page="pagination.currentPage"
+            :page-size="pagination.pageSize"
+            :total="totalModels"
+            layout="prev, pager, next"
+            @current-change="handleCurrentChange"
+            @size-change="handleSizeChange"
+            style="margin-top:20px"
+        >
+        </el-pagination>
     </div>
-    <el-pagination
-        background
-        :current-page="pagination.currentPage"
-        :page-size="pagination.pageSize"
-        :total="totalModels"
-        layout="prev, pager, next"
-        @current-change="handleCurrentChange"
-        @size-change="handleSizeChange"
-    >
-    </el-pagination>
 </template>
 
 <script>

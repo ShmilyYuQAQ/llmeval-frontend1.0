@@ -59,6 +59,7 @@ export default {
                 this.comments = commentsResponse.data.data;
                 this.user_comment_map = this.mapCommentIdsToUserNames(this.comments);
                 }
+                console.log(this.user_comment_map)
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
@@ -68,6 +69,7 @@ export default {
 
             function recurseComments(commentArray) {
                 commentArray.forEach((comment) => {
+                    console.log(comment.commentId)
                     commentMap.set(comment.commentId, comment.userName);
                     if (comment.child && comment.child.length > 0) {
                         recurseComments(comment.child);

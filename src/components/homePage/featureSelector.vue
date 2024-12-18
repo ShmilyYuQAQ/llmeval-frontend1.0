@@ -39,6 +39,14 @@
                 ></span
             >
         </div>
+        <div class="selected-tag">
+            <span
+                >选中标签简介:<span
+                    style="color: red; margin-left: 20px"
+                    >{{ selected_tag }}</span
+                ></span
+            >
+        </div>
         <!-- <featureElement
             :title="nlpTitle"
             :checked="nlpChecked"
