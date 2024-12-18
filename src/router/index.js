@@ -29,8 +29,8 @@ const routes = [
         props: true, // 将路由参数作为组件的 props 传递
     },
     {
-        path: '/ProfileContent',
-        component: () => import("@/components/ProfileContent.vue"),
+        path: '/PersonalCenter',
+        component: () => import("@/views/PersonalCenter.vue"),
     }
 ];
 

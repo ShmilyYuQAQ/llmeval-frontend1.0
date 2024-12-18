@@ -16,7 +16,7 @@
                         <router-link to="/guide" class="link-item">指南</router-link>
                         <router-link to="/home" class="link-item">主页</router-link>
                         <router-link to="/news" class="link-item">新闻</router-link>
-                        <router-link to="/ProfileContent" class="link-item">个人中心</router-link>
+                        <router-link to="/PersonalCenter" class="link-item">个人中心</router-link>
                     </nav>
                 </div>
             </div>

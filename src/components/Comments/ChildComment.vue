@@ -25,8 +25,8 @@
                 <span class="user-name">{{ comment.userName }}</span>
             </div>
             <div class="comment-content">
-                <span v-if="comment.deep == 1">：</span>
-                <span v-else-if="comment.deep == 2"
+                <span v-if="!isGrandChild">：</span>
+                <span v-else-if="isGrandChild"
                     >回复&nbsp;&nbsp;
                     <span class="reply-to-user">@{{ replyToUser }}</span>
                     :</span
@@ -35,9 +35,21 @@
             </div>
         </div>
         <div class="footer">
-            <span class="comment-time">{{ comment.createTime }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-            <span class="likes"><span class="iconfont">&#xe648;</span> {{ comment.likes || 0 }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-            <span class="likes"><span class="iconfont">&#xe64d;</span> {{ comment.dislikes || 0 }}&nbsp;&nbsp;</span>
+            <span class="comment-time"
+                >{{
+                    comment.createTime
+                }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+            >
+            <span class="likes"
+                ><span class="iconfont">&#xe648;</span>
+                {{
+                    comment.likes || 0
+                }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
+            >
+            <span class="likes"
+                ><span class="iconfont">&#xe64d;</span>
+                {{ comment.dislikes || 0 }}&nbsp;&nbsp;</span
+            >
             <button @click="toggleReply" class="reply-btn">回复</button>
             <button class="delete-btn">删除</button>
         </div>
@@ -57,7 +69,8 @@
                 :depth="depth + 1"
                 :user_comment_map="user_comment_map_copy"
                 :modelId="modelId"
-                @comment-updated="$emit('comment-updated')" 
+                :isGrandChild="true"
+                @comment-updated="$emit('comment-updated')"
             />
         </div>
     </div>
@@ -81,20 +94,27 @@ export default {
         },
         modelId: {
             type: [String, Number],
-            required: true
-        }
+            required: true,
+        },
+        isGrandChild:{
+            type: Boolean,
+            default: false,
+        },
     },
     data() {
         return {
             showReplies: false,
-            avaterSize: "default",
-            replyToUser: "",
             replyContent: "",
+            replyToUser: "",
             userId: 7,
         };
     },
     created() {
         // console.log(this.user_comment_map)
+        if (this.comment.answerId === 116) console.log("有的兄弟");
+        this.replyToUser = this.user_comment_map.get(
+            this.comment.answerId
+        );
     },
     methods: {
         toggleReply() {
@@ -103,31 +123,43 @@ export default {
         async submitReply(commentId) {
             if (this.replyContent.trim()) {
                 try {
-                    console.log("请求参数：" + this.replyContent + " " + this.modelId + " " + this.userId + " " + commentId);
-                    const response = await axios.post('http://49.233.82.133:9091/model/comment/add', {
-                        commentDetail: this.replyContent,
-                        modelId: this.modelId,
-                        userId: this.userId,
-                        deep: 2, // 普通评论
-                        answerId: commentId,
-                        status: true,
-                    });
+                    console.log(
+                        "请求参数：" +
+                            this.replyContent +
+                            " " +
+                            this.modelId +
+                            " " +
+                            this.userId +
+                            " " +
+                            commentId
+                    );
+                    const response = await axios.post(
+                        "http://49.233.82.133:9091/model/comment/add",
+                        {
+                            commentDetail: this.replyContent,
+                            modelId: this.modelId,
+                            userId: this.userId,
+                            deep: 2, // 普通评论
+                            answerId: commentId,
+                            status: true,
+                        }
+                    );
 
                     if (response.data.success) {
                         this.replyContent = ""; // 清空输入框
                         this.showReplies = false; // 隐藏回复框
-                        this.$emit('comment-updated'); // 触发自定义事件，通知父组件
+                        this.$emit("comment-updated"); // 触发自定义事件，通知父组件
                     } else {
                         alert("发表评论失败：" + response.data.errorMsg);
                     }
-                    } catch (error) {
-                        console.error('Error posting comment:', error);
-                        alert("发表评论失败，请稍后再试。");
-                        }
-                    } else {
-                        alert("评论内容不能为空！");
-                    }
-            },
+                } catch (error) {
+                    console.error("Error posting comment:", error);
+                    alert("发表评论失败，请稍后再试。");
+                }
+            } else {
+                alert("评论内容不能为空！");
+            }
+        },
     },
     computed: {
         avaterSize() {
@@ -140,9 +172,6 @@ export default {
         user_comment_map_copy() {
             return this.user_comment_map;
         },
-        replyToUser() {
-            return this.user_comment_map.get(this.comment.answerId) || "";
-        },
     },
 };
 </script>
@@ -150,21 +179,21 @@ export default {
 <style scoped>
 .iconfont {
     font-size: 13px;
-    color:#9499a0
+    color: #9499a0;
 }
 
-.likes{
+.likes {
     font-size: 13px;
-    color:#9499a0
+    color: #9499a0;
 }
 
-.dislikes{
+.dislikes {
     font-size: 13px;
-    color:#9499a0
+    color: #9499a0;
 }
 
 .reply {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .delete-btn {
@@ -184,17 +213,17 @@ export default {
     color: rgb(64, 158, 255);
 }
 
-.likes:hover{
+.likes:hover {
     color: #007bff;
     cursor: pointer;
 }
-.dislikes:hover{
+.dislikes:hover {
     color: #007bff;
     cursor: pointer;
 }
 
 .reply:hover {
-  color: #007bff;
+    color: #007bff;
 }
 
 .comment {
@@ -242,7 +271,7 @@ export default {
     height: 35px;
 }
 .comment-time {
-    color: #9499A0;
+    color: #9499a0;
     font-size: 12px;
     margin-left: 45px;
 }
@@ -253,11 +282,11 @@ export default {
     background: transparent;
     font-size: 13px;
     cursor: pointer;
-    margin-left:20px;
-    color:#9499A0;
+    margin-left: 20px;
+    color: #9499a0;
     margin-bottom: 3px;
 }
-.reply-btn:hover{
+.reply-btn:hover {
     color: rgb(64, 158, 255);
 }
 .comment-detail {

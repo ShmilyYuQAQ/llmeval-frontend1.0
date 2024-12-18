@@ -38,7 +38,7 @@ export default {
                 this.datas = response.data.data; //展示的模型数据
                 this.$refs.modelCardContainer.updatePaginatedModel(this.datas);
                 console.log(this.datas);
-                let temp = []
+                let temp = [];
                 for (let i = 0; i < this.datas.length; i++) {
                     try {
                         this.datas[i].model_image_path =
@@ -47,14 +47,12 @@ export default {
                                 this.datas[i].model_image_path,
                                 "public"
                             );
-                        if(this.datas[i].model_image_path==="http://49.233.82.133:5174"){
-                            temp.push(i)
-                        }
                     } catch (error) {
-                        // console.log(i)
+                        console.log(this.datas[i].model_image_path)
+                        console.log(i)
                     }
                 }
-                console.log(temp)
+                console.log(temp);
                 console.log(this.datas);
             } catch (error) {
                 this.datas = [];
@@ -66,11 +64,23 @@ export default {
                 const response = await axiosInstance.get(
                     "/model/tagName/?tagName=" + tag
                 );
-                this.datas = response.data.data || [];
-                this.originDatas = response.data.data || [];
+                let temp = response.data.data || [];
+                for (let i = 0; i < temp.length; i++) {
+                    try {
+                        temp[i].model_image_path =
+                            "http://49.233.82.133:5174" +
+                            this.getSubstringAfterKeyword(
+                                temp[i].model_image_path,
+                                "public"
+                            );
+                    } catch (error) {
+                        // console.log(i)
+                    }
+                }
+                this.datas = temp || [];
+                this.originDatas = temp || [];
                 this.$refs.modelCardContainer.updatePaginatedModel(this.datas);
                 this.selected_tag = tag;
-                console.log(tag, this.datas);
             } catch (error) {
                 this.datas = [];
                 this.error = "Failed to fetch data";

@@ -6,19 +6,10 @@
                 <div class="home-page">
                     <div class="banner">
                         <h1>LLMeval</h1>
-                        <p>一个提供模型评测和模型选择建议的平台</p>
+                        <p>一个标签化展示大模型能力，为用户提供大模型选择建议的平台</p>
                     </div>
-                    <div class="image-container">
+                    <!-- <div class="image-container">
                         <img src="./images/1.png" alt="">
-                    </div>
-                    <!-- <div class="sponsors-container">
-                        <h2>赞助商</h2>
-                        <div class="sponsors-list">
-                            <SponsorCard :sponsor="sponsor"></SponsorCard>
-                            <SponsorCard :sponsor="sponsor"></SponsorCard>
-                            <SponsorCard :sponsor="sponsor"></SponsorCard>
-                            <SponsorCard :sponsor="sponsor"></SponsorCard>
-                        </div>
                     </div> -->
                     <div class="cards">
                         <GuideCard v-for="formData in cardDatas" :key="formData.titile" :cardData="formData"></GuideCard>
