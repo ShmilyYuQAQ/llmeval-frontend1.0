@@ -12,7 +12,12 @@
                     </a>
                 </div>
                 <div class="content">
-                    <nav class="navbar-menu">
+                    <div class="menu-toggle" @click="toggleMenu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <nav :class="['navbar-menu', { 'active': isMenuOpen }]">
                         <router-link to="/guide" class="link-item">指南</router-link>
                         <router-link to="/home" class="link-item">主页</router-link>
                         <router-link to="/news" class="link-item">新闻</router-link>
@@ -25,7 +30,18 @@
 </template>
 
 <script>
-export default {};
+export default {
+    data() {
+        return {
+            isMenuOpen: false
+        }
+    },
+    methods: {
+        toggleMenu() {
+            this.isMenuOpen = !this.isMenuOpen;
+        }
+    }
+};
 </script>
 
 <style scoped>
@@ -93,5 +109,48 @@ export default {};
 }
 .link-item:hover {
     color: #409eff;
+}
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    cursor: pointer;
+    margin-right: 20px;
+}
+.menu-toggle span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: #303133;
+    transition: all 0.3s;
+}
+@media screen and (max-width: 768px) {
+    .menu-toggle {
+        display: flex;
+    }
+    .navbar-menu {
+        display: none;
+        position: absolute;
+        top: 55px;
+        right: 0;
+        flex-direction: column;
+        background-color: white;
+        width: 200px;
+        margin: 0;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .navbar-menu.active {
+        display: flex;
+    }
+    .link-item {
+        padding: 10px 20px;
+        line-height: 1.5;
+        border-bottom: 1px solid #eee;
+    }
+    .link-item:last-child {
+        border-bottom: none;
+    }
 }
 </style>

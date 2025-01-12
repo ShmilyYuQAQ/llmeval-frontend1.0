@@ -111,7 +111,6 @@ export default {
     },
     created() {
         // console.log(this.user_comment_map)
-        if (this.comment.answerId === 116) console.log("有的兄弟");
         this.replyToUser = this.user_comment_map.get(
             this.comment.answerId
         );
