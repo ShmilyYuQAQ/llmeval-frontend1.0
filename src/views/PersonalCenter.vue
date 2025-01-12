@@ -5,17 +5,20 @@
             <div class="user-info">
                 <el-avatar
                     class="user-avatar"
-                    src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+                    :src="userAvatar"
+                    @click="handleAvatarClick"
                 />
-                <div class="user-name">一个测试名字</div>
-                <button class="change-btn" @click="changeNameClick">
-                    改名
-                </button>
-                <el-dialog v-model="dialogVisible" width="800">
-                    <div>
-                        <h1 style="text-align: center">修改昵称</h1>
+                <div class="user-details">
+                    <div class="user-name">{{ userName }}</div>
+                    <div class="user-actions">
+                        <el-button type="text" @click="changeNameClick" class="action-btn">
+                            <el-icon><Edit /></el-icon> 修改昵称
+                        </el-button>
+                        <el-button type="text" @click="changePasswordClick" class="action-btn">
+                            <el-icon><Lock /></el-icon> 修改密码
+                        </el-button>
                     </div>
-                </el-dialog>
+                </div>
             </div>
         </div>
         <div class="main">
@@ -28,17 +31,98 @@
             </div>
         </div>
     </div>
+    <el-dialog v-model="nameDialogVisible" title="修改昵称" width="400px">
+        <el-form :model="nameForm" :rules="nameRules" ref="nameFormRef">
+            <el-form-item prop="newName">
+                <el-input v-model="nameForm.newName" placeholder="请输入新昵称" />
+            </el-form-item>
+        </el-form>
+        <template #footer>
+            <el-button @click="nameDialogVisible = false">取消</el-button>
+            <el-button type="primary" @click="submitNameChange">确认</el-button>
+        </template>
+    </el-dialog>
+    <el-dialog v-model="passwordDialogVisible" title="修改密码" width="400px">
+        <el-form :model="passwordForm" :rules="passwordRules" ref="passwordFormRef">
+            <el-form-item prop="oldPassword">
+                <el-input
+                    v-model="passwordForm.oldPassword"
+                    type="password"
+                    placeholder="请输入原密码"
+                />
+            </el-form-item>
+            <el-form-item prop="newPassword">
+                <el-input
+                    v-model="passwordForm.newPassword"
+                    type="password"
+                    placeholder="请输入新密码"
+                />
+            </el-form-item>
+            <el-form-item prop="confirmPassword">
+                <el-input
+                    v-model="passwordForm.confirmPassword"
+                    type="password"
+                    placeholder="请确认新密码"
+                />
+            </el-form-item>
+        </el-form>
+        <template #footer>
+            <el-button @click="passwordDialogVisible = false">取消</el-button>
+            <el-button type="primary" @click="submitPasswordChange">确认</el-button>
+        </template>
+    </el-dialog>
 </template>
 
 <script>
 import modelCardContainer from "@/components/homePage/modelCardContainer.vue";
 import axiosInstance from "@/plugins/axios";
 import NavBar from "../components/guidePage/NavBar.vue";
+
 export default {
     data() {
         return {
             dialogVisible: false,
             datas: [],
+            userName: '大模型爱好者小明',
+            userAvatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+            nameDialogVisible: false,
+            passwordDialogVisible: false,
+            nameForm: {
+                newName: ''
+            },
+            passwordForm: {
+                oldPassword: '',
+                newPassword: '',
+                confirmPassword: ''
+            },
+            nameRules: {
+                newName: [
+                    { required: true, message: '请输入新昵称', trigger: 'blur' },
+                    { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
+                ]
+            },
+            passwordRules: {
+                oldPassword: [
+                    { required: true, message: '请输入原密码', trigger: 'blur' }
+                ],
+                newPassword: [
+                    { required: true, message: '请输入新密码', trigger: 'blur' },
+                    { min: 6, message: '密码长度不能小于6位', trigger: 'blur' }
+                ],
+                confirmPassword: [
+                    { required: true, message: '请确认新密码', trigger: 'blur' },
+                    {
+                        validator: (rule, value, callback) => {
+                            if (value !== this.passwordForm.newPassword) {
+                                callback(new Error('两次输入密码不一致'))
+                            } else {
+                                callback()
+                            }
+                        },
+                        trigger: 'blur'
+                    }
+                ]
+            }
         };
     },
     components: {
@@ -47,7 +131,23 @@ export default {
     },
     methods: {
         changeNameClick() {
-            this.dialogVisible = true;
+            this.nameDialogVisible = true
+            this.nameForm.newName = this.userName
+        },
+        changePasswordClick() {
+            this.passwordDialogVisible = true
+        },
+        async submitNameChange() {
+            this.userName = this.nameForm.newName
+            this.nameDialogVisible = false
+        },
+        async submitPasswordChange() {
+            this.passwordDialogVisible = false
+            this.passwordForm = {
+                oldPassword: '',
+                newPassword: '',
+                confirmPassword: ''
+            }
         },
         async fetchData() {
             try {
@@ -80,7 +180,6 @@ export default {
                     }
                 }
                 this.$refs.modelCardContainer.updatePaginatedModel(this.datas);
-                console.log("你干嘛", this.datas);
             } catch (error) {
                 this.datas = [];
                 this.error = "Failed to fetch data";
@@ -109,62 +208,64 @@ export default {
 <style scoped>
 .personal-center {
     width: 80%;
-    /* border: solid 1px red; */
-    margin-left: 10%;
-    margin-right: 10%;
-    
+    margin: 20px auto;
+    min-height: calc(100vh - 40px);
 }
 .header {
     background-color: #fff;
     height: 150px;
-    position: relative;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);
+}
+.user-info {
     display: flex;
     align-items: center;
 }
 .user-avatar {
-    width: 50px;
-    height: 50px;
-    margin-right: 10px;
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+    transition: transform 0.3s;
 }
-.user-info {
-    /* position: absolute; */
-    left: 0; /* 相对于父元素的左侧 */
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    top: calc(100% - 60px);
-    margin-left:10px;
+.user-avatar:hover {
+    transform: scale(1.05);
+}
+.user-details {
+    margin-left: 20px;
 }
 .user-name {
-    font-weight: 700;
-    line-height: 18px;
-    font-size: 18px;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #303133;
 }
-.change-btn {
-    outline: none;
-    border: none;
-    background: transparent;
-    font-size: 13px;
-    cursor: pointer;
-    margin-left: 10px;
-    color: #9499a0;
-}
-.change-btn:hover {
-    color: rgb(64, 158, 255);
-}
-.main{
-    background-color: #fff;
-    margin-top:20px;
+.user-actions {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    border-top:#9499a0 1px solid;
+    gap: 15px;
 }
-.title{
-    margin-top:10px;
-    margin-left:10px;
-    color:black;
-    font-size:22px;
-    font-weight:500;
+.action-btn {
+    padding: 0;
+    height: auto;
+    font-size: 14px;
+    color: #606266;
+}
+.action-btn:hover {
+    color: #409EFF;
+}
+.main {
+    background-color: #fff;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);
+}
+.title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #303133;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #EBEEF5;
 }
 </style>

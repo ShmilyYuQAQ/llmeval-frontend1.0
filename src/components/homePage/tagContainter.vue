@@ -86,8 +86,13 @@ export default {
     margin-left: 20px;
     margin-right: 20px;
     width: calc(100% - 40px);
-    /* z-index: 9999; */
+    z-index: 1;
 }
+
+.tag-container:hover {
+    z-index: 999;
+}
+
 .header-tag {
     display: flex;
     justify-content: space-between;
@@ -151,12 +156,9 @@ export default {
 .has-subtags:hover .subtags-container {
     display: flex;
     flex-wrap: wrap;
-    padding-top: 6px;
     color: rgba(39, 38, 77, 0.45);
-    justify-content: center;
-    min-width: 100px;
-    width: auto; /* 宽度自动根据子元素变化 */
-    gap: 10px; /* 设置子元素之间的间距 */
+    justify-content: flex-start;
+    gap: 8px;
 }
 .tag:hover .in-span {
     background-color: #3B29B3;;
@@ -165,19 +167,29 @@ export default {
 
 .subtags-container {
     display: none;
-    /* position: absolute; */
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
     background-color: rgb(243, 245, 259);
-    /* 其他样式 */
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    padding: 8px;
+    border-radius: 4px;
+    min-width: 200px;
+    width: max-content;
+    max-width: 90vw;
 }
 
 .subtag {
     cursor: pointer;
-    padding: 5px;
+    padding: 4px;
     background-color: transparent;
-    margin-top: 2px;
-    flex: 0 0 auto; /* 子元素不伸缩，保持原始大小 */
-    /* 可以设置子元素的最小宽度，以确保它们不会变得太窄 */
-    min-width: 50px; /* 子元素的最小宽度，根据需要调整 */
+    margin: 0;
+    flex: 0 0 auto;
+    min-width: auto;
+    position: relative;
+    z-index: 1;
 }
 .subtag-text {
     border-radius: 3px;
@@ -192,6 +204,8 @@ export default {
     background-color: transparent;
     border-color: transparent;
     cursor: pointer;
+    white-space: nowrap;
+    display: inline-block;
 }
 .subtag-text:hover {
     color: #816df8 !important;

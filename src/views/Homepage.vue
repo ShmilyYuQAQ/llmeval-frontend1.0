@@ -1,18 +1,6 @@
 <template>
     <NavBar></NavBar>
     <div class="container">
-        <!-- <div>
-            <sideBar
-                style="
-                    position: fixed;
-                    width: 200px;
-                    top: 0;
-                    left: 0;
-                    height: 100vh;
-                    background-color: white;
-                "
-            />
-        </div> -->
         <HomePageMid
             style="
                 margin-left: 100px;
@@ -21,21 +9,6 @@
                 width: calc(100% - 200px);
             "
         />
-        <!-- <div
-            style="
-                position: fixed;
-                width: 400px;
-                right: 0;
-                top: 0;
-                height: 100vh;
-                background-color: white;
-                margin-top: 10px;
-                border: solid 1px #e6e6e6;
-                border-radius: 10px;
-            "
-        >
-            <RightSideBar />
-        </div> -->
     </div>
 </template>
 

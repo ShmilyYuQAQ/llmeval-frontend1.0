@@ -1,5 +1,12 @@
 <template>
-    <div style="display: flex; justify-content: center; flex-direction: column;align-items: center;">
+    <div
+        style="
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        "
+    >
         <div class="model-card-container">
             <ModelCard
                 v-for="(item, index) in paginatedModel"
@@ -15,7 +22,7 @@
             layout="prev, pager, next"
             @current-change="handleCurrentChange"
             @size-change="handleSizeChange"
-            style="margin-top:20px"
+            style="margin-top: 20px"
         >
         </el-pagination>
     </div>
@@ -88,12 +95,21 @@ export default {
 
 <style>
 .model-card-container {
-    width: 90%;
+    width: 1300px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     gap: 20px;
     align-items: center;
     z-index: 1;
+    justify-content: flex-start;
+    margin: 0 auto;
+}
+
+@media screen and (max-width: 1280px) {
+    .model-card-container {
+        width: 90%;
+        margin: 0 auto;
+        justify-content: center;
+    }
 }
 </style>
