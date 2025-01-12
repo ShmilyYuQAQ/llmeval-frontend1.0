@@ -160,16 +160,22 @@ export default {
             }
         },
         async deleteComment(commentId) {
-            try {
-                const response = await axios.delete(`http://49.233.82.133:9091/model/comment/delete/?commentId=${commentId}`);
-                if (response.data.success) {
-                    alert('评论删除成功');
-                    this.$emit("comment-updated");
-                } else {
-                    alert("删除评论失败：" + response.data.errorMsg);
+            const confirmed = window.confirm("确认要删除这条评论吗？");
+
+            if (confirmed) {
+                try {
+                    const response = await axios.delete(`http://49.233.82.133:9091/model/comment/delete/?commentId=${commentId}`);
+                    
+                    if (response.data.success) {
+                        alert('评论删除成功');
+                        this.$emit("comment-updated");
+                    } else {
+                        alert("删除评论失败：" + response.data.errorMsg);
+                    }
+                } catch (error) {
+                    console.error('删除失败', error);
+                    alert("删除评论失败，请稍后再试");
                 }
-            } catch (error) {
-                console.error('删除失败', error);
             }
         },
     },
