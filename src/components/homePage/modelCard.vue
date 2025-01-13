@@ -38,6 +38,7 @@
             "
         >
             <span class="model-date">{{ model.updateTime }}更新</span>
+            <span class="model-date">{{ model.favoritesCount }}收藏</span>
             <a class="a_details" @click="goToDetail(model.modelId)">详细信息</a>
         </div>
     </div>

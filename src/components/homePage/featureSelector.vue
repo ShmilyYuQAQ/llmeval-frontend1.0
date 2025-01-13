@@ -5,7 +5,7 @@
             :checked="openSourceChecked"
             :options="openSourceOptions"
             @select="parentMethod"
-            @change="submitChange"
+            @change="(val) => $emit('change', val)"
         ></featureElement>
         <tagContainter
             :tags="tags_0"
@@ -34,7 +34,7 @@
         <div class="selected-tag">
             <span
                 >当前选中的标签是:<span style="color: red; margin-left: 20px">{{
-                    selected_tag
+                    selected_tag[0]
                 }}</span></span
             >
         </div>
@@ -417,7 +417,7 @@ export default {
     flex-direction: column;
     background-color: white;
     width: 90%;
-    justify-content: center; /* 左对齐 */
+    justify-content: center;
     z-index: 9999;
     padding-top:20px;
 }
