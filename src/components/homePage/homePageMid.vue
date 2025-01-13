@@ -3,9 +3,11 @@
         <div class="search-container">
             <el-input
                 v-model="searchQuery"
-                placeholder="请输入模型名称"
+                placeholder="输入关键字 搜索您想找的模型"
                 class="search-input"
+                clearable
                 @keyup.enter="handleSearch"
+                @clear="clearSearch"
             >
                 <template #append>
                     <el-button
@@ -18,13 +20,37 @@
                 </template>
             </el-input>
         </div>
+        <div v-if="hasFilters" class="filter-tags-container">
+            <span
+                >共找到
+                <span style="color: #409eff; font-weight: 600; font-size: 13px"
+                    >&ensp;{{ datas.length }}&ensp;</span
+                >个结果&ensp;&ensp;</span
+            >
+            <el-tag
+                v-if="activeSearchQuery"
+                closable
+                @close="clearSearch"
+                class="filter-tag"
+            >
+                {{ activeSearchQuery }}
+            </el-tag>
+            <el-tag
+                v-if="selected_tag[0]"
+                closable
+                @close="clearTag"
+                class="filter-tag"
+            >
+                {{ selected_tag[0] }}
+            </el-tag>
+        </div>
         <FeatureSelector
             @custom-event="selectModel"
             :selected_tag="selected_tag"
             :tag_description="tag_description"
             @change="openSourceChange"
         />
-        <FeatureSequencer />
+        <FeatureSequencer @change="sequencerChange" ref="featureSequencer" />
         <modelCardContainer
             :datas="datas"
             ref="modelCardContainer"
@@ -40,10 +66,15 @@ export default {
     data() {
         return {
             datas: [],
-            selected_tag: "",
+            selected_tag: ["", ""],
             originDatas: [],
-            searchQuery: '',
+            searchQuery: "",
+            activeSearchQuery: "",
             isSearching: false,
+            activeFilters: [],
+            searchDatas: [],
+            tagDatas: [],
+            sequencerValue: 0,
         };
     },
     components: {
@@ -52,148 +83,185 @@ export default {
         modelCardContainer,
     },
     methods: {
+        processImagePath(data) {
+            const BASE_URL = "http://49.233.82.133:5174";
+            return data.map(item => ({
+                ...item,
+                model_image_path: item.model_image_path ? 
+                    `${BASE_URL}${this.getSubstringAfterKeyword(item.model_image_path, "public")}` : 
+                    item.model_image_path
+            }));
+        },
         async fetchData() {
             try {
-                const response = await axiosInstance.get("/model/");
-                this.originDatas = response.data.data; //所有模型数据
-                this.datas = response.data.data; //展示的模型数据
+                const { data: { data } } = await axiosInstance.get("/model/");
+                this.datas = this.processImagePath(data);
+                this.originDatas = this.processImagePath(data);
+                console.log(this.datas,"datas")
                 this.$refs.modelCardContainer.updatePaginatedModel(this.datas);
-                console.log(this.datas);
-                let temp = [];
-                for (let i = 0; i < this.datas.length; i++) {
-                    try {
-                        this.datas[i].model_image_path =
-                            "http://49.233.82.133:5174" +
-                            this.getSubstringAfterKeyword(
-                                this.datas[i].model_image_path,
-                                "public"
-                            );
-                    } catch (error) {
-                        console.log(this.datas[i].model_image_path)
-                        console.log(i)
-                    }
-                }
-                console.log(temp);
-                console.log(this.datas);
             } catch (error) {
-                this.datas = [];
-                this.error = "Failed to fetch data";
+                console.log(error,"error")
             }
         },
         async selectModel(tag) {
             try {
-                const response = await axiosInstance.get(
-                    "/model/tagName/?tagName=" + tag[0]
-                );
-                let temp = response.data.data || [];
-                for (let i = 0; i < temp.length; i++) {
-                    try {
-                        temp[i].model_image_path =
-                            "http://49.233.82.133:5174" +
-                            this.getSubstringAfterKeyword(
-                                temp[i].model_image_path,
-                                "public"
-                            );
-                    } catch (error) {
-                        // console.log(i)
-                    }
-                }
-                const res = await axiosInstance.get(
-                    "/tag/description?tagId=" + tag[1]
-                );
-                this.datas = temp || [];
-                this.originDatas = temp || [];
+                const [modelResponse, descResponse] = await Promise.all([
+                    axiosInstance.get(`/model/tagName/?tagName=${tag[0]}`),
+                    axiosInstance.get(`/tag/description?tagId=${tag[1]}`)
+                ]);
+
+                this.tagDatas = this.processImagePath(modelResponse.data.data || []);
+                this.tag_description = descResponse.data.data;
+                
+                // 更新数据显示
+                this.datas = !this.activeSearchQuery ? this.tagDatas :
+                    this.searchDatas.filter(searchItem => 
+                        this.tagDatas.some(tagItem => String(tagItem.name) === String(searchItem.name))
+                    );
+                this.sortDatas(this.sequencerValue);
+                this.originDatas = this.datas; // 保存原始数据，原始数据应该是经过标签或者搜索过滤后的数据
+                this.selected_tag = tag;
                 this.$refs.modelCardContainer.updatePaginatedModel(this.datas);
-                this.selected_tag = tag[0];
-                this.tag_description = res.data.data;
             } catch (error) {
-                this.datas = [];
-                this.error = "Failed to fetch data";
+                this.handleError("标签筛选失败");
             }
         },
         getSubstringAfterKeyword(inputString, keyword) {
-            // 找到关键字在字符串中的位置
-            const index = inputString.indexOf(keyword);
-
-            // 如果找到了关键字
-            if (index !== -1) {
-                // 截取关键字之后的内容
-                return inputString.substring(index + keyword.length);
-            } else {
-                // 如果没有找到关键字，返回空字符串或者根据需要进行其他处理
-                return "";
-            }
+            const index = inputString?.indexOf(keyword);
+            return index !== -1 ? inputString.substring(index + keyword.length) : "";
         },
         filterItems(filterArray) {
-            // 根据传入的筛选条件数组来筛选items数组
-            const filteredItems = this.originDatas.filter((item) => {
-                // 如果筛选条件数组为空，则保留所有元素
-                if (filterArray.length === 0) return true;
-
-                // 如果筛选条件数组包含"开源"，则保留isOpenSource为true的元素
-                if (filterArray.includes("开源") && item.isOpenSource)
-                    return true;
-
-                // 如果筛选条件数组包含"闭源"，则保留isOpenSource为false的元素
-                if (filterArray.includes("不开源") && !item.isOpenSource)
-                    return true;
-
-                // 如果元素不满足上述任何条件，则不保留
-                return false;
-            });
-
-            return filteredItems;
+            if (!filterArray?.length) return this.originDatas;
+            
+            return this.originDatas.filter(item => 
+                (filterArray.includes("开源") && item.isOpenSource) ||
+                (filterArray.includes("不开源") && !item.isOpenSource)
+            );
         },
         openSourceChange(value) {
-            this.datas = this.filterItems(value);
+            if (!Array.isArray(value)) {
+                // console.log('Received invalid value type for openSourceChange:', value);
+                return;
+            }
+            this.activeFilters = [...value];
+            this.datas = this.filterItems(this.activeFilters);
             this.$refs.modelCardContainer.updatePaginatedModel(this.datas);
         },
         async handleSearch() {
             if (!this.searchQuery.trim()) {
-                // 如果搜索框为空，恢复显示所有数据
-                this.datas = this.originDatas;
-                this.$refs.modelCardContainer.updatePaginatedModel(this.datas);
-                return;
+                return this.clearSearch();
             }
 
             this.isSearching = true;
             try {
-                console.log((this.searchQuery))
-                const response = await axiosInstance.get(
-                    `/model/searchByName?name=${(this.searchQuery)}`
+                const { data: { data } } = await axiosInstance.get(
+                    `/model/searchByName?name=${this.searchQuery}`
                 );
-                let searchResults = response.data.data || [];
-                console.log(searchResults)
-                // 处理图片路径
-                for (let item of searchResults) {
-                    try {
-                        item.model_image_path = "http://49.233.82.133:5174" +
-                            this.getSubstringAfterKeyword(
-                                item.model_image_path,
-                                "public"
-                            );
-                    } catch (error) {
-                        console.log(item.model_image_path);
-                    }
-                }
-
-                this.datas = searchResults;
+                
+                this.searchDatas = this.processImagePath(data || []);
+                this.activeSearchQuery = this.searchQuery;
+                // 如果搜索结果没有标签，则直接显示搜索结果 否则显示搜索结果和标签的交集
+                this.datas = !this.selected_tag[0] ? this.searchDatas :
+                    this.searchDatas.filter(searchItem => 
+                        this.tagDatas.some(tagItem => 
+                            String(tagItem.name) === String(searchItem.name)
+                        )
+                    );
+                this.sortDatas(this.sequencerValue);
+                this.originDatas = this.datas; // 保存原始数据，原始数据应该是经过标签或者搜索过滤后的数据
                 this.$refs.modelCardContainer.updatePaginatedModel(this.datas);
             } catch (error) {
-                console.error('搜索失败:', error);
-                this.$message.error('搜索失败，请稍后重试');
+                this.handleError("搜索失败");
             } finally {
                 this.isSearching = false;
             }
         },
+        async clearSearch() {
+            this.searchQuery = this.activeSearchQuery = "";
+            this.searchDatas = [];
+            await this.refreshData();
+        },
+        async clearTag() {
+            this.selected_tag = "";
+            this.tag_description = "";
+            this.tagDatas = [];
+            await this.refreshData();
+        },
+        async refreshData() {
+            if (!this.searchQuery && !this.selected_tag[0]) {
+                this.fetchData();// 如果没有任何过滤条件，则重新获取所有数据
+            } else if (this.searchQuery) {
+                await this.handleSearch(); // 如果有搜索条件，则重新进行搜索
+            } else if (this.selected_tag[0]) {
+                await this.selectModel(this.selected_tag); // 如果有标签条件，则重新进行标签筛选
+            }
+
+            if (this.activeFilters.length) {
+                this.datas = this.filterItems(this.activeFilters);
+            }
+
+            this.$refs.modelCardContainer.updatePaginatedModel(this.datas);
+        },
+        handleError(message) {
+            this.datas = [];
+            this.$message.error(message);
+            console.error(message);
+        },
+        sequencerChange(value) {
+            if (typeof value !== 'number') {
+                return;
+            }
+            this.sequencerValue = value;
+            if(value === 0){
+                this.datas = this.originDatas;
+            }
+            this.datas = [...this.datas].sort((a, b) => {
+                switch (value) {
+                    case 1: // 发布时间排序
+                        return new Date(b.releaseDate) - new Date(a.releaseDate); // 降序：新的在前
+                    case 2: // 收藏量排序
+                        return b.favoritesCount - a.favoritesCount; // 降序：多的在前
+                    default:
+                        return 0;
+                }
+            });
+            
+            this.$refs.modelCardContainer.updatePaginatedModel(this.datas);
+        },
+        sortDatas(value){
+            this.datas = [...this.datas].sort((a, b) => {
+                switch (value) {
+                    case 1: // 发布时间排序
+                        return new Date(b.releaseDate) - new Date(a.releaseDate); // 降序：新的在前
+                    case 2: // 收藏量排序
+                        return b.favoritesCount - a.favoritesCount; // 降序：多的在前
+                    default:
+                        return 0;
+                }
+            });
+        }
     },
     created() {
         this.fetchData();
+        this.activeFilters = ["开源", "不开源"];
+    },
+    mounted(){
+        this.sequencerValue = this.$refs.featureSequencer.getRadio();
     },
     watch: {
         models: function (newVal, oldVal) {
             this.$refs.modelCardContainer.models = newVal;
             this.$refs.modelCardContainer.updatePaginatedModel();
+        },
+    },
+    computed: {
+        hasFilters() {
+            return (
+                this.activeSearchQuery ||
+                this.selected_tag[0] ||
+                this.activeFilters.length > 0 ||
+                this.datas.length > 0
+            );
         },
     },
 };
@@ -255,5 +323,34 @@ export default {
 /* 确保搜索框在其他元素之上 */
 .search-container {
     z-index: 1000;
+}
+
+.filter-tags-container {
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    width: calc(90% - 20px);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    align-items: center;
+}
+
+.filter-tag {
+    font-size: 11 px;
+    background-color: #f0f2f5;
+    max-width: fit-content;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.filter-tag:hover {
+    overflow: visible;
+    z-index: 1;
 }
 </style>

@@ -1,10 +1,9 @@
 <template>
     <div class="feature-sequencer">
         <el-radio-group v-model="radio">
-            <el-radio :value="0">综合排序</el-radio>
-            <el-radio :value="1">下载量排序</el-radio>
-            <el-radio :value="2">收藏量排序</el-radio>
-            <el-radio :value="3">按评分排序</el-radio>
+            <el-radio :label="0">综合排序</el-radio>
+            <el-radio :label="1">发布时间排序</el-radio>
+            <el-radio :label="2">收藏量排序</el-radio>
         </el-radio-group>
     </div>
 </template>
@@ -15,11 +14,27 @@ export default {
             radio: 0,
         };
     },
+    methods: {
+        handleChange(value) {
+            this.$emit('change', Number(value));
+        },
+        getRadio(){
+            return this.radio;
+        }
+    },
+    watch: {
+        radio: {
+            handler(newValue) {
+                this.handleChange(newValue);
+            },
+            immediate: false
+        }
+    }
 };
 </script>
 <style scoped>
 .feature-sequencer{
-    width: 90%;
+    width: calc(90% - 20px);
     background-color: white;
     padding: 10px;
     text-align: right;

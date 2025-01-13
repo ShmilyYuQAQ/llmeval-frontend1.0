@@ -41,19 +41,14 @@ export default {
         handleCheckAllChange(val) {
             this.computedChecked = val ? this.computedOptions : [];
             this.isIndeterminate = false;
-            console.log("现在被选中的是", this.computedChecked);
-            this.submitChange()
+            this.$emit("change", [...this.computedChecked]);
         },
         handleCheckedChange(value) {
             const checkedCount = value.length;
             this.checkAll = checkedCount === this.options.length;
             this.isIndeterminate =
                 checkedCount > 0 && checkedCount < this.options.length;
-            console.log("现在被选中的是", this.computedChecked);
-            this.submitChange()
-        },
-        submitChange() {
-            this.$emit("change", this.computedChecked);
+            this.$emit("change", [...value]);
         },
     },
     created() {
