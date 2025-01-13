@@ -38,8 +38,7 @@
             "
         >
             <span class="model-date">{{ model.updateTime }}更新</span>
-            <span class="model-date">{{ model.favoritesCount }}收藏</span>
-            <a class="a_details" @click="goToDetail(model.modelId)">详细信息</a>
+            <a class="a_details" @click="goToDetail(model.name)">详细信息</a>
         </div>
     </div>
 </template>
@@ -59,8 +58,8 @@ export default {
         },
     },
     methods: {
-        goToDetail(modelId) {
-            this.$router.push({ name: "ModelDetail", params: { modelId } });
+        goToDetail(name) {
+            this.$router.push({ name: "ModelDetail", params: { name } });
         },
     },
     // props: ['name','author','imgUrl','description','date','detailsUrl']

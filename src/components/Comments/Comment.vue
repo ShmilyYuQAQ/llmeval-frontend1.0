@@ -26,7 +26,7 @@
                 {{ comment.dislikes || 0 }}&nbsp;&nbsp;</span
             >
             <button @click="toggleReply" class="reply-btn">回复</button>
-            <button class="delete-btn">删除</button>
+            <button v-if="comment.userId === this.userId" class="delete-btn" @click="deleteComment(comment.commentId)">删除</button>
         </div>
         <div class="reply-form" v-if="showReplies">
             <textarea
@@ -128,6 +128,25 @@ export default {
                 }
             } else {
                 alert("评论内容不能为空！");
+            }
+        },
+        async deleteComment(commentId) {
+            const confirmed = window.confirm("确认要删除这条评论吗？");
+
+            if (confirmed) {
+                try {
+                    const response = await axios.delete(`http://49.233.82.133:9091/model/comment/delete/?commentId=${commentId}`);
+                    
+                    if (response.data.success) {
+                        alert('评论删除成功');
+                        this.$emit("comment-updated");
+                    } else {
+                        alert("删除评论失败：" + response.data.errorMsg);
+                    }
+                } catch (error) {
+                    console.error('删除失败', error);
+                    alert("删除评论失败，请稍后再试");
+                }
             }
         },
     },

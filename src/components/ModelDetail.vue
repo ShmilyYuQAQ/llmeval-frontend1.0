@@ -36,7 +36,7 @@
       <br>
       <!-- 评论区 --> 
         <CommentList
-        :modelId="modelId"
+        :modelId="modelData.data.modelId"
       />
 
     </main>
@@ -49,7 +49,7 @@ import NavBar from './guidePage/NavBar.vue';
 import CommentList from './Comments/CommentList.vue';
 
 export default {
-  props: ['modelId'], // 接收路由参数
+  props: ['name'], // 接收路由参数
   data() {
     return {
       modelData: null,
@@ -61,14 +61,16 @@ export default {
       status: true,
       tags: [],
       isFavorited: false, // 存储收藏状态
+      modelId: null,
     }
   },
   
   async created() {
     try {
-      const modelResponse = await axios.get(`http://49.233.82.133:9091/model/modelId?modelId=${this.modelId}`);
+      const modelResponse = await axios.get(`http://49.233.82.133:9091/model/name?name=${this.name}`);
       if (modelResponse.data) {
         this.modelData = modelResponse.data;
+        this.modelId = modelResponse.data.data.modelId;
       }
       
       const modelTagResponse = await axios.get(`http://49.233.82.133:9091/tag/model?modelId=${this.modelId}`);
