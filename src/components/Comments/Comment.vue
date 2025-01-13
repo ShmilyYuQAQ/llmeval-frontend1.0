@@ -13,20 +13,10 @@
             <span class="comment-time"
                 >{{
                     comment.createTime
-                }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
-            >
-            <span class="likes"
-                ><view class="iconfont">&#xe648;</view>
-                {{
-                    comment.likes || 0
-                }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span
-            >
-            <span class="likes"
-                ><view class="iconfont">&#xe64d;</view>
-                {{ comment.dislikes || 0 }}&nbsp;&nbsp;</span
+                }}&nbsp;&nbsp;&nbsp;&nbsp;</span
             >
             <button @click="toggleReply" class="reply-btn">回复</button>
-            <button v-if="comment.userId === this.userId" class="delete-btn" @click="deleteComment(comment.commentId)">删除</button>
+            <button class="delete-btn" @click="deleteComment(comment.commentId)">删除</button>
         </div>
         <div class="reply-form" v-if="showReplies">
             <textarea
@@ -103,23 +93,28 @@ export default {
                             " " +
                             commentId
                     );
-                    const response = await axios.post(
-                        "http://49.233.82.133:9091/model/comment/add",
-                        {
-                            commentDetail: this.replyContent,
-                            modelId: this.modelId,
-                            userId: this.userId,
-                            deep: 1, // 普通评论
-                            answerId: commentId,
-                            status: true,
+                    const token = localStorage.getItem('token');
+                    const response = await axios.post('http://49.233.82.133:9091/model/comment/add', {
+                        commentDetail: this.replyContent,
+                        modelId: this.modelId,
+                        deep: 1, // 普通评论
+                        answerId: commentId,
+                        status: true,
+                    }, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
                         }
-                    );
+                    });
 
                     if (response.data.success) {
                         this.replyContent = ""; // 清空输入框
                         this.showReplies = false; // 隐藏回复框
                         this.$emit("comment-updated"); // 触发自定义事件，通知父组件
-                    } else {
+                    } else if(response.data.msg === "Token无效!!"){
+                        alert("请先登录！")
+                        window.location.href = '/login';
+                    }
+                    else {
                         alert("发表评论失败：" + response.data.errorMsg);
                     }
                 } catch (error) {
@@ -132,15 +127,22 @@ export default {
         },
         async deleteComment(commentId) {
             const confirmed = window.confirm("确认要删除这条评论吗？");
-
             if (confirmed) {
                 try {
-                    const response = await axios.delete(`http://49.233.82.133:9091/model/comment/delete/?commentId=${commentId}`);
-                    
+                    const token = localStorage.getItem('token');
+                    const response = await axios.delete(`http://49.233.82.133:9091/model/comment/delete/?commentId=${commentId}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });  
                     if (response.data.success) {
                         alert('评论删除成功');
                         this.$emit("comment-updated");
-                    } else {
+                    } else if(response.data.msg === "Token无效!!"){
+                        alert("请先登录！")
+                        window.location.href = '/login';
+                    }
+                    else {
                         alert("删除评论失败：" + response.data.errorMsg);
                     }
                 } catch (error) {

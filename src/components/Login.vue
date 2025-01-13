@@ -93,8 +93,13 @@ export default {
         if (data.success) {
           alert("登录成功！");
           // 保存 Token 到 localStorage
+          console.log(response.data.data.token);
           localStorage.setItem('token', response.data.data.token);
-          this.$router.push("/guide"); // 跳转到 GuidePage 页面
+          if (window.history.length > 1) {
+            this.$router.go(-1); // 返回到上一个页面
+          } else {
+            this.$router.push("/"); // 跳转到首页
+          }
         } else {
           alert(data.errorMsg || "登录失败，请检查账号和密码！");
         }

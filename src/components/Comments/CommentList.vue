@@ -83,21 +83,29 @@ export default {
         async postComment() {
             if (this.newComment.trim()) {
                 try {
-                    console.log("请求参数：" + this.newComment + " " + this.modelId + " " + this.userId + " ");
+                    const token = localStorage.getItem('token');
                     const response = await axios.post('http://49.233.82.133:9091/model/comment/add', {
                         commentDetail: this.newComment,
                         modelId: this.modelId,
-                        userId: this.userId,
                         deep: 0, // 普通评论
                         answerId: null,
                         status: true,
+                    }, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
                     });
 
                     if (response.data.success) {
                         this.newComment = ""; // 清空输入框
                         this.showReplies = false; // 隐藏回复框
                         this.fetchComments(); // 刷新评论列表
-                    } else {
+                    } else if(response.data.msg === "Token无效!!"){
+                        alert("请先登录！")
+                        window.location.href = '/login';
+                    }
+                    else {
+                        console.log(response.data);
                         alert("发表评论失败：" + response.data.errorMsg);
                     }
                     } catch (error) {

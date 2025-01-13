@@ -77,9 +77,13 @@ export default {
       if (modelTagResponse.data.success){
         this.tags = modelTagResponse.data.data;
       }
-      
+      const token = localStorage.getItem('token');
       // 检查用户是否已经收藏该模型
-      const favoriteResponse = await axios.get(`http://49.233.82.133:9091/user/favorites/check?userId=${this.userId}&modelId=${this.modelId}`);
+      const favoriteResponse = await axios.get(`http://49.233.82.133:9091/user/favorites/check?modelId=${this.modelId}`,{
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       if (favoriteResponse.data.success) {
         this.isFavorited = favoriteResponse.data.data.isFavorited;
       }
@@ -119,17 +123,20 @@ export default {
       async toggleFavorite() {
       try {
         const url = this.isFavorited
-          ? `http://49.233.82.133:9091/user/favorites/delete?userId=${this.userId}&modelId=${this.modelId}`
-          : `http://49.233.82.133:9091/user/favorites/add?userId=${this.userId}&modelId=${this.modelId}`
+          ? `http://49.233.82.133:9091/user/favorites/delete?modelId=${this.modelId}`
+          : `http://49.233.82.133:9091/user/favorites/add?modelId=${this.modelId}`
         
         // 立即更新按钮状态
-        
+        const token = localStorage.getItem('token');
+        console.log(token);
+        console.log(url);
+        console.log(this.isFavorited);
         const response = this.isFavorited
-          ? await axios.delete(url)
-          : await axios.post(url)
+          ? await axios.delete(url, {headers: {'Authorization': `Bearer ${token}`}})
+          : await axios.post(url, null, {headers: {'Authorization': `Bearer ${token}`}})
         if (response.data.success) {
           // 操作成功后，调用检查接口来确定收藏按钮的状态
-          const checkResponse = await axios.get(`http://49.233.82.133:9091/user/favorites/check?userId=${this.userId}&modelId=${this.modelId}`);
+          const checkResponse = await axios.get(`http://49.233.82.133:9091/user/favorites/check?modelId=${this.modelId}`,{headers: {'Authorization': `Bearer ${token}`}});
           if (checkResponse.data.success) {
             this.isFavorited = checkResponse.data.data.isFavorited;
             const modelResponse = await axios.get(`http://49.233.82.133:9091/model/modelId?modelId=${this.modelId}`);
@@ -145,10 +152,8 @@ export default {
           this.isFavorited = !this.isFavorited;
         }
       } catch (error) {
-        console.error('Error toggling favorite:', error);
         alert("操作失败，请稍后再试。");
         // 如果操作失败，恢复原来的状态
-        this.isFavorited = !this.isFavorited;
       }
     },
 
@@ -156,13 +161,17 @@ export default {
     async postComment() {
       if (this.newComment.trim()) {
         try {
+          const token = localStorage.getItem('token');
           const response = await axios.post('http://49.233.82.133:9091/model/comment/add', {
             commentDetail: this.newComment,
             modelId: this.modelId,
-            userId: this.userId,
             deep: 0, // 普通评论
             answerId: this.answerId,
             status: this.status,
+          }, {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
           });
 
           if (response.data.success) {
