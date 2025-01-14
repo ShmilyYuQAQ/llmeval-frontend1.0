@@ -41,7 +41,7 @@
                 }}&nbsp;&nbsp;&nbsp;&nbsp;</span
             >
             <button @click="toggleReply" class="reply-btn">回复</button>
-            <button class="delete-btn" @click="deleteComment(comment.commentId)">删除</button>
+            <button v-if="comment.userId === this.userId" class="delete-btn" @click="deleteComment(comment.commentId)">删除</button>
         </div>
         <div class="reply-form" v-if="showReplies">
             <textarea
@@ -68,6 +68,8 @@
 
 <script>
 import axios from "axios";
+import { getUserIdFromToken } from '@/utils/token'; // 导入工具函数
+
 export default {
     name: "Comment",
     props: {
@@ -96,7 +98,7 @@ export default {
             showReplies: false,
             replyContent: "",
             replyToUser: "",
-            userId: 7,
+            userId: null,
         };
     },
     created() {
@@ -104,6 +106,10 @@ export default {
         this.replyToUser = this.user_comment_map.get(
             this.comment.answerId
         );
+    },
+    mounted() {
+        // 在组件加载时解析 token，获取 userId
+        this.userId = getUserIdFromToken(localStorage.getItem('token'));
     },
     methods: {
         toggleReply() {
@@ -141,7 +147,8 @@ export default {
                         this.$emit("comment-updated"); // 触发自定义事件，通知父组件
                     }  else if(response.data.msg === "Token无效!!"){
                         alert("请先登录！")
-                        window.location.href = '/login';
+                        const currentUrl = window.location.href;
+                        window.location.href = `/login?redirect=${encodeURIComponent(currentUrl)}`;
                     }
                     else {
                         alert("发表评论失败：" + response.data.errorMsg);
@@ -170,7 +177,8 @@ export default {
                         this.$emit("comment-updated");
                     } else if(response.data.msg === "Token无效!!"){
                         alert("请先登录！")
-                        window.location.href = '/login';
+                        const currentUrl = window.location.href;
+                        window.location.href = `/login?redirect=${encodeURIComponent(currentUrl)}`;
                     }
                     else {
                         console.log(response.data);

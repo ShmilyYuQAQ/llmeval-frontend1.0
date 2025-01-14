@@ -152,8 +152,10 @@ export default {
           this.isFavorited = !this.isFavorited;
         }
       } catch (error) {
-        alert("操作失败，请稍后再试。");
         // 如果操作失败，恢复原来的状态
+        alert("请先登录！")
+        const currentUrl = window.location.href;
+        window.location.href = `/login?redirect=${encodeURIComponent(currentUrl)}`;
       }
     },
 

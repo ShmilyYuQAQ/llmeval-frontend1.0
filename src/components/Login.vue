@@ -95,11 +95,9 @@ export default {
           // 保存 Token 到 localStorage
           console.log(response.data.data.token);
           localStorage.setItem('token', response.data.data.token);
-          if (window.history.length > 1) {
-            this.$router.go(-1); // 返回到上一个页面
-          } else {
-            this.$router.push("/"); // 跳转到首页
-          }
+          const urlParams = new URLSearchParams(window.location.search);
+          const redirectUrl = urlParams.get('redirect') || '/';
+          window.location.href = redirectUrl;
         } else {
           alert(data.errorMsg || "登录失败，请检查账号和密码！");
         }

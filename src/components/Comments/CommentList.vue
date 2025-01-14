@@ -102,7 +102,8 @@ export default {
                         this.fetchComments(); // 刷新评论列表
                     } else if(response.data.msg === "Token无效!!"){
                         alert("请先登录！")
-                        window.location.href = '/login';
+                        const currentUrl = window.location.href;
+                        window.location.href = `/login?redirect=${encodeURIComponent(currentUrl)}`;
                     }
                     else {
                         console.log(response.data);

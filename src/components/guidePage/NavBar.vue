@@ -22,6 +22,8 @@
                         <router-link to="/home" class="link-item">主页</router-link>
                         <router-link to="/news" class="link-item">新闻</router-link>
                         <router-link to="/PersonalCenter" class="link-item">个人中心</router-link>
+                        <button v-if="!isLoggedIn" @click.native="login" class="link-item">登录</button>
+                        <button v-if="isLoggedIn" @click.native="logout" class="link-item">退出登录</button>
                     </nav>
                 </div>
             </div>
@@ -33,12 +35,29 @@
 export default {
     data() {
         return {
-            isMenuOpen: false
+            isMenuOpen: false,
+            isLoggedIn: false // 这里可以根据实际情况初始化
         }
+    },
+    mounted() {
+        // 检查用户是否已登录
+        this.isLoggedIn = !!localStorage.getItem('token'); // 这里可以根据实际情况修改
     },
     methods: {
         toggleMenu() {
             this.isMenuOpen = !this.isMenuOpen;
+        },
+
+        login() {
+            // 登录逻辑
+            window.location.href = `/login?redirect=${encodeURIComponent(window.location.href)}`;
+        },
+        logout() {
+            // 退出登录逻辑
+            this.isLoggedIn = false;
+            // 这里可以添加实际的退出登录逻辑，例如清除 token 等
+            localStorage.removeItem('token'); // 清除 token
+            location.reload(); // 刷新当前页面
         }
     }
 };
@@ -106,6 +125,12 @@ export default {
     color: #303133;
     transition: color 0.3s;
     border-bottom: 2px solid transparent;
+    border: none; /* 去除按钮默认边框 */
+    background: none; /* 去除按钮默认背景色 */
+    cursor: pointer; /* 鼠标悬停样式 */
+    outline: none; /* 去除按钮默认点击高亮框 */
+    font-family: inherit; /* 继承字体样式 */
+    appearance: none; /* 去除按钮默认样式（兼容性更强） */
 }
 .link-item:hover {
     color: #409eff;
