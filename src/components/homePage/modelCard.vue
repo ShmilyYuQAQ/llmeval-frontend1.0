@@ -8,13 +8,7 @@
                     class="img"
                 />
             </div>
-            <div
-                style="
-                    max-width: 200px;
-                    overflow: hidden;
-                    line-height: 25px;
-                "
-            >
+            <div class="model-name-container">
                 <span class="model-name">{{ model.name }}</span>
             </div>
         </div>
@@ -37,7 +31,7 @@
                 margin-top:10px;
             "
         >
-            <span class="model-date">{{ model.updateTime }}更新</span>
+            <span class="model-date">{{ model.releaseDate }}&nbsp;发布</span>
             <a class="a_details" @click="goToDetail(model.name)">详细信息</a>
         </div>
     </div>
@@ -68,26 +62,25 @@ export default {
 <style scoped>
 .model-card {
     width: 280px;
-    /* max-height:200px; */
+    box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 5px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* justify-content: flex-start;  */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease-in-out;
     background-color: white;
-    z-index: 1;
+    overflow: hidden;
 }
 .card-header {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-top:10px;
+    margin-top: 10px;
     margin-right: auto;
-    /* border: solid 1px red; */
+    width: 100%;
 }
 /* .img_container:hover {
     border: solid 1px rgb(64, 158, 255);
@@ -108,29 +101,37 @@ export default {
     font-size: 14px;
 }
 .img_container {
-    height: 50px; /* 固定高度 */
-    width: auto; /* 宽度自适应 */
+    height: 50px;
+    width: 50px;
     display: flex;
-    align-items: center; /* 垂直居中 */
-    justify-content: center; /* 水平居中 */
-    overflow: hidden; /* 防止图片超出容器 */
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
     border-radius: 8px;
-    margin-right:10px;
+    margin-right: 10px;
+    min-width: fit-content;
 }
 
 .img {
-    width: auto; /* 宽度自适应 */
-    height: auto; /* 高度自适应 */
-    max-width: 100%; /* 最大宽度不超过容器 */
-    max-height: 100%; /* 最大高度不超过容器 */
-    object-fit: contain; /* 保持宽高比 */
+    min-width: 30px;
+    min-height: 30px;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
 }
 .model-name {
     font-family: PingFangSC;
     font-size: 14px;
     font-weight: 600;
     color: #1f2129;
-    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    max-width: none;
+    display: block;
 }
 .model-institution {
     /* margin-left: 10px; */
@@ -165,5 +166,10 @@ export default {
 }
 .a_details:hover {
     color: #95c6f7;
+}
+.model-name-container {
+    flex: 1;
+    overflow: hidden;
+    padding-right: 10px;
 }
 </style>

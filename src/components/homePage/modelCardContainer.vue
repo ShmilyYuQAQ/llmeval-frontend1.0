@@ -5,16 +5,22 @@
             justify-content: center;
             flex-direction: column;
             align-items: center;
+            width: 90%;
         "
-    >
+        class="outer"
+    >   
         <div class="model-card-container">
-            <ModelCard
+            <div
                 v-for="(item, index) in paginatedModel"
                 :key="index"
-                :model="item"
-            ></ModelCard>
+                class="container-c"
+            >
+                <ModelCard :model="item"></ModelCard>
+            </div>
         </div>
+        <EmptyResult v-if="datas.length === 0" />
         <el-pagination
+            v-if="shouldShowPagination"
             background
             :current-page="pagination.currentPage"
             :page-size="pagination.pageSize"
@@ -29,10 +35,12 @@
 </template>
 
 <script>
+import EmptyResult from './emptyResult.vue';
 import ModelCard from "./modelCard.vue";
 export default {
     components: {
         ModelCard,
+        EmptyResult
     },
     data() {
         return {
@@ -56,27 +64,44 @@ export default {
             loading: false,
             error: null,
             models: [],
+            screenWidth: window.innerWidth,
+            isDevelopment: process.env.NODE_ENV === 'development',
         };
     },
     props: ["datas"],
     methods: {
         handleCurrentChange(newPage) {
-            this.pagination.currentPage = newPage;
+            const maxPage = Math.ceil(this.models.length / this.pagination.pageSize);
+            if (newPage > maxPage) {
+                this.$message.error(`页码 ${newPage} 超出范围，最大页码为 ${maxPage}`);
+                this.pagination.currentPage = 1;
+            } else {
+                this.pagination.currentPage = newPage;
+            }
             this.updatePaginatedModel();
+            this.$parent.updateUrlParams();
         },
         handleSizeChange(newSize) {
             this.pagination.pageSize = newSize;
             this.updatePaginatedModel();
         },
         updatePaginatedModel(datas = null) {
-            // 根据当前页和每页大小计算需要显示的模型列表
             if (datas !== null) {
                 this.models = datas;
             }
-            const start =
-                (this.pagination.currentPage - 1) * this.pagination.pageSize;
+            
+            const maxPage = Math.ceil(this.models.length / this.pagination.pageSize);
+            if (this.pagination.currentPage > maxPage && maxPage > 0) {
+                this.$message.error(`页码 ${this.pagination.currentPage} 超出范围，最大页码为 ${maxPage}`);
+                this.pagination.currentPage = 1;
+            }
+            
+            const start = (this.pagination.currentPage - 1) * this.pagination.pageSize;
             const end = start + this.pagination.pageSize;
             this.paginatedModel = this.models.slice(start, end);
+        },
+        updateScreenWidth() {
+            this.screenWidth = window.innerWidth
         },
     },
     created() {
@@ -89,27 +114,59 @@ export default {
         totalModels() {
             return this.models.length;
         },
+        shouldShowPagination() {
+            return this.models.length > this.pagination.pageSize;
+        }
     },
+    watch: {
+        datas: {
+            handler(newData) {
+                if (newData?.length) {
+                    const maxPage = Math.ceil(newData.length / this.pagination.pageSize);
+                    if (this.pagination.currentPage > maxPage) {
+                        this.$message.error(`当前页码超出范围，已自动跳转到第一页`);
+                        this.pagination.currentPage = 1;
+                    }
+                }
+            },
+            immediate: true
+        }
+    }
 };
 </script>
 
 <style>
 .model-card-container {
-    width: 1300px;
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
-    align-items: center;
-    z-index: 1;
-    justify-content: flex-start;
-    margin: 0 auto;
+    width: 80%;
 }
 
-@media screen and (max-width: 1280px) {
-    .model-card-container {
-        width: 90%;
-        margin: 0 auto;
-        justify-content: center;
+.model-card-wrapper {
+    width: fit-content;
+    margin: 0 auto;
+}
+.container-c {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    width: calc(100%);
+    margin-bottom: 15px;
+}
+@media (min-width: 914px) {
+    .container-c {
+        width: calc(50%);
+    }
+}
+@media (min-width: 1266px) {
+    .container-c {
+        width: calc(33.333%);
+    }
+}
+@media (min-width: 1611px) {
+    .container-c {
+        width: calc(25%);
     }
 }
 </style>
