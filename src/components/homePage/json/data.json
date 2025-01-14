@@ -1,0 +1,3397 @@
+[
+    {
+        "id": 1,
+        "model_id": 207,
+        "name": "Doubao-pro-32k"
+    },
+    {
+        "id": 2,
+        "model_id": 212,
+        "name": "GPT-4o"
+    },
+    {
+        "id": 3,
+        "model_id": 703,
+        "name": "ERNIE-4.0-8K"
+    },
+    {
+        "id": 4,
+        "model_id": 208,
+        "name": "Doubao-pro-4k"
+    },
+    {
+        "id": 5,
+        "model_id": 547,
+        "name": "BlueLM"
+    },
+    {
+        "id": 6,
+        "model_id": 620,
+        "name": "GPT4-turbo"
+    },
+    {
+        "id": 7,
+        "model_id": 145,
+        "name": "step-1-8k"
+    },
+    {
+        "id": 8,
+        "model_id": 18,
+        "name": "moonshot-v1-8k"
+    },
+    {
+        "id": 9,
+        "model_id": 374,
+        "name": "ERNIE-4.0-Turbo-8K"
+    },
+    {
+        "id": 10,
+        "model_id": 97,
+        "name": "360gpt-pro"
+    },
+    {
+        "id": 11,
+        "model_id": 112,
+        "name": "GLM-4-9B-Chat"
+    },
+    {
+        "id": 12,
+        "model_id": 154,
+        "name": "hunyuan-pro"
+    },
+    {
+        "id": 13,
+        "model_id": 716,
+        "name": "Spark3.5 Max"
+    },
+    {
+        "id": 14,
+        "model_id": 61,
+        "name": "abab6.5"
+    },
+    {
+        "id": 15,
+        "model_id": 243,
+        "name": "Qwen2-7B-Instruct"
+    },
+    {
+        "id": 16,
+        "model_id": 280,
+        "name": "Yi-34B"
+    },
+    {
+        "id": 17,
+        "model_id": 24,
+        "name": "Yi-1.5-9B-Chat"
+    },
+    {
+        "id": 18,
+        "model_id": 15,
+        "name": "Baichuan4"
+    },
+    {
+        "id": 19,
+        "model_id": 82,
+        "name": "SenseChat-5"
+    },
+    {
+        "id": 20,
+        "model_id": 515,
+        "name": "Qwen-14B-Chat"
+    },
+    {
+        "id": 21,
+        "model_id": 170,
+        "name": "InternLM2-Chat-7B"
+    },
+    {
+        "id": 22,
+        "model_id": 698,
+        "name": "BlueLM-3B"
+    },
+    {
+        "id": 23,
+        "model_id": 220,
+        "name": "Llama-3-8B-Instruct"
+    },
+    {
+        "id": 24,
+        "model_id": 709,
+        "name": "mengzi_std"
+    },
+    {
+        "id": 25,
+        "model_id": 8,
+        "name": "BaichuanChat2-13B"
+    },
+    {
+        "id": 26,
+        "model_id": 26,
+        "name": "Yi-1.5-6B-Chat"
+    },
+    {
+        "id": 27,
+        "model_id": 727,
+        "name": "DeepSeek-LLM-7B-chat"
+    },
+    {
+        "id": 28,
+        "model_id": 713,
+        "name": "Phi-3.5-mini-instruct"
+    },
+    {
+        "id": 29,
+        "model_id": 199,
+        "name": "Taichu-2.0"
+    },
+    {
+        "id": 30,
+        "model_id": 728,
+        "name": "Mistral-7B"
+    },
+    {
+        "id": 31,
+        "model_id": 116,
+        "name": "ChatGLM3-6B"
+    },
+    {
+        "id": 32,
+        "model_id": 724,
+        "name": "XVERSE-13B-Chat"
+    },
+    {
+        "id": 33,
+        "model_id": 290,
+        "name": "Gemma-7B"
+    },
+    {
+        "id": 34,
+        "model_id": 5,
+        "name": "BaichuanChat2_7B"
+    },
+    {
+        "id": 35,
+        "model_id": 725,
+        "name": "XVERSE-7B-Chat"
+    },
+    {
+        "id": 36,
+        "model_id": 694,
+        "name": "AquilaChat-7B"
+    },
+    {
+        "id": 37,
+        "model_id": 719,
+        "name": "TuringMM-34B-Chat"
+    },
+    {
+        "id": 38,
+        "model_id": 714,
+        "name": "Qwen-1.8B-Chat"
+    },
+    {
+        "id": 39,
+        "model_id": 165,
+        "name": "InternLM2-Chat-1.8B"
+    },
+    {
+        "id": 40,
+        "model_id": 289,
+        "name": "Gemma-2B"
+    },
+    {
+        "id": 41,
+        "model_id": 730,
+        "name": "Index-1.9B"
+    },
+    {
+        "id": 42,
+        "model_id": 722,
+        "name": "XuanYuan-13B-Chat"
+    },
+    {
+        "id": 43,
+        "model_id": 723,
+        "name": "XuanYuan-6B-Chat"
+    },
+    {
+        "id": 44,
+        "model_id": 733,
+        "name": "Skywork-13B-Base"
+    },
+    {
+        "id": 45,
+        "model_id": 237,
+        "name": "Vicuna-13B-v1.5"
+    },
+    {
+        "id": 46,
+        "model_id": 238,
+        "name": "Vicuna-7B-v1.5"
+    },
+    {
+        "id": 47,
+        "model_id": 734,
+        "name": "BayLing-7B-v1.0"
+    },
+    {
+        "id": 48,
+        "model_id": 744,
+        "name": "Phi-3-Mini-3.8b"
+    },
+    {
+        "id": 49,
+        "model_id": 285,
+        "name": "Qwen1.5-1.8B-Chat"
+    },
+    {
+        "id": 50,
+        "model_id": 420,
+        "name": "LLaVA-OneVision-7B"
+    },
+    {
+        "id": 51,
+        "model_id": 20,
+        "name": "Moonshot-v1-32K"
+    },
+    {
+        "id": 52,
+        "model_id": 94,
+        "name": "SenseMirage"
+    },
+    {
+        "id": 53,
+        "model_id": 736,
+        "name": "bloomz_1b1"
+    },
+    {
+        "id": 54,
+        "model_id": 83,
+        "name": "SenseChat"
+    },
+    {
+        "id": 55,
+        "model_id": 568,
+        "name": "WizardLM-7B"
+    },
+    {
+        "id": 56,
+        "model_id": 246,
+        "name": "Qwen2-1.5B"
+    },
+    {
+        "id": 57,
+        "model_id": 111,
+        "name": "讯飞语音大模型"
+    },
+    {
+        "id": 58,
+        "model_id": 31,
+        "name": "Yi-1.5-6B"
+    },
+    {
+        "id": 59,
+        "model_id": 396,
+        "name": "LLaVA-OneVision-72B(SI)"
+    },
+    {
+        "id": 60,
+        "model_id": 483,
+        "name": "LLaVA-v1.5-13B(QLoRA)"
+    },
+    {
+        "id": 61,
+        "model_id": 113,
+        "name": "GLM-4-9B-Chat"
+    },
+    {
+        "id": 62,
+        "model_id": 664,
+        "name": "豆包（实时语音）"
+    },
+    {
+        "id": 63,
+        "model_id": 275,
+        "name": "Qwen1.5-14B-Chat"
+    },
+    {
+        "id": 64,
+        "model_id": 364,
+        "name": "PixVerse"
+    },
+    {
+        "id": 65,
+        "model_id": 546,
+        "name": "StableBeluga2"
+    },
+    {
+        "id": 66,
+        "model_id": 271,
+        "name": "Deepseek-67B-Chat"
+    },
+    {
+        "id": 67,
+        "model_id": 427,
+        "name": "Llama-3.2-11B-Vision-Instruct"
+    },
+    {
+        "id": 68,
+        "model_id": 267,
+        "name": "Qwen1.5-110B-Chat"
+    },
+    {
+        "id": 69,
+        "model_id": 548,
+        "name": "InternLM-7B-Chat-8K"
+    },
+    {
+        "id": 70,
+        "model_id": 312,
+        "name": "Gemma-2b"
+    },
+    {
+        "id": 71,
+        "model_id": 535,
+        "name": "INF-Med"
+    },
+    {
+        "id": 72,
+        "model_id": 404,
+        "name": "RBDash-v1.5"
+    },
+    {
+        "id": 73,
+        "model_id": 440,
+        "name": "MiniMonkey"
+    },
+    {
+        "id": 74,
+        "model_id": 522,
+        "name": "Claude-2"
+    },
+    {
+        "id": 75,
+        "model_id": 388,
+        "name": "Qwen2-VL-72B"
+    },
+    {
+        "id": 76,
+        "model_id": 234,
+        "name": "PaLM 2"
+    },
+    {
+        "id": 77,
+        "model_id": 1,
+        "name": "Baichuan-7B"
+    },
+    {
+        "id": 78,
+        "model_id": 63,
+        "name": "abab6.5t-chat"
+    },
+    {
+        "id": 79,
+        "model_id": 172,
+        "name": "InternLM2-20B"
+    },
+    {
+        "id": 80,
+        "model_id": 428,
+        "name": "Qwen2-VL-2B"
+    },
+    {
+        "id": 81,
+        "model_id": 397,
+        "name": "NVLM-D-72B"
+    },
+    {
+        "id": 82,
+        "model_id": 98,
+        "name": "360gpt-turbo"
+    },
+    {
+        "id": 83,
+        "model_id": 160,
+        "name": "hunyuan-code"
+    },
+    {
+        "id": 84,
+        "model_id": 335,
+        "name": "Stable Diffusion v3"
+    },
+    {
+        "id": 85,
+        "model_id": 297,
+        "name": "DBRX-Base"
+    },
+    {
+        "id": 86,
+        "model_id": 66,
+        "name": "embo-01"
+    },
+    {
+        "id": 87,
+        "model_id": 375,
+        "name": "Mistral-Small-Instruct-2409"
+    },
+    {
+        "id": 88,
+        "model_id": 593,
+        "name": "Doubao-pro-0828"
+    },
+    {
+        "id": 89,
+        "model_id": 127,
+        "name": "CogVLM2-Llama3-Caption"
+    },
+    {
+        "id": 90,
+        "model_id": 168,
+        "name": "InternLM2-7B"
+    },
+    {
+        "id": 91,
+        "model_id": 518,
+        "name": "Qwen-7B-Chat"
+    },
+    {
+        "id": 92,
+        "model_id": 508,
+        "name": "Chameleon-30B"
+    },
+    {
+        "id": 93,
+        "model_id": 185,
+        "name": "InternLM2-Math-Plus-1.8B"
+    },
+    {
+        "id": 94,
+        "model_id": 424,
+        "name": "VILA1.5-40B"
+    },
+    {
+        "id": 95,
+        "model_id": 525,
+        "name": "Vicuna-v1.3-7B"
+    },
+    {
+        "id": 96,
+        "model_id": 263,
+        "name": "Mistral AI"
+    },
+    {
+        "id": 97,
+        "model_id": 469,
+        "name": "Paligemma-3B-Mix-448"
+    },
+    {
+        "id": 98,
+        "model_id": 450,
+        "name": "XGen-MM-Instruct-Interleave-v1.5"
+    },
+    {
+        "id": 99,
+        "model_id": 425,
+        "name": "WeMM"
+    },
+    {
+        "id": 100,
+        "model_id": 649,
+        "name": "WHEE"
+    },
+    {
+        "id": 101,
+        "model_id": 299,
+        "name": "Qwen1.5-14B"
+    },
+    {
+        "id": 102,
+        "model_id": 149,
+        "name": "step-2-16k"
+    },
+    {
+        "id": 103,
+        "model_id": 156,
+        "name": "hunyuan-standard-256k"
+    },
+    {
+        "id": 104,
+        "model_id": 749,
+        "name": "Baichuan2-13B"
+    },
+    {
+        "id": 105,
+        "model_id": 587,
+        "name": "o1-preview"
+    },
+    {
+        "id": 106,
+        "model_id": 606,
+        "name": "Gemma-2-2b-it"
+    },
+    {
+        "id": 107,
+        "model_id": 633,
+        "name": "ERNIE-4.0-Turbo"
+    },
+    {
+        "id": 108,
+        "model_id": 524,
+        "name": "Vicuna-v1.3-33B"
+    },
+    {
+        "id": 109,
+        "model_id": 710,
+        "name": "abab6.5"
+    },
+    {
+        "id": 110,
+        "model_id": 184,
+        "name": "InternLM2.5-20B-Chat"
+    },
+    {
+        "id": 111,
+        "model_id": 678,
+        "name": "ERNIE(v2.2.0)"
+    },
+    {
+        "id": 112,
+        "model_id": 209,
+        "name": "豆包文生图"
+    },
+    {
+        "id": 113,
+        "model_id": 565,
+        "name": "InternLM-7B"
+    },
+    {
+        "id": 114,
+        "model_id": 250,
+        "name": "Qwen2.5-1.5B"
+    },
+    {
+        "id": 115,
+        "model_id": 206,
+        "name": "Doubao-pro-128k"
+    },
+    {
+        "id": 116,
+        "model_id": 379,
+        "name": "GPT-4o-mini-20240718"
+    },
+    {
+        "id": 117,
+        "model_id": 537,
+        "name": "Hunyuan-Med"
+    },
+    {
+        "id": 118,
+        "model_id": 653,
+        "name": "混元文生图"
+    },
+    {
+        "id": 119,
+        "model_id": 681,
+        "name": "360智脑(4.0)"
+    },
+    {
+        "id": 120,
+        "model_id": 473,
+        "name": "Llama-3-VILA1.5-8B"
+    },
+    {
+        "id": 121,
+        "model_id": 389,
+        "name": "step-1.5V"
+    },
+    {
+        "id": 122,
+        "model_id": 311,
+        "name": "Llama-2-13B"
+    },
+    {
+        "id": 123,
+        "model_id": 536,
+        "name": "WHU-Med"
+    },
+    {
+        "id": 124,
+        "model_id": 188,
+        "name": "InternLM2-Math-Plus-Mixtral8x22B"
+    },
+    {
+        "id": 125,
+        "model_id": 158,
+        "name": "Hunyuan-Role"
+    },
+    {
+        "id": 126,
+        "model_id": 481,
+        "name": "Vintern-1B-v2"
+    },
+    {
+        "id": 127,
+        "model_id": 500,
+        "name": "MMAlaya"
+    },
+    {
+        "id": 128,
+        "model_id": 671,
+        "name": "ERNIE 3.5"
+    },
+    {
+        "id": 129,
+        "model_id": 347,
+        "name": "Yi-VL-Plus"
+    },
+    {
+        "id": 130,
+        "model_id": 305,
+        "name": "Llama-3-8B"
+    },
+    {
+        "id": 131,
+        "model_id": 743,
+        "name": "Llama-3-ln"
+    },
+    {
+        "id": 132,
+        "model_id": 236,
+        "name": "Mixtral-8x22B "
+    },
+    {
+        "id": 133,
+        "model_id": 42,
+        "name": "Yi-6B"
+    },
+    {
+        "id": 134,
+        "model_id": 204,
+        "name": "Doubao-lite-32k"
+    },
+    {
+        "id": 135,
+        "model_id": 740,
+        "name": "Phi-3-Vmedium-14b"
+    },
+    {
+        "id": 136,
+        "model_id": 349,
+        "name": "MiniCPM-V-2"
+    },
+    {
+        "id": 137,
+        "model_id": 242,
+        "name": "Qwen2-57B-A14B"
+    },
+    {
+        "id": 138,
+        "model_id": 497,
+        "name": "LLaVA-v1.5-7B"
+    },
+    {
+        "id": 139,
+        "model_id": 301,
+        "name": "Aya-23-35B"
+    },
+    {
+        "id": 140,
+        "model_id": 186,
+        "name": "InternLM2-Math-Plus-7B"
+    },
+    {
+        "id": 141,
+        "model_id": 655,
+        "name": "Stable Diffusion 3.5 Large"
+    },
+    {
+        "id": 142,
+        "model_id": 47,
+        "name": "Yi-Coder-1.5B-Chat"
+    },
+    {
+        "id": 143,
+        "model_id": 27,
+        "name": "Yi-1.5-34B"
+    },
+    {
+        "id": 144,
+        "model_id": 371,
+        "name": "GLM-4-Plus"
+    },
+    {
+        "id": 145,
+        "model_id": 534,
+        "name": "京医千询"
+    },
+    {
+        "id": 146,
+        "model_id": 623,
+        "name": "Chinese-Alpaca-2-13B"
+    },
+    {
+        "id": 147,
+        "model_id": 21,
+        "name": "Moonshot-v1-auto"
+    },
+    {
+        "id": 148,
+        "model_id": 448,
+        "name": "Vintern-3B-beta"
+    },
+    {
+        "id": 149,
+        "model_id": 224,
+        "name": "Athene-Llama3-70B"
+    },
+    {
+        "id": 150,
+        "model_id": 612,
+        "name": "Doubao-pro-32k-240828"
+    },
+    {
+        "id": 151,
+        "model_id": 540,
+        "name": "ChatGLM-Turbo"
+    },
+    {
+        "id": 152,
+        "model_id": 258,
+        "name": "Deepseek-v2"
+    },
+    {
+        "id": 153,
+        "model_id": 99,
+        "name": "360gpt2-pro"
+    },
+    {
+        "id": 154,
+        "model_id": 52,
+        "name": "Yi-vision"
+    },
+    {
+        "id": 155,
+        "model_id": 392,
+        "name": "Ovis1.6-Gemma2-9B"
+    },
+    {
+        "id": 156,
+        "model_id": 431,
+        "name": "Idefics3-8B-Llama3"
+    },
+    {
+        "id": 157,
+        "model_id": 682,
+        "name": "通义千问"
+    },
+    {
+        "id": 158,
+        "model_id": 541,
+        "name": "济世大模型"
+    },
+    {
+        "id": 159,
+        "model_id": 367,
+        "name": "Pixeling"
+    },
+    {
+        "id": 160,
+        "model_id": 482,
+        "name": "VILA1.5-3B"
+    },
+    {
+        "id": 161,
+        "model_id": 300,
+        "name": "Mixtral-8x7B-v0.1"
+    },
+    {
+        "id": 162,
+        "model_id": 501,
+        "name": "Idefics3-80B-Instruct"
+    },
+    {
+        "id": 163,
+        "model_id": 557,
+        "name": "LexiLaw"
+    },
+    {
+        "id": 164,
+        "model_id": 294,
+        "name": "Qwen1.5-32B"
+    },
+    {
+        "id": 165,
+        "model_id": 48,
+        "name": "Yi-Coder-9B"
+    },
+    {
+        "id": 166,
+        "model_id": 561,
+        "name": "TigerBot-Base"
+    },
+    {
+        "id": 167,
+        "model_id": 120,
+        "name": "GLM-130B"
+    },
+    {
+        "id": 168,
+        "model_id": 348,
+        "name": "GLM-4v"
+    },
+    {
+        "id": 169,
+        "model_id": 441,
+        "name": "Phi-3-Vision"
+    },
+    {
+        "id": 170,
+        "model_id": 273,
+        "name": "C4AI-Command-R-Plus"
+    },
+    {
+        "id": 171,
+        "model_id": 619,
+        "name": "Mistral-7B-v0.3"
+    },
+    {
+        "id": 172,
+        "model_id": 596,
+        "name": "Llama-3.1-405B-Instruct"
+    },
+    {
+        "id": 173,
+        "model_id": 502,
+        "name": "LLaVA-v1-7B"
+    },
+    {
+        "id": 174,
+        "model_id": 592,
+        "name": "Qwen-Max-0919"
+    },
+    {
+        "id": 175,
+        "model_id": 68,
+        "name": "speech-01"
+    },
+    {
+        "id": 176,
+        "model_id": 332,
+        "name": "Stable Diffusion v2.1-base"
+    },
+    {
+        "id": 177,
+        "model_id": 398,
+        "name": "Qwen2-VL-7B"
+    },
+    {
+        "id": 178,
+        "model_id": 81,
+        "name": "蓝心多模态大模型"
+    },
+    {
+        "id": 179,
+        "model_id": 449,
+        "name": "LLaVA-Next-Qwen-32B"
+    },
+    {
+        "id": 180,
+        "model_id": 167,
+        "name": "InternLM2-Base-7B"
+    },
+    {
+        "id": 181,
+        "model_id": 673,
+        "name": "OpenBuddy-Llama2-70B"
+    },
+    {
+        "id": 182,
+        "model_id": 142,
+        "name": "CogVideoX-2b"
+    },
+    {
+        "id": 183,
+        "model_id": 45,
+        "name": "Yi-VL-6B"
+    },
+    {
+        "id": 184,
+        "model_id": 101,
+        "name": "iFlytekSpark-13B-base"
+    },
+    {
+        "id": 185,
+        "model_id": 103,
+        "name": "iFlytekSpark-13B-Lora"
+    },
+    {
+        "id": 186,
+        "model_id": 270,
+        "name": "Mixtral-8x22B-Instruct-v0.1"
+    },
+    {
+        "id": 187,
+        "model_id": 477,
+        "name": "TransCore-M"
+    },
+    {
+        "id": 188,
+        "model_id": 235,
+        "name": "stablelm-2-12b"
+    },
+    {
+        "id": 189,
+        "model_id": 514,
+        "name": "Vicuna-13B"
+    },
+    {
+        "id": 190,
+        "model_id": 117,
+        "name": "ChatGLM3-6B-Base"
+    },
+    {
+        "id": 191,
+        "model_id": 196,
+        "name": "InternLM-XComposer"
+    },
+    {
+        "id": 192,
+        "model_id": 462,
+        "name": "Bunny-Llama3-8B"
+    },
+    {
+        "id": 193,
+        "model_id": 551,
+        "name": "Fuzi-Mingcha"
+    },
+    {
+        "id": 194,
+        "model_id": 406,
+        "name": "Molmo-72B"
+    },
+    {
+        "id": 195,
+        "model_id": 91,
+        "name": "SenseChat-CodeCompletion-Lite"
+    },
+    {
+        "id": 196,
+        "model_id": 638,
+        "name": "Phi-3.5-Vision-Instruct"
+    },
+    {
+        "id": 197,
+        "model_id": 222,
+        "name": "Deepseek-v2.5"
+    },
+    {
+        "id": 198,
+        "model_id": 577,
+        "name": "GoGPT"
+    },
+    {
+        "id": 199,
+        "model_id": 191,
+        "name": "InternLM-XComposer2-VL-1.8B"
+    },
+    {
+        "id": 200,
+        "model_id": 51,
+        "name": "Yi-Medium"
+    },
+    {
+        "id": 201,
+        "model_id": 369,
+        "name": "Pika"
+    },
+    {
+        "id": 202,
+        "model_id": 520,
+        "name": "GPT-3.5-turbo-0613"
+    },
+    {
+        "id": 203,
+        "model_id": 575,
+        "name": "LLaMA-7B"
+    },
+    {
+        "id": 204,
+        "model_id": 393,
+        "name": "JT-VL-Chat-V3.0"
+    },
+    {
+        "id": 205,
+        "model_id": 421,
+        "name": "Aquila-VL-2B"
+    },
+    {
+        "id": 206,
+        "model_id": 266,
+        "name": "DeepSeek-Chat"
+    },
+    {
+        "id": 207,
+        "model_id": 218,
+        "name": "Gemini-1.5-Flash"
+    },
+    {
+        "id": 208,
+        "model_id": 637,
+        "name": "DeepSeek-VL-7b-chat"
+    },
+    {
+        "id": 209,
+        "model_id": 691,
+        "name": "XVERSE-13B-2-Chat"
+    },
+    {
+        "id": 210,
+        "model_id": 60,
+        "name": "Yi-Lightning-Lite"
+    },
+    {
+        "id": 211,
+        "model_id": 164,
+        "name": "InternLM2-1.8B"
+    },
+    {
+        "id": 212,
+        "model_id": 49,
+        "name": "Yi-Coder-1.5B"
+    },
+    {
+        "id": 213,
+        "model_id": 361,
+        "name": "Runway Gen-3"
+    },
+    {
+        "id": 214,
+        "model_id": 412,
+        "name": "Ovis 1.5-Llama3-8B"
+    },
+    {
+        "id": 215,
+        "model_id": 567,
+        "name": "MOSS-Moon"
+    },
+    {
+        "id": 216,
+        "model_id": 472,
+        "name": "Slime-8B"
+    },
+    {
+        "id": 217,
+        "model_id": 241,
+        "name": "Qwen2-57B-A14B-Instruct"
+    },
+    {
+        "id": 218,
+        "model_id": 4,
+        "name": "Baichuan2-7B-Base"
+    },
+    {
+        "id": 219,
+        "model_id": 282,
+        "name": "Mistral-7B-Instruct-v0.2"
+    },
+    {
+        "id": 220,
+        "model_id": 269,
+        "name": "Qwen1.5-72B-Chat"
+    },
+    {
+        "id": 221,
+        "model_id": 467,
+        "name": "InternLM-XComposer2-1.8B"
+    },
+    {
+        "id": 222,
+        "model_id": 410,
+        "name": "MMAlaya2"
+    },
+    {
+        "id": 223,
+        "model_id": 252,
+        "name": "Qwen2.5-7B"
+    },
+    {
+        "id": 224,
+        "model_id": 73,
+        "name": "BlueLM-7B-Chat"
+    },
+    {
+        "id": 225,
+        "model_id": 339,
+        "name": "InternVL-Chat-V1.5"
+    },
+    {
+        "id": 226,
+        "model_id": 704,
+        "name": "ERNIE-4.0-Turbo-8K"
+    },
+    {
+        "id": 227,
+        "model_id": 433,
+        "name": "Gemini-1.0-Pro"
+    },
+    {
+        "id": 228,
+        "model_id": 200,
+        "name": "Taichu-2.0V"
+    },
+    {
+        "id": 229,
+        "model_id": 356,
+        "name": "LLaVA-Next-Vicuna-7B"
+    },
+    {
+        "id": 230,
+        "model_id": 460,
+        "name": "LLaVA-Next-Interleave-7B-DPO"
+    },
+    {
+        "id": 231,
+        "model_id": 486,
+        "name": "LLaVA-OneVision-0.5B(SI)"
+    },
+    {
+        "id": 232,
+        "model_id": 584,
+        "name": "Ernie-Bot-3.5"
+    },
+    {
+        "id": 233,
+        "model_id": 604,
+        "name": "Llama-3.2-11B-Instruct"
+    },
+    {
+        "id": 234,
+        "model_id": 264,
+        "name": "Baichuan2-53B"
+    },
+    {
+        "id": 235,
+        "model_id": 478,
+        "name": "Mantis-8B-siglip-llama3"
+    },
+    {
+        "id": 236,
+        "model_id": 55,
+        "name": "Yi-Large-RAG"
+    },
+    {
+        "id": 237,
+        "model_id": 387,
+        "name": "Mistral-7B-Instruct-v0.3"
+    },
+    {
+        "id": 238,
+        "model_id": 29,
+        "name": "Yi-1.5-9B"
+    },
+    {
+        "id": 239,
+        "model_id": 641,
+        "name": "可灵AI 1.5"
+    },
+    {
+        "id": 240,
+        "model_id": 283,
+        "name": "DeepSeek-7B-Chat"
+    },
+    {
+        "id": 241,
+        "model_id": 617,
+        "name": "kimi.ai(网页)"
+    },
+    {
+        "id": 242,
+        "model_id": 363,
+        "name": "可灵（高性能版）"
+    },
+    {
+        "id": 243,
+        "model_id": 738,
+        "name": "bloomz_7b1_mt"
+    },
+    {
+        "id": 244,
+        "model_id": 465,
+        "name": "LLaVA-Next-Interleave-7B"
+    },
+    {
+        "id": 245,
+        "model_id": 93,
+        "name": "SenseChat-Vision"
+    },
+    {
+        "id": 246,
+        "model_id": 256,
+        "name": "GPT-4"
+    },
+    {
+        "id": 247,
+        "model_id": 244,
+        "name": "Qwen2-7B"
+    },
+    {
+        "id": 248,
+        "model_id": 129,
+        "name": "cogvlm2-llama3-chinese-chat-19B"
+    },
+    {
+        "id": 249,
+        "model_id": 639,
+        "name": "PixVerse V3"
+    },
+    {
+        "id": 250,
+        "model_id": 286,
+        "name": "Llama-2-13b-chat"
+    },
+    {
+        "id": 251,
+        "model_id": 308,
+        "name": "Aya-23-8B"
+    },
+    {
+        "id": 252,
+        "model_id": 474,
+        "name": "Monkey"
+    },
+    {
+        "id": 253,
+        "model_id": 665,
+        "name": "智谱清言"
+    },
+    {
+        "id": 254,
+        "model_id": 320,
+        "name": "ERNIE-ViLG"
+    },
+    {
+        "id": 255,
+        "model_id": 337,
+        "name": "GPT-4o-0513"
+    },
+    {
+        "id": 256,
+        "model_id": 685,
+        "name": "Ziya-LLaMA-13B-v1"
+    },
+    {
+        "id": 257,
+        "model_id": 699,
+        "name": "BlueLM-7B"
+    },
+    {
+        "id": 258,
+        "model_id": 466,
+        "name": "Eagle-X5-7B"
+    },
+    {
+        "id": 259,
+        "model_id": 408,
+        "name": "GPT-4v-20240409"
+    },
+    {
+        "id": 260,
+        "model_id": 255,
+        "name": "ERNIE 4.0"
+    },
+    {
+        "id": 261,
+        "model_id": 605,
+        "name": "Qwen2.5-1.5B-Instruct"
+    },
+    {
+        "id": 262,
+        "model_id": 288,
+        "name": "Qwen1.5-0.5B-Chat"
+    },
+    {
+        "id": 263,
+        "model_id": 372,
+        "name": "Qwen2.5-72B-Instruct"
+    },
+    {
+        "id": 264,
+        "model_id": 543,
+        "name": "ChatMed"
+    },
+    {
+        "id": 265,
+        "model_id": 338,
+        "name": "Qwen-VL-Max"
+    },
+    {
+        "id": 266,
+        "model_id": 599,
+        "name": "TeleChat2-35B"
+    },
+    {
+        "id": 267,
+        "model_id": 480,
+        "name": "LLaVA-OneVision-0.5B"
+    },
+    {
+        "id": 268,
+        "model_id": 221,
+        "name": "Llama-3-70B-Instruct"
+    },
+    {
+        "id": 269,
+        "model_id": 193,
+        "name": "InternLM-XComposer2-VL"
+    },
+    {
+        "id": 270,
+        "model_id": 169,
+        "name": "InternLM2-Chat-7B-SFT"
+    },
+    {
+        "id": 271,
+        "model_id": 310,
+        "name": "DeepSeek-7B"
+    },
+    {
+        "id": 272,
+        "model_id": 656,
+        "name": "Flux.1 Pro"
+    },
+    {
+        "id": 273,
+        "model_id": 382,
+        "name": "DianXin-V1-Chat"
+    },
+    {
+        "id": 274,
+        "model_id": 380,
+        "name": "Llama-3.1-405B-Instruct-FP8"
+    },
+    {
+        "id": 275,
+        "model_id": 491,
+        "name": "ShareCaptioner"
+    },
+    {
+        "id": 276,
+        "model_id": 586,
+        "name": "Qwen2-Chat-7B"
+    },
+    {
+        "id": 277,
+        "model_id": 353,
+        "name": "LLaVA-Next-Mistral-7B"
+    },
+    {
+        "id": 278,
+        "model_id": 102,
+        "name": "iFlytekSpark-13B-chat"
+    },
+    {
+        "id": 279,
+        "model_id": 583,
+        "name": "LaWGPT-7B-beta1.0"
+    },
+    {
+        "id": 280,
+        "model_id": 394,
+        "name": "LLaVA-OneVision-72B"
+    },
+    {
+        "id": 281,
+        "model_id": 503,
+        "name": "InstructBLIP-7B"
+    },
+    {
+        "id": 282,
+        "model_id": 28,
+        "name": "Yi-1.5-34B-32K"
+    },
+    {
+        "id": 283,
+        "model_id": 451,
+        "name": "Eagle-X5-13B"
+    },
+    {
+        "id": 284,
+        "model_id": 742,
+        "name": "Phi-3-small-7b"
+    },
+    {
+        "id": 285,
+        "model_id": 183,
+        "name": "InternLM2.5-20B"
+    },
+    {
+        "id": 286,
+        "model_id": 401,
+        "name": "BlueLM-V-3B"
+    },
+    {
+        "id": 287,
+        "model_id": 114,
+        "name": "GLM-4-9B-Chat-1M"
+    },
+    {
+        "id": 288,
+        "model_id": 319,
+        "name": "Meta-Imagine"
+    },
+    {
+        "id": 289,
+        "model_id": 359,
+        "name": "Paligemma-3B-Mix-224"
+    },
+    {
+        "id": 290,
+        "model_id": 434,
+        "name": "XinYuan-VL-2B-Instruct"
+    },
+    {
+        "id": 291,
+        "model_id": 368,
+        "name": "VegaAI"
+    },
+    {
+        "id": 292,
+        "model_id": 23,
+        "name": "Yi-1.5-34B-Chat-16K"
+    },
+    {
+        "id": 293,
+        "model_id": 409,
+        "name": "Llama-3.2-90B-Vision-Instruct"
+    },
+    {
+        "id": 294,
+        "model_id": 590,
+        "name": "AndesGPT-2.0"
+    },
+    {
+        "id": 295,
+        "model_id": 314,
+        "name": "Phi-1.5"
+    },
+    {
+        "id": 296,
+        "model_id": 357,
+        "name": "DeepSeek-VL-1.3B"
+    },
+    {
+        "id": 297,
+        "model_id": 737,
+        "name": "bloomz_3b"
+    },
+    {
+        "id": 298,
+        "model_id": 313,
+        "name": "Llama-2-7B"
+    },
+    {
+        "id": 299,
+        "model_id": 463,
+        "name": "360VL-70B"
+    },
+    {
+        "id": 300,
+        "model_id": 163,
+        "name": "HunyuanDiT"
+    },
+    {
+        "id": 301,
+        "model_id": 257,
+        "name": "Baichuan3"
+    },
+    {
+        "id": 302,
+        "model_id": 669,
+        "name": "讯飞星火V3.0"
+    },
+    {
+        "id": 303,
+        "model_id": 86,
+        "name": "SenseChat-Turbo"
+    },
+    {
+        "id": 304,
+        "model_id": 378,
+        "name": "Mistral-NeMo-Instruct-2407"
+    },
+    {
+        "id": 305,
+        "model_id": 109,
+        "name": "Spark Lite"
+    },
+    {
+        "id": 306,
+        "model_id": 79,
+        "name": "BlueLM-Audio"
+    },
+    {
+        "id": 307,
+        "model_id": 697,
+        "name": "BayLing-7B"
+    },
+    {
+        "id": 308,
+        "model_id": 166,
+        "name": "InternLM2-Chat-1.8B"
+    },
+    {
+        "id": 309,
+        "model_id": 545,
+        "name": "ChatTCM"
+    },
+    {
+        "id": 310,
+        "model_id": 615,
+        "name": "hunyuan-turbo-latest"
+    },
+    {
+        "id": 311,
+        "model_id": 293,
+        "name": "Llama-3-70B"
+    },
+    {
+        "id": 312,
+        "model_id": 552,
+        "name": "ChatLaw-13B"
+    },
+    {
+        "id": 313,
+        "model_id": 741,
+        "name": "Mixtral-8x7B"
+    },
+    {
+        "id": 314,
+        "model_id": 322,
+        "name": "Doubao-Image"
+    },
+    {
+        "id": 315,
+        "model_id": 627,
+        "name": "星火飞码iFlyCode"
+    },
+    {
+        "id": 316,
+        "model_id": 658,
+        "name": "wanx-v1"
+    },
+    {
+        "id": 317,
+        "model_id": 17,
+        "name": "Baichuan-Text-Embedding"
+    },
+    {
+        "id": 318,
+        "model_id": 628,
+        "name": "CodeArt Snap"
+    },
+    {
+        "id": 319,
+        "model_id": 64,
+        "name": "abab5.5-chat"
+    },
+    {
+        "id": 320,
+        "model_id": 90,
+        "name": "SenseChat-Code"
+    },
+    {
+        "id": 321,
+        "model_id": 309,
+        "name": "Qwen1.5-1.8B"
+    },
+    {
+        "id": 322,
+        "model_id": 211,
+        "name": "豆包・声音复刻模型"
+    },
+    {
+        "id": 323,
+        "model_id": 643,
+        "name": "通义万相"
+    },
+    {
+        "id": 324,
+        "model_id": 213,
+        "name": "Claude 3.5 Sonnet"
+    },
+    {
+        "id": 325,
+        "model_id": 276,
+        "name": "Nanbeige2-16B-Chat"
+    },
+    {
+        "id": 326,
+        "model_id": 105,
+        "name": "Spark 4.0 Ultra"
+    },
+    {
+        "id": 327,
+        "model_id": 426,
+        "name": "Cambrian-34B"
+    },
+    {
+        "id": 328,
+        "model_id": 95,
+        "name": "Nova-tts-1"
+    },
+    {
+        "id": 329,
+        "model_id": 631,
+        "name": "Step-1V-8k"
+    },
+    {
+        "id": 330,
+        "model_id": 581,
+        "name": "LLaMA-2-Chinese-13B"
+    },
+    {
+        "id": 331,
+        "model_id": 340,
+        "name": "GPT-4-Turbo-0409"
+    },
+    {
+        "id": 332,
+        "model_id": 159,
+        "name": "hunyuan-functioncall"
+    },
+    {
+        "id": 333,
+        "model_id": 443,
+        "name": "Cambrian-13B"
+    },
+    {
+        "id": 334,
+        "model_id": 445,
+        "name": "Phi-3.5-Vision"
+    },
+    {
+        "id": 335,
+        "model_id": 507,
+        "name": "VisualGLM"
+    },
+    {
+        "id": 336,
+        "model_id": 155,
+        "name": "hunyuan-standard"
+    },
+    {
+        "id": 337,
+        "model_id": 689,
+        "name": "GPT-4-0125-preview"
+    },
+    {
+        "id": 338,
+        "model_id": 179,
+        "name": "InternLM2.5-1.8B-Chat"
+    },
+    {
+        "id": 339,
+        "model_id": 521,
+        "name": "ChatGLM2-6B"
+    },
+    {
+        "id": 340,
+        "model_id": 360,
+        "name": "mPLUG-Owl2"
+    },
+    {
+        "id": 341,
+        "model_id": 544,
+        "name": "GPT3.5"
+    },
+    {
+        "id": 342,
+        "model_id": 626,
+        "name": "通义灵码"
+    },
+    {
+        "id": 343,
+        "model_id": 687,
+        "name": "MOSS-16B"
+    },
+    {
+        "id": 344,
+        "model_id": 529,
+        "name": "Ernie Bot"
+    },
+    {
+        "id": 345,
+        "model_id": 7,
+        "name": "Baichuan2-13B-Base"
+    },
+    {
+        "id": 346,
+        "model_id": 171,
+        "name": "InternLM2-Base-20B"
+    },
+    {
+        "id": 347,
+        "model_id": 475,
+        "name": "LLaVA-InternLM2-20B (QLoRA)"
+    },
+    {
+        "id": 348,
+        "model_id": 381,
+        "name": "Llama-3.1-70B-Instruct"
+    },
+    {
+        "id": 349,
+        "model_id": 414,
+        "name": "POINTS-Yi-1.5-9B"
+    },
+    {
+        "id": 350,
+        "model_id": 247,
+        "name": "Qwen2-0.5B-Instruct"
+    },
+    {
+        "id": 351,
+        "model_id": 459,
+        "name": "Falcon2-VLM-11B"
+    },
+    {
+        "id": 352,
+        "model_id": 284,
+        "name": "MiniCPM-2B-dpo-bf16"
+    },
+    {
+        "id": 353,
+        "model_id": 217,
+        "name": "Gemini-1.5-Pro"
+    },
+    {
+        "id": 354,
+        "model_id": 495,
+        "name": "Mantis-8B-clip-llama3"
+    },
+    {
+        "id": 355,
+        "model_id": 636,
+        "name": "海螺AI"
+    },
+    {
+        "id": 356,
+        "model_id": 254,
+        "name": "Qwen2.5-32B"
+    },
+    {
+        "id": 357,
+        "model_id": 341,
+        "name": "LLaVA-Next-Yi-34B"
+    },
+    {
+        "id": 358,
+        "model_id": 157,
+        "name": "hunyuan-lite"
+    },
+    {
+        "id": 359,
+        "model_id": 278,
+        "name": "Qwen1.5-MoE-A2.7B-Chat"
+    },
+    {
+        "id": 360,
+        "model_id": 576,
+        "name": "LLaMA-30B"
+    },
+    {
+        "id": 361,
+        "model_id": 696,
+        "name": "BayLing-13B"
+    },
+    {
+        "id": 362,
+        "model_id": 667,
+        "name": "文小言（实时语音）"
+    },
+    {
+        "id": 363,
+        "model_id": 296,
+        "name": "Mixtral-8x22B-v0.1"
+    },
+    {
+        "id": 364,
+        "model_id": 484,
+        "name": "Parrot-7B"
+    },
+    {
+        "id": 365,
+        "model_id": 506,
+        "name": "PandeGPT-13B"
+    },
+    {
+        "id": 366,
+        "model_id": 602,
+        "name": "讯飞星火V4.0"
+    },
+    {
+        "id": 367,
+        "model_id": 533,
+        "name": "ChatYuan-large-v2"
+    },
+    {
+        "id": 368,
+        "model_id": 2,
+        "name": "Baichuan-13B-Chat"
+    },
+    {
+        "id": 369,
+        "model_id": 492,
+        "name": "Moondream2"
+    },
+    {
+        "id": 370,
+        "model_id": 585,
+        "name": "Ernie-Bot-4"
+    },
+    {
+        "id": 371,
+        "model_id": 391,
+        "name": "InternVL2-40B"
+    },
+    {
+        "id": 372,
+        "model_id": 452,
+        "name": "Claude3-Haiku"
+    },
+    {
+        "id": 373,
+        "model_id": 121,
+        "name": "CodeGeeX4-ALL-9B"
+    },
+    {
+        "id": 374,
+        "model_id": 291,
+        "name": "Qwen1.5-110B"
+    },
+    {
+        "id": 375,
+        "model_id": 677,
+        "name": "ChatGLM-130B"
+    },
+    {
+        "id": 376,
+        "model_id": 672,
+        "name": "ChatGLM2-Pro"
+    },
+    {
+        "id": 377,
+        "model_id": 688,
+        "name": "RWKV-7B-World-CHNtuned"
+    },
+    {
+        "id": 378,
+        "model_id": 192,
+        "name": "InternLM-XComposer2"
+    },
+    {
+        "id": 379,
+        "model_id": 233,
+        "name": "Command R+ (08-2024)"
+    },
+    {
+        "id": 380,
+        "model_id": 499,
+        "name": "Moondream1"
+    },
+    {
+        "id": 381,
+        "model_id": 274,
+        "name": "Mixtral-8x7B-Instruct-v0.1"
+    },
+    {
+        "id": 382,
+        "model_id": 532,
+        "name": "ChatGLM-6B"
+    },
+    {
+        "id": 383,
+        "model_id": 471,
+        "name": "LLaVA-LLaMA-3-8B"
+    },
+    {
+        "id": 384,
+        "model_id": 210,
+        "name": "豆包・语音合成模型"
+    },
+    {
+        "id": 385,
+        "model_id": 558,
+        "name": "ChatLaw-33B"
+    },
+    {
+        "id": 386,
+        "model_id": 390,
+        "name": "InternVL2-Llama3-76B"
+    },
+    {
+        "id": 387,
+        "model_id": 292,
+        "name": "GLM-4"
+    },
+    {
+        "id": 388,
+        "model_id": 675,
+        "name": "ERNIE-3.5-Turbo"
+    },
+    {
+        "id": 389,
+        "model_id": 399,
+        "name": "bailingMM-mini"
+    },
+    {
+        "id": 390,
+        "model_id": 376,
+        "name": "Gemma-2-9b-it"
+    },
+    {
+        "id": 391,
+        "model_id": 613,
+        "name": "o1-mini-2024-09-12"
+    },
+    {
+        "id": 392,
+        "model_id": 458,
+        "name": "MolmoE-1B"
+    },
+    {
+        "id": 393,
+        "model_id": 662,
+        "name": "360智绘"
+    },
+    {
+        "id": 394,
+        "model_id": 153,
+        "name": "hunyuan-turbo"
+    },
+    {
+        "id": 395,
+        "model_id": 589,
+        "name": "SenseChat 5.5"
+    },
+    {
+        "id": 396,
+        "model_id": 355,
+        "name": "Qwen-VL-Chat-7b"
+    },
+    {
+        "id": 397,
+        "model_id": 377,
+        "name": "Qwen2.5-7B-Instruct"
+    },
+    {
+        "id": 398,
+        "model_id": 657,
+        "name": "文心一格"
+    },
+    {
+        "id": 399,
+        "model_id": 277,
+        "name": "ChatGLM3-6B-Chat"
+    },
+    {
+        "id": 400,
+        "model_id": 67,
+        "name": "video-01"
+    },
+    {
+        "id": 401,
+        "model_id": 464,
+        "name": "CogVLM-17B-chat"
+    },
+    {
+        "id": 402,
+        "model_id": 303,
+        "name": "Qwen1.5-MoE-A2.7B"
+    },
+    {
+        "id": 403,
+        "model_id": 373,
+        "name": "Mistral-Large-Instruct-2407"
+    },
+    {
+        "id": 404,
+        "model_id": 272,
+        "name": "DBRX-Instruct"
+    },
+    {
+        "id": 405,
+        "model_id": 651,
+        "name": "Runway Gen-2"
+    },
+    {
+        "id": 406,
+        "model_id": 162,
+        "name": "HunyuanDiT-Diffusers"
+    },
+    {
+        "id": 407,
+        "model_id": 227,
+        "name": "RekaSpark"
+    },
+    {
+        "id": 408,
+        "model_id": 40,
+        "name": "Yi-9B"
+    },
+    {
+        "id": 409,
+        "model_id": 487,
+        "name": "MiniCPM-V"
+    },
+    {
+        "id": 410,
+        "model_id": 510,
+        "name": "MiniGPT-4-v1-7B"
+    },
+    {
+        "id": 411,
+        "model_id": 330,
+        "name": "OpenJourney-V4"
+    },
+    {
+        "id": 412,
+        "model_id": 25,
+        "name": "Yi-1.5-9B-Chat-16K"
+    },
+    {
+        "id": 413,
+        "model_id": 684,
+        "name": "BELLE-13B"
+    },
+    {
+        "id": 414,
+        "model_id": 328,
+        "name": "PixArt-XL-2-1024-MS"
+    },
+    {
+        "id": 415,
+        "model_id": 659,
+        "name": "美图AI"
+    },
+    {
+        "id": 416,
+        "model_id": 446,
+        "name": "Cambrian-8B"
+    },
+    {
+        "id": 417,
+        "model_id": 80,
+        "name": "BlueLM-Art"
+    },
+    {
+        "id": 418,
+        "model_id": 187,
+        "name": "InternLM2-Math-Plus-20B"
+    },
+    {
+        "id": 419,
+        "model_id": 418,
+        "name": "Pixtral-12B"
+    },
+    {
+        "id": 420,
+        "model_id": 517,
+        "name": "Vicuna-7B"
+    },
+    {
+        "id": 421,
+        "model_id": 317,
+        "name": "Kolors"
+    },
+    {
+        "id": 422,
+        "model_id": 528,
+        "name": "MiniMax"
+    },
+    {
+        "id": 423,
+        "model_id": 298,
+        "name": "Deepseek-67B"
+    },
+    {
+        "id": 424,
+        "model_id": 607,
+        "name": "Phi-3-Mini-4K-Instruct"
+    },
+    {
+        "id": 425,
+        "model_id": 205,
+        "name": "Doubao-lite-4k"
+    },
+    {
+        "id": 426,
+        "model_id": 690,
+        "name": "DeepSeek-coder-6.7b"
+    },
+    {
+        "id": 427,
+        "model_id": 634,
+        "name": "GLM-4V-Plus"
+    },
+    {
+        "id": 428,
+        "model_id": 542,
+        "name": "Fusion医助大模型"
+    },
+    {
+        "id": 429,
+        "model_id": 591,
+        "name": "Gemini-1.5-Pro-002"
+    },
+    {
+        "id": 430,
+        "model_id": 62,
+        "name": "abab6.5g-chat"
+    },
+    {
+        "id": 431,
+        "model_id": 509,
+        "name": "OpenFlamingo v2"
+    },
+    {
+        "id": 432,
+        "model_id": 324,
+        "name": "SDXL-Lightning-4Step-Unet"
+    },
+    {
+        "id": 433,
+        "model_id": 594,
+        "name": "山海大模型4.0"
+    },
+    {
+        "id": 434,
+        "model_id": 498,
+        "name": "Mantis-8B-Fuyu"
+    },
+    {
+        "id": 435,
+        "model_id": 223,
+        "name": "Mistral-Large-2407"
+    },
+    {
+        "id": 436,
+        "model_id": 287,
+        "name": "Llama-2-7B-chat"
+    },
+    {
+        "id": 437,
+        "model_id": 595,
+        "name": "TeleChat2-Large"
+    },
+    {
+        "id": 438,
+        "model_id": 708,
+        "name": "InternLM2-Chat-1B"
+    },
+    {
+        "id": 439,
+        "model_id": 343,
+        "name": "Gemini-1.0-Pro-Vision"
+    },
+    {
+        "id": 440,
+        "model_id": 430,
+        "name": "CogVLM2-19B-Chat"
+    },
+    {
+        "id": 441,
+        "model_id": 143,
+        "name": "CogVideoX-5b-I2V"
+    },
+    {
+        "id": 442,
+        "model_id": 437,
+        "name": "InternVL2-2B"
+    },
+    {
+        "id": 443,
+        "model_id": 455,
+        "name": "VILA1.5-13B"
+    },
+    {
+        "id": 444,
+        "model_id": 268,
+        "name": "Qwen1.5-32B-Chat"
+    },
+    {
+        "id": 445,
+        "model_id": 316,
+        "name": "DALL-E3"
+    },
+    {
+        "id": 446,
+        "model_id": 668,
+        "name": "AndesGPT"
+    },
+    {
+        "id": 447,
+        "model_id": 22,
+        "name": "Yi-1.5-34B-Chat"
+    },
+    {
+        "id": 448,
+        "model_id": 635,
+        "name": "MiniCPM-V2.6"
+    },
+    {
+        "id": 449,
+        "model_id": 327,
+        "name": "Kandinsky-3"
+    },
+    {
+        "id": 450,
+        "model_id": 259,
+        "name": "Qwen-Max-0403"
+    },
+    {
+        "id": 451,
+        "model_id": 115,
+        "name": "GLM-4V-9B"
+    },
+    {
+        "id": 452,
+        "model_id": 315,
+        "name": "Qwen1.5-0.5B"
+    },
+    {
+        "id": 453,
+        "model_id": 415,
+        "name": "Ovis 1.5-Llama3.2-3B"
+    },
+    {
+        "id": 454,
+        "model_id": 527,
+        "name": "Claude"
+    },
+    {
+        "id": 455,
+        "model_id": 251,
+        "name": "Qwen2.5-3B"
+    },
+    {
+        "id": 456,
+        "model_id": 306,
+        "name": "Phi-2"
+    },
+    {
+        "id": 457,
+        "model_id": 87,
+        "name": "SenseChat-5-Cantonese"
+    },
+    {
+        "id": 458,
+        "model_id": 621,
+        "name": "讯飞星火V3.5"
+    },
+    {
+        "id": 459,
+        "model_id": 436,
+        "name": "Molmo-7B-O"
+    },
+    {
+        "id": 460,
+        "model_id": 538,
+        "name": "UniGPT-Med"
+    },
+    {
+        "id": 461,
+        "model_id": 279,
+        "name": "Qwen1.5-7B-Chat"
+    },
+    {
+        "id": 462,
+        "model_id": 419,
+        "name": "InternVL2-4B"
+    },
+    {
+        "id": 463,
+        "model_id": 178,
+        "name": "InternLM2.5-1.8B"
+    },
+    {
+        "id": 464,
+        "model_id": 511,
+        "name": "Chameleon-7B"
+    },
+    {
+        "id": 465,
+        "model_id": 13,
+        "name": "Baichuan2-Turbo"
+    },
+    {
+        "id": 466,
+        "model_id": 692,
+        "name": "Code-Llama-13b-instruct"
+    },
+    {
+        "id": 467,
+        "model_id": 215,
+        "name": "Grok-2"
+    },
+    {
+        "id": 468,
+        "model_id": 505,
+        "name": "Idefics-9B-Instruct"
+    },
+    {
+        "id": 469,
+        "model_id": 598,
+        "name": "Sky-Chat-3.0"
+    },
+    {
+        "id": 470,
+        "model_id": 403,
+        "name": "MiniCPM-V-2.6"
+    },
+    {
+        "id": 471,
+        "model_id": 560,
+        "name": "Lawyer-LLaMA"
+    },
+    {
+        "id": 472,
+        "model_id": 488,
+        "name": "Janus-1.3B"
+    },
+    {
+        "id": 473,
+        "model_id": 642,
+        "name": "Luma Dream Machine 1.6"
+    },
+    {
+        "id": 474,
+        "model_id": 106,
+        "name": "Spark Pro"
+    },
+    {
+        "id": 475,
+        "model_id": 416,
+        "name": "LLaVA-OneVision-7B(SI)"
+    },
+    {
+        "id": 476,
+        "model_id": 245,
+        "name": "Qwen2-1.5B-Instruct"
+    },
+    {
+        "id": 477,
+        "model_id": 676,
+        "name": "360GPT_S2_V94"
+    },
+    {
+        "id": 478,
+        "model_id": 54,
+        "name": "Yi-Spark"
+    },
+    {
+        "id": 479,
+        "model_id": 146,
+        "name": "step-1-32k"
+    },
+    {
+        "id": 480,
+        "model_id": 137,
+        "name": "CogVLM"
+    },
+    {
+        "id": 481,
+        "model_id": 56,
+        "name": "Yi-Large-FC"
+    },
+    {
+        "id": 482,
+        "model_id": 225,
+        "name": "Reka Core"
+    },
+    {
+        "id": 483,
+        "model_id": 554,
+        "name": "BELLE-LLaMA-2"
+    },
+    {
+        "id": 484,
+        "model_id": 100,
+        "name": "360GPT_S2_V9"
+    },
+    {
+        "id": 485,
+        "model_id": 174,
+        "name": "InternLM2-Chat-20B"
+    },
+    {
+        "id": 486,
+        "model_id": 59,
+        "name": "Yi-Lightning"
+    },
+    {
+        "id": 487,
+        "model_id": 661,
+        "name": "天工AI"
+    },
+    {
+        "id": 488,
+        "model_id": 512,
+        "name": "Kosmos2"
+    },
+    {
+        "id": 489,
+        "model_id": 650,
+        "name": "Pika Art"
+    },
+    {
+        "id": 490,
+        "model_id": 578,
+        "name": "Chinese-LLaMA-2-7B"
+    },
+    {
+        "id": 491,
+        "model_id": 663,
+        "name": "讯飞星火"
+    },
+    {
+        "id": 492,
+        "model_id": 400,
+        "name": "InternVL2-26B"
+    },
+    {
+        "id": 493,
+        "model_id": 16,
+        "name": "Baichuan3-Turbo-128k"
+    },
+    {
+        "id": 494,
+        "model_id": 203,
+        "name": "Doubao-lite-128k"
+    },
+    {
+        "id": 495,
+        "model_id": 489,
+        "name": "Slime-7B"
+    },
+    {
+        "id": 496,
+        "model_id": 346,
+        "name": "DeepSeek-VL-7B"
+    },
+    {
+        "id": 497,
+        "model_id": 342,
+        "name": "Intern-XComposer2-VL-7B"
+    },
+    {
+        "id": 498,
+        "model_id": 566,
+        "name": "MOSS-Moon-SFT"
+    },
+    {
+        "id": 499,
+        "model_id": 417,
+        "name": "InternLM-XComposer2.5"
+    },
+    {
+        "id": 500,
+        "model_id": 563,
+        "name": "Baichuan-13B"
+    },
+    {
+        "id": 501,
+        "model_id": 202,
+        "name": "Doubao-embedding"
+    },
+    {
+        "id": 502,
+        "model_id": 571,
+        "name": "MPT-7B"
+    },
+    {
+        "id": 503,
+        "model_id": 131,
+        "name": "cogvlm2-video-llama3-base"
+    },
+    {
+        "id": 504,
+        "model_id": 674,
+        "name": "abab5.5s"
+    },
+    {
+        "id": 505,
+        "model_id": 603,
+        "name": "MiniCPM3-4B"
+    },
+    {
+        "id": 506,
+        "model_id": 239,
+        "name": "Qwen2-72B-Instruct"
+    },
+    {
+        "id": 507,
+        "model_id": 739,
+        "name": "Qwen-14B"
+    },
+    {
+        "id": 508,
+        "model_id": 46,
+        "name": "Yi-Coder-9B-Chat"
+    },
+    {
+        "id": 509,
+        "model_id": 383,
+        "name": "Llama-3.1-8B-Instruct"
+    },
+    {
+        "id": 510,
+        "model_id": 12,
+        "name": "Baichuan-NPC-Turbo"
+    },
+    {
+        "id": 511,
+        "model_id": 261,
+        "name": "Claude3"
+    },
+    {
+        "id": 512,
+        "model_id": 130,
+        "name": "cogvlm2-video-llama3-chat"
+    },
+    {
+        "id": 513,
+        "model_id": 745,
+        "name": "易车大模型"
+    },
+    {
+        "id": 514,
+        "model_id": 523,
+        "name": "Vicuna-v1.3-13B"
+    },
+    {
+        "id": 515,
+        "model_id": 32,
+        "name": "Yi-34B-Chat"
+    },
+    {
+        "id": 516,
+        "model_id": 700,
+        "name": "BlueLM-Long"
+    },
+    {
+        "id": 517,
+        "model_id": 640,
+        "name": "海螺视频"
+    },
+    {
+        "id": 518,
+        "model_id": 574,
+        "name": "LaWGPT-7B-beta1.1"
+    },
+    {
+        "id": 519,
+        "model_id": 405,
+        "name": "InternVL2-8B"
+    },
+    {
+        "id": 520,
+        "model_id": 248,
+        "name": "Qwen2-0.5B"
+    },
+    {
+        "id": 521,
+        "model_id": 148,
+        "name": "step-1-256k"
+    },
+    {
+        "id": 522,
+        "model_id": 516,
+        "name": "InternLM-20B-Chat"
+    },
+    {
+        "id": 523,
+        "model_id": 644,
+        "name": "Dreamina即梦AI"
+    },
+    {
+        "id": 524,
+        "model_id": 580,
+        "name": "LLaMA-65B"
+    },
+    {
+        "id": 525,
+        "model_id": 44,
+        "name": "Yi-VL-34B"
+    },
+    {
+        "id": 526,
+        "model_id": 711,
+        "name": "Mistral"
+    },
+    {
+        "id": 527,
+        "model_id": 281,
+        "name": "Llama-2-70B-chat"
+    },
+    {
+        "id": 528,
+        "model_id": 147,
+        "name": "step-1-128k"
+    },
+    {
+        "id": 529,
+        "model_id": 150,
+        "name": "step-1-flash"
+    },
+    {
+        "id": 530,
+        "model_id": 559,
+        "name": "TigerBot-SFT"
+    },
+    {
+        "id": 531,
+        "model_id": 253,
+        "name": "Qwen2.5-14B"
+    },
+    {
+        "id": 532,
+        "model_id": 624,
+        "name": "Cursor"
+    },
+    {
+        "id": 533,
+        "model_id": 232,
+        "name": "Gemma-2-9b-it-SimPO"
+    },
+    {
+        "id": 534,
+        "model_id": 14,
+        "name": "Baichuan3-Turbo"
+    },
+    {
+        "id": 535,
+        "model_id": 648,
+        "name": "可灵"
+    },
+    {
+        "id": 536,
+        "model_id": 180,
+        "name": "InternLM2.5-7B"
+    },
+    {
+        "id": 537,
+        "model_id": 629,
+        "name": "豆包MarsCode"
+    },
+    {
+        "id": 538,
+        "model_id": 65,
+        "name": "abab5.5s-chat"
+    },
+    {
+        "id": 539,
+        "model_id": 351,
+        "name": "Monkey-Chat"
+    },
+    {
+        "id": 540,
+        "model_id": 58,
+        "name": "Yi-Large-preview"
+    },
+    {
+        "id": 541,
+        "model_id": 249,
+        "name": "Qwen2.5-0.5B"
+    },
+    {
+        "id": 542,
+        "model_id": 334,
+        "name": "Stable Diffusion v1.4"
+    },
+    {
+        "id": 543,
+        "model_id": 429,
+        "name": "GPT-4v-20231106"
+    },
+    {
+        "id": 544,
+        "model_id": 173,
+        "name": "InternLM2-Chat-20B-SFT"
+    },
+    {
+        "id": 545,
+        "model_id": 647,
+        "name": "智谱清影"
+    },
+    {
+        "id": 546,
+        "model_id": 198,
+        "name": "InternLM-XComposer-VL"
+    },
+    {
+        "id": 547,
+        "model_id": 453,
+        "name": "XGen-MM-Instruct-DPO-v1.5"
+    },
+    {
+        "id": 548,
+        "model_id": 161,
+        "name": "hunyuan-vision"
+    },
+    {
+        "id": 549,
+        "model_id": 333,
+        "name": "Stable Diffusion v1.5"
+    },
+    {
+        "id": 550,
+        "model_id": 326,
+        "name": "Stable Diffusion XL base-1.0"
+    },
+    {
+        "id": 551,
+        "model_id": 550,
+        "name": "Yulan-Chat-2-13B"
+    },
+    {
+        "id": 552,
+        "model_id": 240,
+        "name": "Qwen2-72B"
+    },
+    {
+        "id": 553,
+        "model_id": 69,
+        "name": "speech-01-turbo"
+    },
+    {
+        "id": 554,
+        "model_id": 181,
+        "name": "InternLM2.5-7B-Chat"
+    },
+    {
+        "id": 555,
+        "model_id": 30,
+        "name": "Yi-1.5-9B-32K"
+    },
+    {
+        "id": 556,
+        "model_id": 573,
+        "name": "Alpaca-v1.0-7B"
+    },
+    {
+        "id": 557,
+        "model_id": 476,
+        "name": "H2OVL-800M"
+    },
+    {
+        "id": 558,
+        "model_id": 618,
+        "name": "Phi-3-Mini-4K"
+    },
+    {
+        "id": 559,
+        "model_id": 395,
+        "name": "Claude 3.5 Sonnet 20241022"
+    },
+    {
+        "id": 560,
+        "model_id": 680,
+        "name": "abab5.5"
+    },
+    {
+        "id": 561,
+        "model_id": 321,
+        "name": "Doubao-Image-v1.4"
+    },
+    {
+        "id": 562,
+        "model_id": 362,
+        "name": "即梦"
+    },
+    {
+        "id": 563,
+        "model_id": 444,
+        "name": "IDEFICS2-8B"
+    },
+    {
+        "id": 564,
+        "model_id": 582,
+        "name": "LLaMA-2-Chinese-7B"
+    },
+    {
+        "id": 565,
+        "model_id": 384,
+        "name": "Llama-3.2-3B-Instruct"
+    },
+    {
+        "id": 566,
+        "model_id": 226,
+        "name": "RekaFlash"
+    },
+    {
+        "id": 567,
+        "model_id": 447,
+        "name": "Llama-3-MixSense-v1.1"
+    },
+    {
+        "id": 568,
+        "model_id": 136,
+        "name": "cogvlm-chat-hf"
+    },
+    {
+        "id": 569,
+        "model_id": 318,
+        "name": "CogView3"
+    },
+    {
+        "id": 570,
+        "model_id": 556,
+        "name": "HanFei"
+    },
+    {
+        "id": 571,
+        "model_id": 307,
+        "name": "Gemma-7b"
+    },
+    {
+        "id": 572,
+        "model_id": 331,
+        "name": "Stable Diffusion v2.1"
+    },
+    {
+        "id": 573,
+        "model_id": 686,
+        "name": "Phoenix-7B"
+    },
+    {
+        "id": 574,
+        "model_id": 229,
+        "name": "Jamba 1.5 Mini"
+    },
+    {
+        "id": 575,
+        "model_id": 683,
+        "name": "Claude-instant-v1"
+    },
+    {
+        "id": 576,
+        "model_id": 735,
+        "name": "bloomz_560m"
+    },
+    {
+        "id": 577,
+        "model_id": 608,
+        "name": "Qwen2.5-0.5B-Instruct"
+    },
+    {
+        "id": 578,
+        "model_id": 679,
+        "name": "讯飞星火V1.5"
+    },
+    {
+        "id": 579,
+        "model_id": 601,
+        "name": "Llama-3.2-90B-Instruct"
+    },
+    {
+        "id": 580,
+        "model_id": 329,
+        "name": "SDXL Turbo "
+    },
+    {
+        "id": 581,
+        "model_id": 230,
+        "name": "Jamba 1.5 Large"
+    },
+    {
+        "id": 582,
+        "model_id": 470,
+        "name": "OmniLMM-12B"
+    },
+    {
+        "id": 583,
+        "model_id": 411,
+        "name": "POINTS-Qwen2.5-7B"
+    },
+    {
+        "id": 584,
+        "model_id": 352,
+        "name": "LLaVA-Next-Vicuna-13B"
+    },
+    {
+        "id": 585,
+        "model_id": 304,
+        "name": "Llama-2-70B"
+    },
+    {
+        "id": 586,
+        "model_id": 747,
+        "name": "GPT-4-1106"
+    },
+    {
+        "id": 587,
+        "model_id": 457,
+        "name": "Mantis-8B-Idefics2"
+    },
+    {
+        "id": 588,
+        "model_id": 423,
+        "name": "MiniCPM-Llama3-V2.5"
+    },
+    {
+        "id": 589,
+        "model_id": 493,
+        "name": "LLaVA-v1.5-13B"
+    },
+    {
+        "id": 590,
+        "model_id": 11,
+        "name": "Baichuan-NPC-Lite"
+    },
+    {
+        "id": 591,
+        "model_id": 413,
+        "name": "OmChat-v2.0-13B"
+    },
+    {
+        "id": 592,
+        "model_id": 454,
+        "name": "Mini-InternVL-Chat-2B-V1.5"
+    },
+    {
+        "id": 593,
+        "model_id": 630,
+        "name": "Codeium"
+    },
+    {
+        "id": 594,
+        "model_id": 715,
+        "name": "Skywork-13B"
+    },
+    {
+        "id": 595,
+        "model_id": 666,
+        "name": "通义（实时语音）"
+    },
+    {
+        "id": 596,
+        "model_id": 654,
+        "name": "Midjourney"
+    },
+    {
+        "id": 597,
+        "model_id": 189,
+        "name": "InternLM-XComposer-2.5"
+    },
+    {
+        "id": 598,
+        "model_id": 96,
+        "name": "nova-embedding-stable"
+    },
+    {
+        "id": 599,
+        "model_id": 645,
+        "name": "Pika1.5"
+    },
+    {
+        "id": 600,
+        "model_id": 38,
+        "name": "Yi-34B"
+    },
+    {
+        "id": 601,
+        "model_id": 622,
+        "name": "GPT-3.5-turbo-0125"
+    },
+    {
+        "id": 602,
+        "model_id": 652,
+        "name": "BlueLM-Art"
+    },
+    {
+        "id": 603,
+        "model_id": 530,
+        "name": "MOSS"
+    },
+    {
+        "id": 604,
+        "model_id": 35,
+        "name": "Yi-6B-Chat"
+    },
+    {
+        "id": 605,
+        "model_id": 513,
+        "name": "MiniGPT-4-v2"
+    },
+    {
+        "id": 606,
+        "model_id": 479,
+        "name": "LLaVA-InternLM2-7B (QLoRA)"
+    },
+    {
+        "id": 607,
+        "model_id": 89,
+        "name": "SenseChat-Character"
+    },
+    {
+        "id": 608,
+        "model_id": 422,
+        "name": "Molmo-7B-D"
+    },
+    {
+        "id": 609,
+        "model_id": 71,
+        "name": "BlueLM-7B-Base"
+    },
+    {
+        "id": 610,
+        "model_id": 504,
+        "name": "Qwen-VL"
+    },
+    {
+        "id": 611,
+        "model_id": 125,
+        "name": "CogView3-Plus-3B"
+    },
+    {
+        "id": 612,
+        "model_id": 201,
+        "name": "Taichu-2.0-Turbo"
+    },
+    {
+        "id": 613,
+        "model_id": 182,
+        "name": "InternLM2.5-7B-Chat-1M"
+    },
+    {
+        "id": 614,
+        "model_id": 438,
+        "name": "H2OVL-2B"
+    },
+    {
+        "id": 615,
+        "model_id": 562,
+        "name": "Qwen-7B"
+    },
+    {
+        "id": 616,
+        "model_id": 570,
+        "name": "XVERSE-13B"
+    },
+    {
+        "id": 617,
+        "model_id": 107,
+        "name": "Spark Max"
+    },
+    {
+        "id": 618,
+        "model_id": 344,
+        "name": "Qwen-VL-Plus"
+    },
+    {
+        "id": 619,
+        "model_id": 579,
+        "name": "LLaMA-13B"
+    },
+    {
+        "id": 620,
+        "model_id": 365,
+        "name": "Luma"
+    },
+    {
+        "id": 621,
+        "model_id": 531,
+        "name": "BELLE"
+    },
+    {
+        "id": 622,
+        "model_id": 123,
+        "name": "CodeGeeX2-6B"
+    },
+    {
+        "id": 623,
+        "model_id": 432,
+        "name": "Mini-InternVL-Chat-4B-V1.5"
+    },
+    {
+        "id": 624,
+        "model_id": 57,
+        "name": "Yi-Large-Turbo"
+    },
+    {
+        "id": 625,
+        "model_id": 231,
+        "name": "Gemma-2-27b-it"
+    },
+    {
+        "id": 626,
+        "model_id": 354,
+        "name": "ShareGPT4V-13B"
+    },
+    {
+        "id": 627,
+        "model_id": 126,
+        "name": "CogView2"
+    },
+    {
+        "id": 628,
+        "model_id": 216,
+        "name": "Grok-2-Mini"
+    },
+    {
+        "id": 629,
+        "model_id": 706,
+        "name": "hunyuan"
+    },
+    {
+        "id": 630,
+        "model_id": 609,
+        "name": "RWKV-6-World-7B"
+    },
+    {
+        "id": 631,
+        "model_id": 70,
+        "name": "music-01"
+    },
+    {
+        "id": 632,
+        "model_id": 128,
+        "name": "cogvlm2-llama3-chat-19B"
+    },
+    {
+        "id": 633,
+        "model_id": 350,
+        "name": "Claude-3-Opus"
+    },
+    {
+        "id": 634,
+        "model_id": 151,
+        "name": "step-1v"
+    },
+    {
+        "id": 635,
+        "model_id": 526,
+        "name": "ChatGPT"
+    },
+    {
+        "id": 636,
+        "model_id": 456,
+        "name": "XVERSE-V-13B"
+    },
+    {
+        "id": 637,
+        "model_id": 358,
+        "name": "ShareGPT4V-7B"
+    },
+    {
+        "id": 638,
+        "model_id": 461,
+        "name": "InternVL2-1B"
+    },
+    {
+        "id": 639,
+        "model_id": 494,
+        "name": "Emu2_chat"
+    },
+    {
+        "id": 640,
+        "model_id": 325,
+        "name": "Playground v2.5-1024px-aesthetic"
+    },
+    {
+        "id": 641,
+        "model_id": 219,
+        "name": "Llama 3.1 405B"
+    },
+    {
+        "id": 642,
+        "model_id": 564,
+        "name": "Ziya-LLaMA-13B"
+    },
+    {
+        "id": 643,
+        "model_id": 260,
+        "name": "UniGPT"
+    },
+    {
+        "id": 644,
+        "model_id": 611,
+        "name": "DeepSeek-R1-Lite-Preview"
+    },
+    {
+        "id": 645,
+        "model_id": 748,
+        "name": "Qwen-72B"
+    },
+    {
+        "id": 646,
+        "model_id": 660,
+        "name": "星火绘图"
+    },
+    {
+        "id": 647,
+        "model_id": 366,
+        "name": "星火绘镜"
+    },
+    {
+        "id": 648,
+        "model_id": 152,
+        "name": "step-1x"
+    },
+    {
+        "id": 649,
+        "model_id": 323,
+        "name": "Midjourney v5.2"
+    },
+    {
+        "id": 650,
+        "model_id": 442,
+        "name": "Claude3-Sonnet"
+    },
+    {
+        "id": 651,
+        "model_id": 553,
+        "name": "Wisdom-Interrogatory"
+    },
+    {
+        "id": 652,
+        "model_id": 496,
+        "name": "LLaVA-v1.5-7B(QLoRA)"
+    },
+    {
+        "id": 653,
+        "model_id": 670,
+        "name": "讯飞星火V2.0"
+    },
+    {
+        "id": 654,
+        "model_id": 407,
+        "name": "Ovis1.5-Gemma2-9B"
+    },
+    {
+        "id": 655,
+        "model_id": 539,
+        "name": "fusiontech-Med"
+    },
+    {
+        "id": 656,
+        "model_id": 370,
+        "name": "Open-Sora"
+    },
+    {
+        "id": 657,
+        "model_id": 485,
+        "name": "Slime-13B"
+    },
+    {
+        "id": 658,
+        "model_id": 632,
+        "name": "SenseChat-Vision 5.5"
+    },
+    {
+        "id": 659,
+        "model_id": 228,
+        "name": "RekaEdge"
+    },
+    {
+        "id": 660,
+        "model_id": 572,
+        "name": "MPT-Instruct-7B"
+    },
+    {
+        "id": 661,
+        "model_id": 646,
+        "name": "Vidu"
+    },
+    {
+        "id": 662,
+        "model_id": 262,
+        "name": "Qwen-Max-1201"
+    },
+    {
+        "id": 663,
+        "model_id": 555,
+        "name": "Qwen1.5-7B"
+    },
+    {
+        "id": 664,
+        "model_id": 569,
+        "name": "Chinese-Alpaca-2-7B"
+    },
+    {
+        "id": 665,
+        "model_id": 50,
+        "name": "Yi-Large"
+    },
+    {
+        "id": 666,
+        "model_id": 144,
+        "name": "CogVideoX-5b"
+    },
+    {
+        "id": 667,
+        "model_id": 295,
+        "name": "Qwen1.5-72B"
+    },
+    {
+        "id": 668,
+        "model_id": 345,
+        "name": "LLaVA-Next-Llama3-8B"
+    },
+    {
+        "id": 669,
+        "model_id": 88,
+        "name": "SenseChat-Character-Pro"
+    },
+    {
+        "id": 670,
+        "model_id": 265,
+        "name": "abab6-chat"
+    },
+    {
+        "id": 671,
+        "model_id": 746,
+        "name": "奇智孔明AInno-15B-1128"
+    },
+    {
+        "id": 672,
+        "model_id": 625,
+        "name": "文心快码Baidu Comate"
+    },
+    {
+        "id": 673,
+        "model_id": 519,
+        "name": "InternLM-7B-Chat"
+    },
+    {
+        "id": 674,
+        "model_id": 190,
+        "name": "InternLM-XComposer2-4KHD"
+    },
+    {
+        "id": 675,
+        "model_id": 336,
+        "name": "Dreamlike Photoreal"
+    },
+    {
+        "id": 676,
+        "model_id": 104,
+        "name": "iFlytekSpark-13B-Charater"
+    },
+    {
+        "id": 677,
+        "model_id": 402,
+        "name": "CongRong"
+    },
+    {
+        "id": 678,
+        "model_id": 19,
+        "name": "Moonshot-v1-128K"
+    },
+    {
+        "id": 679,
+        "model_id": 92,
+        "name": "SenseChat-Medical"
+    }
+]

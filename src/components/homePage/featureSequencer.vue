@@ -20,6 +20,9 @@ export default {
         },
         getRadio(){
             return this.radio;
+        },
+        setRadio(value) {
+            this.radio = value;
         }
     },
     watch: {
