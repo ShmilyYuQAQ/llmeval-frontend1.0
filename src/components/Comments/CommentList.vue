@@ -56,10 +56,13 @@ export default {
                 `http://49.233.82.133:9091/model/comment/tree?modelId=${this.modelId}`
                 );
                 if (commentsResponse.data.success) {
-                this.comments = commentsResponse.data.data;
-                this.user_comment_map = this.mapCommentIdsToUserNames(this.comments);
+                    this.comments = commentsResponse.data.data;
+                    this.user_comment_map = this.mapCommentIdsToUserNames(this.comments);
                 }
-                console.log(this.user_comment_map)
+                else {
+                    this.comments = [];
+                    this.user_comment_map = new Map();
+                }
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
