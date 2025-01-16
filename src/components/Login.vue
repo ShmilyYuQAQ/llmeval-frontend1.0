@@ -93,8 +93,9 @@ export default {
         if (data.success) {
           alert("登录成功！");
           // 保存 Token 到 localStorage
-          console.log(response.data.data.token);
+          console.log(response.data.data);
           localStorage.setItem('token', response.data.data.token);
+          localStorage.setItem('userName', response.data.data.userName);
           const urlParams = new URLSearchParams(window.location.search);
           const redirectUrl = urlParams.get('redirect') || '/';
           window.location.href = redirectUrl;
