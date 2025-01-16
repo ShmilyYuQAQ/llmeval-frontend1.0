@@ -203,7 +203,11 @@ export default {
     },
 
     redirectToModelLink(link) {
-      window.open(link, '_blank');
+      if (link === "无") {
+        alert("暂无模型试用链接");
+      } else {
+        window.open(link, '_blank');
+      }
     },
 
     toggleLikeIcon(comment) {
