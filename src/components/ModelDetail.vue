@@ -28,7 +28,7 @@
 
         <div class="actions">
           <button class="action-button" @click="toggleFavorite()">{{ isFavorited ? '取消收藏' : '收藏' }}</button>
-          <button class="action-button">模型试用</button>
+          <button class="action-button" @click="redirectToModelLink(modelData.data.model_link)">模型试用</button>
         </div>
       </section>
       <br>
@@ -201,6 +201,11 @@ export default {
         alert("评论内容不能为空！");
       }
     },
+
+    redirectToModelLink(link) {
+      window.open(link, '_blank');
+    },
+
     toggleLikeIcon(comment) {
       comment.liked = !comment.liked;
     },
