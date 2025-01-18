@@ -140,6 +140,7 @@ export default {
     display: flex;
     flex-wrap: wrap;
     width: 80%;
+    margin-top:20px;
 }
 
 .model-card-wrapper {

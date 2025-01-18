@@ -8,9 +8,10 @@
                 v-for="(tag, index) in tags"
                 :key="index"
                 class="tag"
-                @click="selectTag(tag.value)"
+                @click="handleTagClick(tag, index)"
                 :class="{
                     'has-subtags': tag.subtags && tag.subtags.length > 0,
+                    'active': activeTagIndex === index
                 }"
             >
                 <span class="out-span">
@@ -19,6 +20,7 @@
                 <div
                     v-if="tag.subtags && tag.subtags.length > 0"
                     class="subtags-container"
+                    :class="{ 'mobile-show': activeTagIndex === index }"
                 >
                     <div
                         v-for="(subtag, subIndex) in tag.subtags"
@@ -47,7 +49,18 @@ export default {
             required: true,
         },
     },
+    data() {
+        return {
+            activeTagIndex: null
+        }
+    },
     methods: {
+        handleTagClick(tag, index) {
+            if (window.innerWidth <= 768) {
+                this.activeTagIndex = this.activeTagIndex === index ? null : index;
+            }
+            this.selectTag(tag.value);
+        },
         selectTag(value) {
             this.$emit('custom-event', value);
         },
@@ -209,5 +222,42 @@ export default {
 }
 .subtag-text:hover {
     color: #816df8 !important;
+}
+
+/* 桌面端保持原有的hover效果 */
+@media (min-width: 769px) {
+    .has-subtags:hover .subtags-container {
+        display: flex;
+        flex-wrap: wrap;
+        color: rgba(39, 38, 77, 0.45);
+        justify-content: flex-start;
+        gap: 8px;
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+/* 移动端样式调整 */
+@media (max-width: 768px) {
+    .has-subtags:hover .subtags-container {
+        display: none;
+    }
+    
+    .subtags-container.mobile-show {
+        display: flex;
+        flex-wrap: wrap;
+        color: rgba(39, 38, 77, 0.45);
+        justify-content: flex-start;
+        gap: 8px;
+        position: static;
+        transform: none;
+        left: auto;
+        width: 100%;
+        margin-top: 8px;
+        box-shadow: none;
+        background-color: transparent;
+    }
 }
 </style>

@@ -21,7 +21,7 @@
                         <router-link to="/" class="link-item">指南</router-link>
                         <router-link to="/home" class="link-item">主页</router-link>
                         <router-link to="/news" class="link-item">新闻</router-link>
-                        <router-link to="/PersonalCenter" class="link-item">个人中心</router-link>
+                        <router-link to="/center" class="link-item">个人中心</router-link>
                         <button v-if="!isLoggedIn" @click.native="login" class="link-item">登录</button>
                         <button v-if="isLoggedIn" @click.native="logout" class="link-item">退出登录</button>
                     </nav>
@@ -179,5 +179,14 @@ export default {
     .link-item:last-child {
         border-bottom: none;
     }
+}
+.nav-bar {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 1000;
+    /* 其他现有样式 */
 }
 </style>

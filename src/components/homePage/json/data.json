@@ -21,8 +21,8 @@
     },
     {
         "id": 5,
-        "model_id": 547,
-        "name": "BlueLM"
+        "model_id": 700,
+        "name": "BlueLM-Long"
     },
     {
         "id": 6,
@@ -2576,8 +2576,8 @@
     },
     {
         "id": 516,
-        "model_id": 700,
-        "name": "BlueLM-Long"
+        "model_id": 547,
+        "name": "BlueLM"
     },
     {
         "id": 517,
