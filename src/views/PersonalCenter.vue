@@ -221,33 +221,72 @@ export default {
         async submitNameChange() {
             try {
                 await this.$refs.nameFormRef.validate();
-                // TODO: 添加实际的 API 调用
-                // await axiosInstance.post('/user/update-name', { name: this.nameForm.newName });
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    this.$message.error('请先登录');
+                    return;
+                }
 
-                this.userName = this.nameForm.newName;
-                this.nameDialogVisible = false;
-                this.$message.success("昵称修改成功");
+                const response = await axiosInstance.put(
+                    `/user/updateUsername?newUsername=${encodeURIComponent(this.nameForm.newName)}`,
+                    null,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                );
+
+                if (response.data.success) {
+                    this.userName = this.nameForm.newName;
+                    localStorage.setItem('userName', this.nameForm.newName);
+                    this.nameDialogVisible = false;
+                    this.$message.success("昵称修改成功");
+                } else {
+                    throw new Error(response.data.message || '昵称修改失败');
+                }
             } catch (error) {
                 console.error("Change name failed:", error);
-                this.$message.error("昵称修改失败");
+                this.$message.error(error.message || "昵称修改失败");
             }
         },
         async submitPasswordChange() {
             try {
                 await this.$refs.passwordFormRef.validate();
-                // TODO: 添加实际的 API 调用
-                // await axiosInstance.post('/user/update-password', this.passwordForm);
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    this.$message.error('请先登录');
+                    return;
+                }
 
-                this.passwordDialogVisible = false;
-                this.passwordForm = {
-                    oldPassword: "",
-                    newPassword: "",
-                    confirmPassword: "",
-                };
-                this.$message.success("密码修改成功");
+                const response = await axiosInstance.put(
+                    `/user/updatePassword?oldPassword=${encodeURIComponent(this.passwordForm.oldPassword)}&newPassword=${encodeURIComponent(this.passwordForm.newPassword)}`,
+                    null,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                );
+
+                if (response.data.success) {
+                    this.passwordDialogVisible = false;
+                    this.passwordForm = {
+                        oldPassword: "",
+                        newPassword: "",
+                        confirmPassword: "",
+                    };
+                    this.$message.success("密码修改成功");
+                } else {
+                    throw new Error(response.data.message || '旧密码不正确');
+                }
             } catch (error) {
                 console.error("Change password failed:", error);
-                this.$message.error("密码修改失败");
+                if (error.response?.status === 401) {
+                    this.$message.error("旧密码不正确");
+                } else {
+                    this.$message.error(error.message || "网络错误，请稍后重试");
+                }
             }
         },
         async fetchData() {
