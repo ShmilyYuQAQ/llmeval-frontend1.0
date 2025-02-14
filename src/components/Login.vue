@@ -72,14 +72,14 @@
     <div v-if="isFindPasswordVisible" class="modal">
       <div class="modal-content">
         <h2>找回密码</h2>
-        <form @submit.prevent="handleRegister">
+        <form @submit.prevent="submitFindPassword">
           <div class="input-group">
             <input
               type="email"
               placeholder="请输入电子邮箱"
               v-model="findPasswordForm.email"
             />
-            <button type="button" class="sendVerify-btn" @click="sendVerificationCode">发送验证码</button>
+            <button type="button" class="sendVerify-btn" :class="{ 'disabled-btn': isSendingCode1 }" :disabled="isSendingCode1" @click="sendVerificationCodeFindPassword(findPasswordForm.email)">{{ isSendingCode1 ? `${countdown1}s 后重新发送` : '发送验证码' }}</button>
           </div>
           <div class="input-group">
             <input
@@ -90,14 +90,14 @@
           </div>
           <div class="input-group">
             <input
-              type="text"
+              type="password"
               placeholder="请设置新密码"
               v-model="findPasswordForm.newPassword"
             />
           </div>
           <div class="input-group">
             <input
-              type="text"
+              type="password"
               placeholder="请确认新密码"
               v-model="findPasswordForm.checknewPassword"
             />
@@ -139,7 +139,9 @@ export default {
         checknewPassword: "",
       },
       isSendingCode: false,
-      countdown: 60
+      countdown: 60,
+      isSendingCode1: false,
+      countdown1: 60,
     };
   },
   setup() {
@@ -259,10 +261,10 @@ export default {
         alert("请输入电子邮箱！");
         return;
       }
-
       try {
         const response = await axios.post(`http://49.233.82.133:9091/user/sendEmailCode?email=${email}`);
         const data = response.data;
+        console.log(data);
         if (data.success) {
           alert("验证码已发送到您的邮箱！");
           this.startCountdown();
@@ -275,6 +277,56 @@ export default {
       }
     },
 
+    //找回密码时发送验证码
+    async sendVerificationCodeFindPassword(email) {
+      // 发送验证码逻辑
+      if (!email) {
+        alert("请输入电子邮箱！");
+        return;
+      }
+
+      try {
+        const response = await axios.post(`http://49.233.82.133:9091/user/sendEmailCode?email=${email}`);
+        const data = response.data;
+        if (data.success) {
+          alert("验证码已发送到您的邮箱！");
+          this.startCountdown1();
+        } else {
+          alert(data.errorMsg || "发送验证码失败，请重试！");
+        }
+      } catch (error) {
+        alert("网络错误或后端异常，请稍后再试");
+        console.error(error);
+      }
+    },
+
+    //提交找回密码
+    async submitFindPassword() {
+      const { email, verificationCode, newPassword, checknewPassword } = this.findPasswordForm;
+      if (!email || !verificationCode || !newPassword || !checknewPassword) {
+        alert("请填写完整的找回密码信息！");
+        return;
+      }
+      if (newPassword !== checknewPassword) {
+        alert("两次输入的密码不一致！");
+        return;
+      }
+      try {
+        const response = await axios.post(`http://49.233.82.133:9091/user/findPassword?email=${email}&code=${verificationCode}&newPassword=${newPassword}`);
+        const data = response.data;
+        if (data.success) {
+          alert(data.data || "找回密码成功！");
+          this.closeFindPassword();
+        } else {
+          alert(data.errorMsg || "找回密码失败，请重试！");
+        }
+      } catch (error) {
+        alert("网络错误或后端异常，请稍后再试");
+        console.error(error);
+      }
+    },
+        
+
     startCountdown() {
       this.isSendingCode = true;
       this.countdown = 60;
@@ -283,6 +335,18 @@ export default {
         if (this.countdown <= 0) {
           clearInterval(interval);
           this.isSendingCode = false;
+        }
+      }, 1000);
+    },
+
+    startCountdown1() {
+      this.isSendingCode1 = true;
+      this.countdown1 = 60;
+      const interval1 = setInterval(() => {
+        this.countdown1--;
+        if (this.countdown1 <= 0) {
+          clearInterval(interval1);
+          this.isSendingCode1 = false;
         }
       }, 1000);
     },
