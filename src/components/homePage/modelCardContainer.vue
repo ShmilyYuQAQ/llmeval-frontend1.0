@@ -154,20 +154,22 @@ export default {
     flex-shrink: 0;
     width: calc(100%);
     margin-bottom: 15px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 @media (min-width: 914px) {
     .container-c {
-        width: calc(50%);
+        width: calc(50% - 20px);
     }
 }
 @media (min-width: 1266px) {
     .container-c {
-        width: calc(33.333%);
+        width: calc(33.333% - 20px);
     }
 }
 @media (min-width: 1611px) {
     .container-c {
-        width: calc(25%);
+        width: calc(25% - 20px);
     }
 }
 </style>

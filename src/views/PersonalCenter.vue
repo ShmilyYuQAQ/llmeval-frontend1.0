@@ -39,18 +39,26 @@
             </div>
             <div class="comment">
                 <div class="title">已评价模型</div>
-                <div class="comment-list" v-loading="loading" element-loading-text="加载中...">
-                    <div 
-                        v-for="(comment, index) in paginatedComments" 
-                        :key="index" 
+                <div
+                    class="comment-list"
+                    v-loading="loading"
+                    element-loading-text="加载中..."
+                >
+                    <div
+                        v-for="(comment, index) in paginatedComments"
+                        :key="index"
                         class="comment-item"
                     >
                         <div class="model-link">
-                            <a :href="comment.modelUrl">{{ comment.modelName }}</a>
+                            <a :href="comment.modelUrl">{{
+                                comment.modelName
+                            }}</a>
                         </div>
                         <div class="comment-content">{{ comment.content }}</div>
                         <div class="comment-footer">
-                            <span class="comment-time">发表于{{ comment.createTime }}</span>
+                            <span class="comment-time"
+                                >发表于{{ comment.createTime }}</span
+                            >
                         </div>
                     </div>
                 </div>
@@ -128,7 +136,7 @@ export default {
         return {
             dialogVisible: false,
             datas: [],
-            userName: localStorage.getItem('userName') || "未知用户",
+            userName: localStorage.getItem("userName") || "未知用户",
             userAvatar:
                 "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
             nameDialogVisible: false,
@@ -204,7 +212,7 @@ export default {
             const start = (this.currentPage - 1) * this.pageSize;
             const end = start + this.pageSize;
             return this.comments.slice(start, end);
-        }
+        },
     },
     components: {
         NavBar,
@@ -221,29 +229,31 @@ export default {
         async submitNameChange() {
             try {
                 await this.$refs.nameFormRef.validate();
-                const token = localStorage.getItem('token');
+                const token = localStorage.getItem("token");
                 if (!token) {
-                    this.$message.error('请先登录');
+                    this.$message.error("请先登录");
                     return;
                 }
 
                 const response = await axiosInstance.put(
-                    `/user/updateUsername?newUsername=${encodeURIComponent(this.nameForm.newName)}`,
+                    `/user/updateUsername?newUsername=${encodeURIComponent(
+                        this.nameForm.newName
+                    )}`,
                     null,
                     {
                         headers: {
-                            Authorization: `Bearer ${token}`
-                        }
+                            Authorization: `Bearer ${token}`,
+                        },
                     }
                 );
 
                 if (response.data.success) {
                     this.userName = this.nameForm.newName;
-                    localStorage.setItem('userName', this.nameForm.newName);
+                    localStorage.setItem("userName", this.nameForm.newName);
                     this.nameDialogVisible = false;
                     this.$message.success("昵称修改成功");
                 } else {
-                    throw new Error(response.data.message || '昵称修改失败');
+                    throw new Error(response.data.message || "昵称修改失败");
                 }
             } catch (error) {
                 console.error("Change name failed:", error);
@@ -253,19 +263,23 @@ export default {
         async submitPasswordChange() {
             try {
                 await this.$refs.passwordFormRef.validate();
-                const token = localStorage.getItem('token');
+                const token = localStorage.getItem("token");
                 if (!token) {
-                    this.$message.error('请先登录');
+                    this.$message.error("请先登录");
                     return;
                 }
 
                 const response = await axiosInstance.put(
-                    `/user/updatePassword?oldPassword=${encodeURIComponent(this.passwordForm.oldPassword)}&newPassword=${encodeURIComponent(this.passwordForm.newPassword)}`,
+                    `/user/updatePassword?oldPassword=${encodeURIComponent(
+                        this.passwordForm.oldPassword
+                    )}&newPassword=${encodeURIComponent(
+                        this.passwordForm.newPassword
+                    )}`,
                     null,
                     {
                         headers: {
-                            Authorization: `Bearer ${token}`
-                        }
+                            Authorization: `Bearer ${token}`,
+                        },
                     }
                 );
 
@@ -278,30 +292,41 @@ export default {
                     };
                     this.$message.success("密码修改成功");
                 } else {
-                    throw new Error(response.data.message || '旧密码不正确');
+                    throw new Error(response.data.message || "旧密码不正确");
                 }
             } catch (error) {
                 console.error("Change password failed:", error);
                 if (error.response?.status === 401) {
                     this.$message.error("旧密码不正确");
                 } else {
-                    this.$message.error(error.message || "网络错误，请稍后重试");
+                    this.$message.error(
+                        error.message || "网络错误，请稍后重试"
+                    );
                 }
             }
         },
         async fetchData() {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                this.$message.error("请先登录");
+                return;
+            }
             try {
                 // 并行请求提高性能
                 const [modelResponse, favoritesResponse] = await Promise.all([
                     axiosInstance.get("/model/"),
-                    axiosInstance.get("/user/favorites?userId=1"),
+                    axiosInstance.get("/user/favorites?userId=1", {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }),
                 ]);
 
                 const allModels = this.processImagePath(
                     modelResponse.data.data
                 );
                 const favorites = favoritesResponse.data.data || [];
-
+                console.log(favorites);
                 // 使用 filter 和 map 替代循环
                 this.datas = allModels.filter((model) =>
                     favorites.includes(model.modelId)
@@ -339,42 +364,43 @@ export default {
         async fetchComments() {
             this.loading = true;
             try {
-                const token = localStorage.getItem('token');
+                const token = localStorage.getItem("token");
                 if (!token) {
-                    this.$message.error('请先登录');
+                    this.$message.error("请先登录");
                     return;
                 }
 
-                const response = await axiosInstance.get('/user/dynamic', {
+                const response = await axiosInstance.get("/user/dynamic", {
                     headers: {
-                        Authorization: `Bearer ${token}`
-                    }
+                        Authorization: `Bearer ${token}`,
+                    },
                 });
                 console.log(response.data.data);
 
                 if (response.data.success) {
-                    this.comments = response.data.data.flatMap(item => {
+                    this.comments = response.data.data.flatMap((item) => {
                         if (!item.modelName) return [];
-                        
+
                         return item.comments
-                            .filter(comment => {
-                                return comment.commentDetail && 
-                                       comment.createTime;
+                            .filter((comment) => {
+                                return (
+                                    comment.commentDetail && comment.createTime
+                                );
                             })
-                            .map(comment => ({
+                            .map((comment) => ({
                                 modelName: item.modelName,
                                 modelUrl: `/model-detail/${item.modelName}`,
                                 content: comment.commentDetail,
-                                createTime: comment.createTime
+                                createTime: comment.createTime,
                             }));
                     });
                     console.log(this.comments);
                 } else {
-                    throw new Error(response.data.message || '获取评论失败');
+                    throw new Error(response.data.message || "获取评论失败");
                 }
             } catch (error) {
-                console.error('Failed to fetch comments:', error);
-                this.$message.error(error.message || '获取评论失败');
+                console.error("Failed to fetch comments:", error);
+                this.$message.error(error.message || "获取评论失败");
             } finally {
                 this.loading = false;
             }
@@ -382,29 +408,29 @@ export default {
         handlePageChange(newPage) {
             this.currentPage = newPage;
             // 滚动到评论区顶部
-            const commentSection = document.querySelector('.comment');
+            const commentSection = document.querySelector(".comment");
             if (commentSection) {
-                commentSection.scrollIntoView({ behavior: 'smooth' });
+                commentSection.scrollIntoView({ behavior: "smooth" });
             }
         },
         async checkLoginStatus() {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem("token");
             if (!token) {
-                this.$router.push('/');
+                this.$router.push("/");
                 return false;
             }
             return true;
         },
         async initializeData() {
             if (await this.checkLoginStatus()) {
-                const storedUserName = localStorage.getItem('userName');
+                const storedUserName = localStorage.getItem("userName");
                 if (storedUserName) {
                     this.userName = storedUserName;
                 }
                 await this.fetchData();
                 await this.fetchComments();
             }
-        }
+        },
     },
     async beforeMount() {
         await this.initializeData();
@@ -413,14 +439,14 @@ export default {
         // 移除 initializeData 的调用，因为已经在 beforeMount 中处理
     },
     async beforeRouteEnter(to, from, next) {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem("token");
         if (!token) {
             next(async (vm) => {
                 try {
                     alert("请先登录!");
-                    vm.$router.push('/');
+                    vm.$router.push("/");
                 } catch (err) {
-                    vm.$router.push('/');
+                    vm.$router.push("/");
                 }
             });
         } else {
@@ -549,11 +575,10 @@ export default {
 
 /* 可选：自定义分页样式 */
 :deep(.el-pagination.is-background .el-pager li:not(.is-disabled).is-active) {
-    background-color: #409EFF;
+    background-color: #409eff;
 }
 
 :deep(.el-pagination.is-background .el-pager li:not(.is-disabled):hover) {
-    color: #409EFF;
+    color: #409eff;
 }
-
 </style>
