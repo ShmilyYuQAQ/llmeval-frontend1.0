@@ -58,7 +58,13 @@ export default {
             // 这里可以添加实际的退出登录逻辑，例如清除 token 等
             localStorage.removeItem('token'); // 清除 token
             localStorage.removeItem('userName');
-            location.reload(); // 刷新当前页面
+            
+            if (this.$route.path === '/center') {
+                this.$router.push('/'); // 重定向到首页
+            } else {
+                location.reload(); // 刷新当前页面
+            }
+            
             console.log("退出登录");
         }
     }

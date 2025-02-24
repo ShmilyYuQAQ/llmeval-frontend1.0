@@ -290,7 +290,9 @@ export default {
                         newPassword: "",
                         confirmPassword: "",
                     };
-                    this.$message.success("密码修改成功");
+                    this.$message.success("密码修改成功，即将跳转到登录界面");
+                    alert("密码修改成功，即将跳转到登录界面");  
+                    window.location.href = `/login?redirect=${encodeURIComponent(window.location.href)}`;
                 } else {
                     throw new Error(response.data.message || "旧密码不正确");
                 }
@@ -441,14 +443,14 @@ export default {
     async beforeRouteEnter(to, from, next) {
         const token = localStorage.getItem("token");
         if (!token) {
-            next(async (vm) => {
-                try {
-                    alert("请先登录!");
+            if (from.path === "/center") {
+                next(vm => {
                     vm.$router.push("/");
-                } catch (err) {
-                    vm.$router.push("/");
-                }
-            });
+                });
+            } else {
+                alert("请先登录!");
+                next(false); // 阻止导航
+            }
         } else {
             next();
         }
