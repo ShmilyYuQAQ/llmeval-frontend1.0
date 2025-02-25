@@ -16,9 +16,9 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 
 const bodyScale = () => {
-    const deviceWidth = document.documentElement.clientWidth; // 获取当前分辨率下的可视区域宽度
-    const scale = deviceWidth / 1600; // 分母——设计稿的尺寸
-    document.documentElement.style.zoom = scale; // 放大缩小相应倍数
+  const deviceWidth = document.documentElement.clientWidth; // 获取当前分辨率下的可视区域宽度
+  const scale = deviceWidth / 1600; // 分母——设计稿的尺寸
+  document.documentElement.style.zoom = scale; // 放大缩小相应倍数
 };
   
 app.mixin({

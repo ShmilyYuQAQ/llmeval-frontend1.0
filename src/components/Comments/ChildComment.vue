@@ -147,8 +147,6 @@ export default {
                         this.$emit("comment-updated"); // 触发自定义事件，通知父组件
                     }  else if(response.data.msg === "Token无效!!"){
                         alert("请先登录！")
-                        const currentUrl = window.location.href;
-                        window.location.href = `/login?redirect=${encodeURIComponent(currentUrl)}`;
                     }
                     else {
                         alert("发表评论失败：" + response.data.errorMsg);
@@ -176,9 +174,7 @@ export default {
                         alert('评论删除成功');
                         this.$emit("comment-updated");
                     } else if(response.data.msg === "Token无效!!"){
-                        alert("请先登录！")
-                        const currentUrl = window.location.href;
-                        window.location.href = `/login?redirect=${encodeURIComponent(currentUrl)}`;
+                        alert("请先登录！");
                     }
                     else {
                         console.log(response.data);
