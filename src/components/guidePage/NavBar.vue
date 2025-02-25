@@ -42,6 +42,9 @@ export default {
     mounted() {
         // 检查用户是否已登录
         this.isLoggedIn = !!localStorage.getItem('token'); // 这里可以根据实际情况修改
+
+        // 监听事件总线的 logout 事件
+        this.$bus.on('logout', this.logout);
     },
     methods: {
         toggleMenu() {
@@ -66,6 +69,10 @@ export default {
             }
             
             console.log("退出登录");
+        },
+        beforeDestroy() {
+            // 移除事件监听
+            this.$bus.off('logout', this.logout);
         }
     }
 };

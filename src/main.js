@@ -7,6 +7,7 @@ import './assets/fonts/inter.css';
 import "./assets/main.css";
 import { setup as setupPlugin } from './plugins';
 import "./assets/iconfont/iconfont.css";
+import mitt from 'mitt';
 
 const app = createApp(App);
 setupPlugin(app);
@@ -29,6 +30,10 @@ app.mixin({
       window.removeEventListener('resize', bodyScale, false);
     }
 });
+
+// 创建事件总线
+const eventBus = mitt();
+app.config.globalProperties.$bus = eventBus;
 
 app.use(ElementPlus);
 app.mount("#app");
