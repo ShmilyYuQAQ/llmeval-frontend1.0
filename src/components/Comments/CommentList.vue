@@ -104,9 +104,7 @@ export default {
                         this.showReplies = false; // 隐藏回复框
                         this.fetchComments(); // 刷新评论列表
                     } else if(response.data.msg === "Token无效!!"){
-                        alert("请先登录！")
-                        const currentUrl = window.location.href;
-                        window.location.href = `/login?redirect=${encodeURIComponent(currentUrl)}`;
+                        alert("请先登录！");
                     }
                     else {
                         console.log(response.data);
