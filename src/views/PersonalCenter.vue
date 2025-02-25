@@ -292,6 +292,7 @@ export default {
                     };
                     this.$message.success("密码修改成功，即将跳转到登录界面");
                     alert("密码修改成功，即将跳转到登录界面");  
+                    this.$bus.emit('logout'); // 触发事件总线的 logout 事件
                     window.location.href = `/login?redirect=${encodeURIComponent(window.location.href)}`;
                 } else {
                     throw new Error(response.data.message || "旧密码不正确");
