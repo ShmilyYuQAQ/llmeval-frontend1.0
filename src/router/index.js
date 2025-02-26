@@ -37,7 +37,15 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(),
     routes,
+    scrollBehavior(to, from, savedPosition) {
+        if (savedPosition) {
+            return savedPosition;
+        } else {
+            return { left: 0, top: 0 };
+        }
+    }
 });
+
 export function setup(app) {
     app.use(router);
 }
