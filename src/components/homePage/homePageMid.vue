@@ -177,7 +177,8 @@ export default {
         filterItems(filterArray) {
             if (!filterArray?.length) return this.originDatas;
 
-            return this.originDatas.filter(
+            const dataToFilter = this.selected_tag[0] ? this.datas : this.originDatas;
+            return dataToFilter.filter(
                 (item) =>
                     (filterArray.includes("开源") && item.isOpenSource) ||
                     (filterArray.includes("不开源") && !item.isOpenSource)
@@ -266,21 +267,31 @@ export default {
             if (typeof value !== "number") return;
 
             this.sequencerValue = value;
+            
+            // 保存当前的筛选状态
+            const currentFilters = [...this.activeFilters];
+            
+            // 首先根据排序更新数据
             if (value === 0) {
-                this.datas = this.originDatas;
+                // 综合排序：恢复到原始排序，但保持标签筛选
+                this.datas = this.selected_tag[0] ? this.tagDatas : this.originDatas;
+            } else {
+                this.datas = [...this.datas].sort((a, b) => {
+                    switch (value) {
+                        case 1:
+                            return new Date(b.releaseDate) - new Date(a.releaseDate);
+                        case 2:
+                            return b.favoritesCount - a.favoritesCount;
+                        default:
+                            return 0;
+                    }
+                });
             }
-            this.datas = [...this.datas].sort((a, b) => {
-                switch (value) {
-                    case 1:
-                        return (
-                            new Date(b.releaseDate) - new Date(a.releaseDate)
-                        );
-                    case 2:
-                        return b.favoritesCount - a.favoritesCount;
-                    default:
-                        return 0;
-                }
-            });
+
+            // 重新应用开源/不开源筛选
+            if (currentFilters.length) {
+                this.datas = this.filterItems(currentFilters);
+            }
 
             this.$refs.modelCardContainer.updatePaginatedModel(this.datas);
             this.$nextTick(() => this.updateUrlParams());
