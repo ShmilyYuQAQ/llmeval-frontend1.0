@@ -1,9 +1,6 @@
 <template>
     <div class="tag-container">
-        <div class="header-tag">
-            <span class="tag-title">{{ tagTitle }}</span>
-        </div>
-        <div class="tag-list" :style="{ '--zindex': tags.length - index }">
+        <div class="tag-list">
             <div
                 v-for="(tag, index) in tags"
                 :key="index"
@@ -11,25 +8,26 @@
                 @click="handleTagClick(tag, index)"
                 :class="{
                     'has-subtags': tag.subtags && tag.subtags.length > 0,
-                    'active': activeTagIndex === index
+                    'active': isTagActive(tag)
                 }"
             >
-                <span class="out-span">
-                    <span class="in-span">{{ tag.text }}</span>
-                </span>
+                <span class="tag-text">{{ tag.text }}</span>
+            </div>
+        </div>
+        
+        <!-- 子标签容器：显示在当前激活的标签下方 -->
+        <div 
+            v-if="activeTagIndex !== null && tags[activeTagIndex]?.subtags && tags[activeTagIndex].subtags.length > 0" 
+            class="subtags-wrapper"
+        >
+            <div class="subtags-container">
                 <div
-                    v-if="tag.subtags && tag.subtags.length > 0"
-                    class="subtags-container"
-                    :class="{ 'mobile-show': activeTagIndex === index }"
+                    v-for="(subtag, subIndex) in tags[activeTagIndex].subtags"
+                    :key="subIndex"
+                    class="subtag"
+                    @click="selectSubTag(subtag.value)"
                 >
-                    <div
-                        v-for="(subtag, subIndex) in tag.subtags"
-                        :key="subIndex"
-                        class="subtag"
-                        @click.stop="selectSubTag(subtag.value)"
-                    >
-                        <span class="subtag-text">{{ subtag.text }}</span>
-                    </div>
+                    <span class="subtag-text">{{ subtag.text }}</span>
                 </div>
             </div>
         </div>
@@ -48,6 +46,10 @@ export default {
             type: String,
             required: true,
         },
+        selectedValue: {
+            type: Array,
+            default: null
+        }
     },
     data() {
         return {
@@ -56,10 +58,13 @@ export default {
     },
     methods: {
         handleTagClick(tag, index) {
-            if (window.innerWidth <= 768) {
-                this.activeTagIndex = this.activeTagIndex === index ? null : index;
-            }
-            this.selectTag(tag.value);
+            // 发送标签和索引信息
+            this.$emit('custom-event', [...tag.value, index]);
+        },
+        isTagActive(tag) {
+            return this.selectedValue && 
+                   this.selectedValue[0] === tag.value[0] && 
+                   this.selectedValue[1] === tag.value[1];
         },
         selectTag(value) {
             this.$emit('custom-event', value);
@@ -88,176 +93,131 @@ export default {
 <style scoped>
 .tag-container {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     font-family: "PingFang SC", "Microsoft Yahei", "Helvetica Neue", Helvetica,
         Arial, "Hiragino Sans GB", -apple-system, sans-serif;
     font-size: 14px;
     color: rgba(0, 0, 0, 0.88);
     position: relative;
-    margin-bottom: 32px;
-    flex-direction: column;
-    margin-left: 20px;
-    margin-right: 20px;
-    width: calc(100% - 40px);
-    z-index: 1;
+    flex: 1;
+    user-select: none;
 }
 
 .tag-container:hover {
     z-index: 999;
 }
 
-.header-tag {
-    display: flex;
-    justify-content: space-between;
-    height: 20px;
-    margin-bottom: 12px;
-    color: #27254c;
-    font-weight: 600;
-    font-size: 14px;
-    letter-spacing: 0;
-}
-.tag-title {
-    color: #27254c;
-    font-weight: 600;
-    font-size: 14px;
-    letter-spacing: 0;
-}
 .tag-list {
-    position: relative;
-    z-index: --zindex;
-    display: flex;
-    flex-flow: row wrap;
-}
-.tag {
-    cursor: pointer;
-    position: relative;
-    display: inline-block;
-    max-width: 260px;
-    margin-right: 6px;
-    margin-bottom: 6px;
-    transform: scale(0.92);
-}
-
-.out-span {
-    margin-bottom: 0px;
-    border-radius: 3px;
-    padding: 0;
-    border: none;
-    margin-right: 0px;
-    cursor: pointer;
-    margin: 0;
-    font-size: 12px;
-    line-height: 20px;
-    transition: all 0.2s;
-    text-align: start;
-    position: relative;
-    z-index: -1;
-}
-.in-span {
-    color: #3B29B3;
-    background-color: #f4f6fa;
-    padding: 0 6px;
-    max-width: 260px;
-    height: 20px;
-    font-size: 12px;
-    line-height: 20px;
-    border-radius: 4px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.has-subtags:hover .subtags-container {
     display: flex;
     flex-wrap: wrap;
-    color: rgba(39, 38, 77, 0.45);
-    justify-content: flex-start;
-    gap: 8px;
+    gap: 12px;
+    justify-content: flex-end;
 }
-.tag:hover .in-span {
-    background-color: #3B29B3;;
+
+.tag {
+    min-width: 88px;
+    height: 32px;
+    background: #EDEFF2;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0 12px;
+}
+
+.tag:hover, .tag.active {
+    min-width: 130px;
+    background: #870066;
     color: white;
 }
 
+.tag-text {
+    font-size: 14px;
+    white-space: normal;
+    text-align: center;
+    padding: 0 4px;
+}
+
+.subtags-wrapper {
+    margin-top: 12px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
 .subtags-container {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgb(243, 245, 259);
-    z-index: 1000;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    padding: 8px;
-    border-radius: 4px;
-    min-width: 200px;
-    width: max-content;
-    max-width: 90vw;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    background-color: #f7f7f9;
+    padding: 12px;
+    border-radius: 8px;
+    width: 80%;
+    justify-content: flex-end;
 }
 
 .subtag {
+    min-width: 88px;
+    height: 32px;
+    background: #EDEFF2;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    padding: 4px;
-    background-color: transparent;
-    margin: 0;
-    flex: 0 0 auto;
-    min-width: auto;
-    position: relative;
-    z-index: 1;
+    transition: all 0.3s ease;
+    padding: 0 12px;
 }
+
+.subtag:hover {
+    min-width: 130px;
+    background: #870066;
+    color: white;
+}
+
 .subtag-text {
-    border-radius: 3px;
-    margin-right: 0px;
+    font-size: 14px;
+    white-space: normal;
+    text-align: center;
     padding: 0 4px;
-    color: #27254c;
-    font-size: 12px;
-    -webkit-transform: scale(0.92);
-    -moz-transform: scale(0.92);
-    -ms-transform: scale(0.92);
-    transform: scale(0.92);
-    background-color: transparent;
-    border-color: transparent;
-    cursor: pointer;
-    white-space: nowrap;
-    display: inline-block;
-}
-.subtag-text:hover {
-    color: #816df8 !important;
 }
 
-/* 桌面端保持原有的hover效果 */
-@media (min-width: 769px) {
-    .has-subtags:hover .subtags-container {
-        display: flex;
-        flex-wrap: wrap;
-        color: rgba(39, 38, 77, 0.45);
-        justify-content: flex-start;
-        gap: 8px;
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-}
-
-/* 移动端样式调整 */
+/* 响应式调整 */
 @media (max-width: 768px) {
-    .has-subtags:hover .subtags-container {
-        display: none;
+    .tag-list {
+        justify-content: flex-start;
     }
     
-    .subtags-container.mobile-show {
-        display: flex;
-        flex-wrap: wrap;
-        color: rgba(39, 38, 77, 0.45);
-        justify-content: flex-start;
-        gap: 8px;
-        position: static;
-        transform: none;
-        left: auto;
+    .tag {
+        width: calc(33.33% - 12px);
+    }
+    
+    .tag:hover, .tag.active {
+        width: calc(33.33% - 12px);
+    }
+    
+    /* 子标签在移动设备上的显示 */
+    .subtags-wrapper {
         width: 100%;
-        margin-top: 8px;
-        box-shadow: none;
-        background-color: transparent;
+        margin-top: 15px;
+    }
+    
+    .subtags-container {
+        width: 100%;
+        justify-content: flex-start;
+        padding: 10px;
+    }
+    
+    .subtag {
+        width: calc(50% - 12px);
+        min-width: unset;
+    }
+    
+    .subtag:hover {
+        width: calc(50% - 12px);
+        min-width: unset;
     }
 }
 </style>

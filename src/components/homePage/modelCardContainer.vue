@@ -1,14 +1,5 @@
 <template>
-    <div
-        style="
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            align-items: center;
-            width: 90%;
-        "
-        class="outer"
-    >   
+    <div class="outer">   
         <div class="model-card-container">
             <div
                 v-for="(item, index) in paginatedModel"
@@ -18,29 +9,28 @@
                 <ModelCard :model="item"></ModelCard>
             </div>
         </div>
-        <EmptyResult v-if="datas.length === 0" />
-        <el-pagination
-            v-if="shouldShowPagination"
-            background
-            :current-page="pagination.currentPage"
-            :page-size="pagination.pageSize"
-            :total="totalModels"
-            layout="prev, pager, next"
-            @current-change="handleCurrentChange"
-            @size-change="handleSizeChange"
-            style="margin-top: 20px"
-        >
-        </el-pagination>
+        <div class="pagination-container">
+            <el-pagination
+                v-if="shouldShowPagination"
+                background
+                :current-page="pagination.currentPage"
+                :page-size="pagination.pageSize"
+                :total="totalModels"
+                layout="prev, pager, next"
+                @current-change="handleCurrentChange"
+                @size-change="handleSizeChange"
+                class="custom-pagination"
+            >
+            </el-pagination>
+        </div>
     </div>
 </template>
 
 <script>
-import EmptyResult from './emptyResult.vue';
 import ModelCard from "./modelCard.vue";
 export default {
     components: {
         ModelCard,
-        EmptyResult
     },
     data() {
         return {
@@ -49,6 +39,7 @@ export default {
                 currentPage: 1,
                 pageSize: 12,
             },
+            paginatedModel: [],
             model: {
                 //测试数据
                 name: "腾讯混元大模型",
@@ -71,7 +62,7 @@ export default {
     props: ["datas"],
     methods: {
         handleCurrentChange(newPage) {
-            const maxPage = Math.ceil(this.models.length / this.pagination.pageSize);
+            const maxPage = Math.max(Math.ceil(this.models.length / this.pagination.pageSize), 1);
             if (newPage > maxPage) {
                 this.$message.error(`页码 ${newPage} 超出范围，最大页码为 ${maxPage}`);
                 this.pagination.currentPage = 1;
@@ -79,7 +70,9 @@ export default {
                 this.pagination.currentPage = newPage;
             }
             this.updatePaginatedModel();
-            this.$parent.updateUrlParams();
+            if (this.$parent && this.$parent.updateUrlParams) {
+                this.$parent.updateUrlParams();
+            }
         },
         handleSizeChange(newSize) {
             this.pagination.pageSize = newSize;
@@ -87,30 +80,40 @@ export default {
         },
         updatePaginatedModel(datas = null) {
             if (datas !== null) {
-                this.models = datas;
+                this.models = datas || [];
+                // 当提供新数据时始终重置为第一页
+                this.pagination.currentPage = 1;
             }
             
-            const maxPage = Math.ceil(this.models.length / this.pagination.pageSize);
-            if (this.pagination.currentPage > maxPage && maxPage > 0) {
-                this.$message.error(`页码 ${this.pagination.currentPage} 超出范围，最大页码为 ${maxPage}`);
+            if (!this.models || this.models.length === 0) {
+                this.paginatedModel = [];
+                return;
+            }
+            
+            const maxPage = Math.max(Math.ceil(this.models.length / this.pagination.pageSize), 1);
+            if (this.pagination.currentPage > maxPage) {
+                console.warn(`页码 ${this.pagination.currentPage} 超出范围，最大页码为 ${maxPage}，已自动调整`);
                 this.pagination.currentPage = 1;
             }
             
             const start = (this.pagination.currentPage - 1) * this.pagination.pageSize;
             const end = start + this.pagination.pageSize;
             this.paginatedModel = this.models.slice(start, end);
+            console.log(`当前页: ${this.pagination.currentPage}, 每页数量: ${this.pagination.pageSize}, 显示数据: ${this.paginatedModel.length}/${this.models.length}`);
         },
         updateScreenWidth() {
             this.screenWidth = window.innerWidth
         },
     },
     created() {
-        this.models = this.datas;
+        this.models = this.datas || [];
+        this.updatePaginatedModel();
+        window.addEventListener('resize', this.updateScreenWidth);
+    },
+    unmounted() {
+        window.removeEventListener('resize', this.updateScreenWidth);
     },
     computed: {
-        models() {
-            return this.datas;
-        },
         totalModels() {
             return this.models.length;
         },
@@ -122,11 +125,16 @@ export default {
         datas: {
             handler(newData) {
                 if (newData?.length) {
+                    this.models = newData;
                     const maxPage = Math.ceil(newData.length / this.pagination.pageSize);
                     if (this.pagination.currentPage > maxPage) {
                         this.$message.error(`当前页码超出范围，已自动跳转到第一页`);
                         this.pagination.currentPage = 1;
                     }
+                    this.updatePaginatedModel();
+                } else {
+                    this.models = [];
+                    this.paginatedModel = [];
                 }
             },
             immediate: true
@@ -135,41 +143,172 @@ export default {
 };
 </script>
 
-<style>
-.model-card-container {
-    display: flex;
-    flex-wrap: wrap;
-    width: 80%;
-    margin-top:20px;
-}
-
-.model-card-wrapper {
-    width: fit-content;
-    margin: 0 auto;
-}
-.container-c {
+<style scoped>
+.outer {
     display: flex;
     justify-content: center;
+    flex-direction: column;
     align-items: center;
-    flex-shrink: 0;
-    width: calc(100%);
+    width: 95%;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.model-card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    width: 100%;
+    margin-top: 20px;
+    justify-content: center; /* 网格整体居中 */
+}
+
+.container-c {
+    width: 100%;
+    min-height: 242px; /* 使用最小高度而不是固定高度 */
+    height: auto; /* 允许自动调整高度 */
+}
+
+.custom-pagination {
+    /* 自定义分页组件类 */
+    font-size: 13px;
+}
+
+/* 分页容器样式 */
+.pagination-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end; /* 改为右对齐 */
+    margin-top: 25px;
     margin-bottom: 15px;
-    margin-left: 10px;
-    margin-right: 10px;
+    padding-right: 20px; /* 右侧添加一些内边距 */
+    box-sizing: border-box;
 }
-@media (min-width: 914px) {
+
+/* 自定义分页样式 */
+:deep(.el-pagination.is-background .el-pager li:not(.is-disabled).is-active) {
+    background-color: #870066 !important;
+    color: #ffffff !important;
+    transition: all 0.3s ease;
+}
+
+:deep(.el-pagination.is-background .el-pager li:not(.is-disabled):hover) {
+    color: #870066 !important;
+    transition: color 0.3s ease;
+}
+
+:deep(.el-pagination .btn-next:hover, .el-pagination .btn-prev:hover) {
+    color: #870066 !important;
+    transition: color 0.3s ease;
+}
+
+:deep(.el-pagination .el-pager li:not(.disabled).active) {
+    color: #ffffff !important;
+    background-color: #870066 !important;
+    transition: all 0.3s ease;
+}
+
+:deep(.el-pagination button:hover) {
+    color: #870066 !important;
+}
+
+:deep(.el-pagination.is-background .btn-next, 
+      .el-pagination.is-background .btn-prev, 
+      .el-pagination.is-background .el-pager li) {
+    background-color: #f4f4f5;
+    transition: all 0.3s ease;
+}
+
+:deep(.el-pagination.is-background .btn-next:hover:not(:disabled), 
+      .el-pagination.is-background .btn-prev:hover:not(:disabled)) {
+    color: #870066 !important;
+}
+
+:deep(.el-pagination.is-background .el-pager li:not(.disabled).active) {
+    background-color: #870066 !important;
+}
+
+:deep(.el-pagination) {
+    font-weight: normal;
+    padding: 0;
+}
+
+/* 响应式调整 */
+@media (max-width: 479px) {
+    .model-card-container {
+        grid-template-columns: 1fr; /* 单列 */
+        gap: 20px;
+    }
+    
     .container-c {
-        width: calc(50% - 20px);
+        width: 100%;
+        min-height: 242px; /* 保持最小高度 */
+        justify-self: center; /* 单元格内居中 */
+    }
+    
+    .pagination-container {
+        justify-content: center; /* 小屏幕上居中显示 */
+        padding: 0;
+        margin-top: 20px;
+        margin-bottom: 30px;
+    }
+    
+    :deep(.el-pagination) {
+        padding: 0;
+        margin: 0;
+    }
+    
+    :deep(.el-pagination .el-pager li) {
+        min-width: 30px;
     }
 }
-@media (min-width: 1266px) {
+
+/* 平板设备的响应式处理 */
+@media (min-width: 480px) and (max-width: 939px) {
+    .model-card-container {
+        grid-template-columns: minmax(320px, 1fr); /* 单列但限制最大宽度 */
+        gap: 25px;
+    }
+    
     .container-c {
-        width: calc(33.333% - 20px);
+        width: 100%;
+        justify-self: center;
+    }
+    
+    .pagination-container {
+        justify-content: flex-end; /* 平板依然右对齐 */
+        padding-right: 10px;
     }
 }
-@media (min-width: 1611px) {
-    .container-c {
-        width: calc(25% - 20px);
+
+/* 中等屏幕设备 - 显示2列 */
+@media (min-width: 940px) and (max-width: 1279px) {
+    .model-card-container {
+        grid-template-columns: repeat(2, minmax(320px, 1fr));
+        gap: 30px;
+    }
+}
+
+/* 大屏幕设备 - 显示3列 */
+@media (min-width: 1280px) and (max-width: 1679px) {
+    .model-card-container {
+        grid-template-columns: repeat(3, minmax(320px, 1fr));
+        gap: 35px;
+    }
+}
+
+/* 超大屏幕设备 - 显示3列，留出更多空间 */
+@media (min-width: 1680px) {
+    .model-card-container {
+        grid-template-columns: repeat(3, minmax(320px, 1fr));
+        gap: 40px;
+        width: 90%; /* 收窄一点宽度，提供更多留白 */
+        max-width: 1400px;
+    }
+    
+    .pagination-container {
+        width: 90%;
+        max-width: 1400px;
     }
 }
 </style>
