@@ -2,144 +2,108 @@
     <NavBar></NavBar>
     <main class="page-content">
         <div class="main-content">
-            <div
-                style="
+            <div style="
                     position: relative;
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                "
-            >
-                <div
-                    class="home-page"
-                    style="
+                ">
+                <div class="home-page" style="
                         display: flex;
                         justify-content: center;
                         align-items: center;
                         flex-direction: column;
-                    "
-                >
+                    ">
                     <div class="banner">
                         <h1>LLMeval</h1>
                         <p>
                             一个标签化展示大模型能力，为用户提供大模型选择建议的平台
                         </p>
                     </div>
-                    
-                    <div class="cards">
-                        <div class="guide-card">
-                            <div class="card-header">
-                                <div class="icon_container">
-                                    <div class="icon_item">
-                                        <el-icon size="40"
-                                            ><ChatLineSquare
-                                        /></el-icon>
-                                        <div class="icon_text">语言理解</div>
+                    <div class="content-container">
+                        <div class="cards">
+                            <p class="card-title">标签识能，交互荐优，个性匹配</p>
+                            <p class="card-subtitle">Interactive recommendation, personalized matching</p>
+                            <div class="guide-card">
+                                <div class="card-body">
+                                    <div class="card-icon">
+                                        <img src="@/components/guidePage/images/biaoqian.png" alt="标签" />
                                     </div>
-                                    <div class="icon_item">
-                                        <el-icon size="40"><Search /></el-icon>
-                                        <div class="icon_text">推理能力</div>
-                                    </div>
-                                    <div class="icon_item">
-                                        <el-icon size="40"><Cpu /></el-icon>
-                                        <div class="icon_text">知识能力</div>
-                                    </div>
-                                    <div class="icon_item">
-                                        <el-icon size="40"><More /></el-icon>
+                                    <div class="text_container">
+                                        <h2>标签化：充分展现各模型特色</h2>
+                                        <ul>
+                                            <li>没有分数的直观对比，而是以标签的形式去描述模型</li>
+                                            <li>各模型的能力、特色可以在网站上充分体现出来</li>
+                                            <li>细粒度的模型能力对比,200+标签</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-body">
-                                <div class="text_container">
-                                    <h2 style="text-align: center">
-                                        标签化：充分展现各模型特色
-                                    </h2>
-                                    <ul style="text-align: left">
-                                        <li>
-                                            没有分数的直观对比，而是以标签的形式去描述模型
-                                        </li>
-                                        <li>
-                                            各模型的能力、特色可以在网站上充分体现出来
-                                        </li>
-                                        <li>细粒度的模型能力对比,200+标签</li>
-                                    </ul>
+
+                            <div class="guide-card">
+                                <div class="card-body">
+                                    <div class="card-icon">
+                                        <img src="@/components/guidePage/images/jiaohu.png" alt="交互" />
+                                    </div>
+                                    <div class="text_container">
+                                        <h2>交互性：用户导向的评测与推荐网站</h2>
+                                        <ul>
+                                            <li>根据用户搜索、收藏历史个性化推荐模型</li>
+                                            <li>用户可以输入任务需求，得到模型推荐结果</li>
+                                            <li>用户可以对各大模型进行评论，交互性强</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="guide-card">
+                                <div class="card-body">
+                                    <div class="card-icon">
+                                        <img src="@/components/guidePage/images/gexing.png" alt="个性" />
+                                    </div>
+                                    <div class="text_container">
+                                        <h2>个性化：给用户提供选择模型的参考</h2>
+                                        <ul>
+                                            <li>划分五级能力标签，让用户了解模型能力</li>
+                                            <li>根据用户收藏个性化推荐模型</li>
+                                            <li>针对用户特定需求推荐模型</li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="guide-card">
-                            <div class="card-header">
-                                <div class="user_container">
-                                    <el-icon size="60"><UserFilled /></el-icon>
-                                    <div class="tags_container">
-                                        <div class="icon_text text_1">
-                                            个性化推荐
-                                        </div>
-                                        <div class="icon_text text_1">
-                                            需求处理
-                                        </div>
-                                        <div class="icon_text text_1">
-                                            评论交互
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="text_container">
-                                    <h2 style="text-align: center">
-                                        交互性:用户导向的评测与推荐网站
-                                    </h2>
-                                    <ul style="text-align: left">
-                                        <li>
-                                            根据用户搜索、收藏历史个性化推荐模型
-                                        </li>
-                                        <li>
-                                            用户可以输入任务需求，得到模型推荐结果
-                                        </li>
-                                        <li>
-                                            用户可以对各大模型进行评论，交互性强
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="guide-card">
-                            <div class="card-header">
-                                <div class="img-container">
-                                    <img
-                                        src="@/components/guidePage/images/12.png"
-                                        alt=""
-                                    />
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="text_container">
-                                    <h2 style="text-align: center">
-                                        个性化:给用户提供选择模型的参考
-                                    </h2>
-                                    <ul style="text-align: left">
-                                        <li>
-                                            划分五级能力标签，让用户了解模型能力
-                                        </li>
-                                        <li>根据用户收藏个性化推荐模型</li>
-                                        <li>针对用户特定需求推荐模型</li>
-                                    </ul>
-                                </div>
-                            </div>
+                        <div class="right-content">
+                            <img src="D:\workspace\VS code projects\llmeval-frontend\llmeval-frontend1.0\src\components\guidePage\images\doubao.png"
+                                alt="豆包" class="pyramid-image" />
                         </div>
                     </div>
-                    
-                    <h1 style="text-align: center; margin-bottom: 80px">
-                        能力等级
-                    </h1>
-                    <div class="pyramid-container" style="width: 80%;margin-bottom:100px">
-                        <img
-                            src="@/components/guidePage/images/1.jpg"
-                            alt=""
-                            style="width: 90%"
-                        />
+                    <div class="level">
+                        <h1>
+                            能力等级
+                        </h1>
+                        <p>Capability level</p>
+                        <div class="pyramid-container" style="width: 80%;margin-bottom:100px;position:relative;">
+                            <img src="@/components/guidePage/images/level.png" alt="" style="width: 90%" />
+                            <div class="level-descriptions">
+                                <div class="level-item">
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;模型表现明显不足，与平均水平差距较大，需要较大改进</p>
+                                </div>
+                                <div class="level-item">
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;能力表现略低于平均水平，需要进一步提升。</p>
+                                </div>
+                                <div class="level-item">
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;模型表现尚可，达到一般水平，但仍有一定的提升空间。</p>
+                                </div>
+                                <div class="level-item">
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;模型表现优异，超过大多数模型，仅有一些轻微不足。</p>
+                                </div>
+                                <div class="level-item">
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;模型能力非常出色，远超平均水平，几乎无明显缺陷。</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                
             </div>
         </div>
     </main>
@@ -191,173 +155,304 @@ export default {
 </script>
 
 <style scoped>
-ul {
-    display: flex; /* 使用Flexbox布局 */
-    flex-direction: column; /* 垂直排列 */
-    gap: 15px; /* 调整列表项之间的间距 */
-}
 .page-content {
-    padding-top: 55px;
     background-color: rgb(255, 255, 255);
 }
+
 .main-content {
-    padding: 40px 40px 0;
     display: block;
 }
+
 .banner {
     text-align: center;
     margin-bottom: 20px;
-}
-.banner > h1 {
-    font-size: 48px;
-    font-weight: 800;
-    margin: 0;
-    color: #303133;
-    font-family: Inter, sans-serif;
-}
-.banner > p {
-    font-size: 16px;
-    margin-top: 20px;
-    color: #606266;
-    margin: 1rem 0;
-    line-height: 1.7;
-}
-.image-container {
-    width: 800px;
-    margin: 20px auto;
-    position: relative;
-}
-.image-container > img {
-    max-width: 100%;
-}
-.cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin: 0 auto 80px;
-    max-width: 1500px;
-    margin-top: 59px;
-}
-.features {
     width: 100%;
+    height: 197px;
+    background-image: url("@/components/guidePage/images/LLM_BK.png");
+    background-size: cover;
+    background-repeat: no-repeat;
 }
-.feature {
-    display: flex;
-    flex-direction: row;
-    padding-bottom: 20px;
-    border-bottom: solid 1px #e4e7ed;
-}
-.icon_container {
-    width: 300px;
-    height: 250px;
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* 创建两列，每列等宽 */
-    grid-template-rows: 1fr 1fr; /* 创建两行，每行等高 */
-    gap: 10px; /* 可选，设置网格项目之间的间隙 */
-    /* border-bottom: solid 1px #e4e7ed; */
-}
-.img-container {
-    width: 300px;
-    height: 250px;
-}
-.icon_item {
-    padding: 20px; /* 可选，设置内边距 */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-.text_container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-.icon_text {
-    border: 2px dashed #409eff;
-    color: rgb(23, 57, 101);
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    text-align: center;
-    margin-top: 10px;
-}
-.user_container {
-    height: 250px;
-    width: 300px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-.tags_container {
-    margin-left: 40px;
-}
-.text_1 {
-    margin-bottom: 20px;
-}
-.card-header {
-    height: 300px;
-    margin-top: 20px;
-    border-bottom: solid 1px #e4e7ed;
-}
-.guide-card {
-    background: #ffffff;
-    border: 1px solid #dcdfe6;
-    text-align: center;
-    position: relative;
-    transition: all 0.3s;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 10px;
-}
-.card-body {
-    padding: 0;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    /* justify-content: center; */
-}
-h3 {
-    margin: 0;
-    font-size: 18px;
-    color: #303133;
+
+.banner>h1 {
+    font-size: 32px;
     font-weight: 400;
+    margin: 50px;
+    color: #870066;
+    font-family: PingFangSC, PingFang SC;
+    font-style: normal;
+    line-height: 45px;
+    position: relative;
 }
-p {
-    font-size: 14px;
-    color: #99a9bf;
-    padding: 0 25px;
-    line-height: 20px;
-    margin: 16px 0;
-}
-.card-footer {
-    bottom: 0;
-    padding: 0;
-    border-top: 1px solid #e4e7ed;
-}
-.card-footer:hover {
-    background-color: #409eff;
-}
-a {
-    line-height: 52px;
-    font-size: 14px;
-    color: #409eff;
-    text-align: center;
-    border: 0;
-    padding: 0;
-    cursor: pointer;
-    background-color: #ffffff;
-    transition: all 0.3s;
-    text-decoration: none;
+
+.banner>h1::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 1px;
+    background-color: #C4C5CC;
     display: block;
 }
-.card-a:hover {
-    background-color: #409eff;
-    color: #ffffff;
+
+.banner>p {
+    font-size: 16px;
+    color: #870066;
+    margin: -15px;
+    line-height: 22px;
+    font-family: PingFangSC, PingFang SC;
+    font-style: normal;
+}
+
+/* 内容容器样式 */
+.content-container {
+    display: flex;
+    width: 100%;
+    margin-bottom: 80px;
+    /* padding: 0 20px; */
+    box-sizing: border-box;
+    padding-left: 80px;
+}
+
+.card-title {
+    font-family: PingFangSC, PingFang SC;
+    font-weight: 700;
+    font-size: 28px;
+    color: #1E2437;
+    line-height: 40px;
+    text-align: left;
+    font-style: normal;
+    margin: 0;
+}
+
+.card-subtitle {
+    font-family: PingFangSC, PingFang SC;
+    font-weight: 600;
+    font-size: 16px;
+    color: #C2C5CE;
+    line-height: 22px;
+    text-align: left;
+    font-style: normal;
+    margin: 0 0 16px 0;
+}
+
+/* 卡片列表样式 */
+.cards {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    gap: 8px;
+    padding: 50px 0 0 160px;
+}
+
+/* 单个卡片样式 */
+.guide-card {
+    background: #ffffff;
+    padding: 0;
+    transition: all 0.3s ease;
+    width: 498px;
+    height: 149px;
+}
+
+.guide-card:hover {
+    transform: scale(1.02);
+    border-radius: 16px;
+    border: 2px solid #870066;
+}
+
+/* 卡片内部样式 */
+.card-body {
+    padding: 20px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.card-icon {
+    flex-shrink: 0;
+    width: 47px;
+    height: 47px;
+    margin-right: 15px;
+    margin-top: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: #000000 1px dashed;
+}
+
+.card-icon img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+}
+
+/* 文字内容容器样式 */
+.text_container {
+    flex-grow: 1;
+}
+
+.text_container h2 {
+    font-family: PingFangSC, PingFang SC;
+    font-weight: 500;
+    font-size: 18px;
+    color: #000000;
+    line-height: 25px;
+    text-align: left;
+    font-style: normal;
+    margin-bottom: 12px;
+    margin-top: 8px;
+}
+
+.guide-card:hover .text_container h2 {
+    color: #870066;
+}
+
+/* 列表样式 */
+.text_container ul {
+    padding-left: 20px;
+    margin: 0;
+    list-style-type: disc;
+}
+
+ul {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+ul li {
+    font-size: 14px;
+    color: #606266;
+    line-height: 1.5;
+}
+
+/* 右侧图片容器样式 */
+.right-content {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* 图片样式 */
+.pyramid-image {
+    width: 627px;
+    max-width: 100%;
+    height: 550px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+    padding-right: 180px;
+    position: relative;
+    top: 40px;
+}
+
+.pyramid-image:hover {
+    transform: scale(1.02);
+}
+
+/* 响应式设计 */
+@media screen and (max-width: 768px) {
+    .content-container {
+        flex-direction: column;
+    }
+
+    .cards,
+    .right-content {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .right-content {
+        margin-top: 30px;
+    }
+}
+
+.level {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 20px;
+    background-image: url("@/components/guidePage/images/level_BK.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: auto;
+}
+
+.level h1 {
+    font-family: PingFangSC, PingFang SC;
+    font-weight: 500;
+    font-size: 28px;
+    color: #1E2437;
+    line-height: 40px;
+    text-align: left;
+    font-style: normal;
+    margin-bottom: 12px;
+    margin-top: 100px;
+}
+
+.level p {
+    font-family: PingFangSC, PingFang SC;
+    font-weight: 400;
+    font-size: 16px;
+    color: #C2C5CE;
+    line-height: 22px;
+    text-align: center;
+    font-style: normal;
+    margin-bottom: 50px;
+    margin-top: 0;
+}
+
+.pyramid-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+.level-descriptions {
+    position: absolute;
+    width: 88.5%;
+    display: flex;
+    justify-content: space-between;
+    bottom: 10px;
+}
+
+.level-item {
+    position: relative;
+    padding: 10px 15px;
+    max-width: 16%;
+    transition: all 0.3s ease;
+}
+
+.level-item:nth-child(1) {
+    bottom: 0px;
+}
+
+.level-item:nth-child(2) {
+    bottom: 30px;
+}
+
+.level-item:nth-child(3) {
+    bottom: 60px;
+}
+
+.level-item:nth-child(4) {
+    bottom: 85px;
+}
+
+.level-item:nth-child(5) {
+    bottom: 125px;
+}
+
+.level-item p {
+    font-family: PingFangSC, PingFang SC;
+    font-weight: 400;
+    font-size: 16px;
+    color: #1E2437;
+    line-height: 1.4;
+    text-align: start;
+    margin: 0;
 }
 </style>
