@@ -73,7 +73,7 @@
                             </div>
                         </div>
                         <div class="right-content">
-                            <img src="D:\workspace\VS code projects\llmeval-frontend\llmeval-frontend1.0\src\components\guidePage\images\doubao.png"
+                            <img src="@\components\guidePage\images\doubao.png"
                                 alt="豆包" class="pyramid-image" />
                         </div>
                     </div>
