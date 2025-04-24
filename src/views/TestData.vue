@@ -51,11 +51,10 @@
 
             <!-- 右侧示例数据 -->
             <el-col :span="21">
-
               <el-table :data="dataset.examples" border>
-                <el-table-column prop="id" label="ID" width="100" />
-                <el-table-column prop="text" label="示例文本" />
-                <el-table-column prop="label" label="标签" width="150" />
+                <el-table-column prop="type" label="题型" width="100" align="center" />
+                <el-table-column prop="difficulty" label="难度" width="60" align="center" />
+                <el-table-column prop="question" label="问题" width="1158" align="center" />
               </el-table>
             </el-col>
           </el-row>
@@ -81,30 +80,69 @@ export default {
         dimensions: 52,
         domains: 4,
         examples: [
-          { id: 1, text: "今天天气不错。", label: "积极" },
-          { id: 2, text: "这家餐厅的服务很差。", label: "消极" },
+          { type: "单轮问答题", difficulty: "高", question: "把句子翻译成现代汉语：从是观之，地形险阻，奚足以霸王矣！" },
+          { type: "多轮问答题", difficulty: "高", question: "把句子翻译成现代汉语：从是观之，地形险阻，奚足以霸王矣！" },
         ],
       },
       data: [
         {
-          label: "一级维度",
+          label: "语言理解与生成",
           children: [
             {
-              label: "二级 1-1",
-              children: [{ label: "三级 1-1-1" }],
+              label: "跨语言理解",
+            },
+            {
+              label: "文本纠错",
+            },
+            {
+              label: "理解能力",
+            },
+            {
+              label: "语言生成",
+            },
+            {
+              label: "场景生成",
             },
           ],
         },
         {
-          label: "二级维度",
+          label: "知识能力",
           children: [
             {
-              label: "二级 2-1",
-              children: [{ label: "三级 2-1-1" }],
+              label: "知识记忆及应用",
+            },
+          ],
+        },
+        {
+          label: "代码能力",
+          children: [
+            {
+              label: "代码能力",
+            },
+          ],
+        },
+        {
+          label: "推理能力",
+          children: [
+            {
+              label: "推理能力",
+            },
+          ],
+        },
+        {
+          label: "安全性",
+          children: [
+            {
+              label: "对话安全性",
             },
             {
-              label: "二级 2-2",
-              children: [{ label: "三级 2-2-1" }],
+              label: "公平性",
+            },
+            {
+              label: "社会道德规范",
+            },
+            {
+              label: "系统安全性",
             },
           ],
         },
@@ -120,34 +158,24 @@ export default {
     Footer,
   },
   methods: {
-    handleNodeClick(data) {
-      // 定义一个数组存储当前节点及其所有父节点
-      const path = [];
-
-      // 递归函数，用于查找父节点路径
-      const findParentPath = (node, treeData) => {
-        for (const item of treeData) {
-          if (item.children && item.children.some(child => child.label === node.label)) {
-            path.unshift(item.label); // 将父节点的 label 添加到路径中
-            findParentPath(item, treeData); // 递归查找上一级父节点
-            break;
-          }
-          if (item.children) {
-            findParentPath(node, item.children); // 递归查找子节点
-          }
-        }
-      };
-
-      // 将当前节点的 label 添加到路径中
-      path.push(data.label);
-
-      // 调用递归函数，查找父节点路径
-      findParentPath(data, this.data);
-
-      // 输出当前节点及其所有父节点
-      console.log("当前节点:", data.label);
-      console.log("父节点路径:", path);
-    }
+    handleNodeClick(data, node) {
+  if (!node.parent || !node.parent.data || !node.parent.data.label) {
+    // 如果没有父节点，或者父节点的 label 为 undefined，说明是一级维度
+    console.log(`当前选中的一级维度为：${data.label}，二级维度为：无`);
+  } else {
+    // 如果有父节点且父节点的 label 存在，说明是二级维度
+    console.log(`当前选中的一级维度为：${node.parent.data.label}，二级维度为：${data.label}`);
+  }
+},
+    handleNodeClick(data, node) {
+      if (!node.parent || !node.parent.data || !node.parent.data.label) {
+        // 如果没有父节点，或者父节点的 label 为 undefined，说明是一级维度
+        console.log(`当前选中的一级维度为：${data.label}，二级维度为：无`);
+      } else {
+        // 如果有父节点且父节点的 label 存在，说明是二级维度
+        console.log(`当前选中的一级维度为：${node.parent.data.label}，二级维度为：${data.label}`);
+      }
+    },  
   },
 };
 </script>
@@ -242,9 +270,11 @@ export default {
   background-color: #e9ecef;
   color: #333;
   font-weight: bold;
+  text-align: center; /* 设置表头和单元格内容居中 */
 }
 
 .el-table td {
   color: #495057;
+  text-align: center; /* 设置表头和单元格内容居中 */
 }
 </style>
