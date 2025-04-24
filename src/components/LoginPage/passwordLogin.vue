@@ -1,168 +1,172 @@
 <template>
-  <div class="page flex-col">
-    <div class="section_1 flex-col">
-      <div class="group_1 flex-col">
-          <div v-if="isPasswordLogin === false" class="block_1 flex-col">
-            <img
-              class="label_1"
-              referrerpolicy="no-referrer"
-              src="https://lanhu-oss-2537-2.lanhuapp.com/SketchPng47638b1da138cee666907d5f65204bf4414946d26c4bab281ee9f431085aeb3c"
-            />
-            <span class="paragraph_1" @click="switchToPasswordLogin">账号密码<br />登录</span>
-          </div>
-          <div v-else class="block_1 flex-col">
-            <img
-              class="label_1"
-              referrerpolicy="no-referrer"
-              src="https://lanhu-oss-2537-2.lanhuapp.com/SketchPng8ef6dcfe1594c288cd5fc1f965dcc08133d91cf095a4c0c4627924e9759a1c0f"
-            />
-            <span class="paragraph_1" @click="switchToVerificationLogin">验证码<br />登录</span>
-          </div>
-          <div v-if="isPasswordLogin">
-            <PasswordLogin />
-          </div>
-        <div v-else>
-            <div class="image-text_1 flex-row justify-between">
-              <!-- 欢迎登录 -->
-              <div class="text-group_1 flex-col justify-between">
-                <span class="text_1">HI！欢迎登录</span>
-                <span class="text_2">琅琊海评</span>
-              </div>
-            </div>
-          <!-- 输入手机号 -->
-          <div class="block_2 flex-row">
-            <div class="image-text_2 flex-row justify-between">
-              <img
-                class="thumbnail_1"
-                referrerpolicy="no-referrer"
-                src="https://lanhu-oss-2537-2.lanhuapp.com/SketchPng7d6b6bb55e8745e4ac6ea719d2dfeb1feea999bd69aa4763c17d018fcfc2b62d"
-              />
-              <input
-                class="text-group_2"
-                type="text"
-                placeholder="请输入手机号"
-                v-model="phone"
-              />
-            </div>
-          </div>
-
-          <!-- 输入验证码 -->
-          <div class="block_3 flex-row">
-            <div class="image-text_3 flex-row align-center">
-              <img
-                class="thumbnail_2"
-                referrerpolicy="no-referrer"
-                src="https://lanhu-oss-2537-2.lanhuapp.com/SketchPng132721bb3bfcd9776b3fa2fa15eb3e516af67531bdcb1b5c3afe77653b9c6404"
-              />
-              <input
-                class="text-group_3"
-                type="text"
-                placeholder="请输入验证码"
-                v-model="verificationCode"
-              />
-            </div>
-            <span
-              class="text_3"
-              :class="{ disabled: isSendingCode }"
-              :disabled="isSendingCode"
-              @click="sendVerificationCode(phone)"
-            >
-              {{ isSendingCode ? `${countdown}s 后重新发送` : '发送验证码' }}
-            </span>
-          </div>
-
-          <!-- 登录按钮 -->
-          <div class="text-wrapper_1 flex-col" @click="handleLogin">
-            <button class="text_4">登&nbsp;&nbsp;&nbsp;录</button>
-          </div>
-
-          <!-- 协议 -->
-          <div class="image-text_4 flex-row justify-between">
-            <input
-              type="checkbox"
-              id="agreement"
-              class="checkbox_3"
-              v-model="isAgreed"
-            />
-            <label for="agreement" class="text-group_4">
-              <span class="text_5">
-                未注册的手机号验证并登录后将自动完成注册。注册即代表您同意并接受
-              </span>
-              <a href="/琅琊海评平台服务协议.pdf" target="_blank" class="text_6">《琅琊海评平台服务协议》</a>
-              <a href="/《琅琊海评个人信息保护政策》.pdf" target="_blank" class="text_6">《琅琊海评个人信息保护政策》</a>
-            </label>
-          </div>
+    <div class="image-text_1 flex-row justify-between">
+        <!-- 欢迎登录 -->
+        <div class="text-group_1 flex-col justify-between">
+            <span class="text_1">HI！欢迎登录</span>
+            <span class="text_2">琅琊海评</span>
         </div>
-      </div>
     </div>
-  </div>
+
+    <div class="block_2 flex-row">
+        <div class="image-text_2 flex-row justify-between">
+            <img
+            class="thumbnail_1"
+            referrerpolicy="no-referrer"
+            src="https://lanhu-oss-2537-2.lanhuapp.com/SketchPng7d6b6bb55e8745e4ac6ea719d2dfeb1feea999bd69aa4763c17d018fcfc2b62d"
+            />
+            <input
+            class="text-group_2"
+            type="text"
+            placeholder="请输入邮箱或手机号"
+            v-model="email"
+            />
+        </div>
+    </div>
+
+    <div class="block_3 flex-row">
+        <div class="image-text_3 flex-row align-center">
+            <img
+            class="thumbnail_2"
+            referrerpolicy="no-referrer"
+            src="https://lanhu-oss-2537-2.lanhuapp.com/SketchPngfb27592d6bf29f7cde12a61ed2f84e726131b09bd372863818d70e75170af410"
+            />
+            <input
+            class="text-group_3"
+            type="text"
+            placeholder="请输入密码"
+            v-model="password"
+            />
+        </div>
+    </div>
+
+    <!-- 登录按钮 -->
+    <div class="text-wrapper_1 flex-col" @click="handleLogin">
+        <button class="text_4">登&nbsp;&nbsp;&nbsp;录</button>
+    </div>
+
+    <div class="text-wrapper_2 flex-col" @click="showRegisterModal">
+        <span class="new_text_4">注&nbsp;&nbsp;&nbsp;册</span>
+    </div>
+
+    <!-- 注册弹窗 -->
+    <Register v-if="isRegisterModalVisible" @close="closeRegisterModal" />
+
+    <div class="text-wrapper_3">
+        <span class="text_5">忘记密码？</span>
+        <span class="text_6" @click="showFindPasswordModal">找回密码</span>
+    </div>
+
+    <!-- 找回密码弹窗 -->
+    <FindPassword v-if="isFindPasswordModalVisible" @close="closeFindPasswordModal" />
 </template>
 
 <script>
 import axios from "axios";
-import Footer from "./Footer.vue";
-import PasswordLogin from "./LoginPage/passwordLogin.vue"; // 引入密码登录组件
+import Register from "./Register.vue"; // 引入注册组件
+import FindPassword from "./FindPassword.vue"; // 引入找回密码组件
 export default {
   data() {
     return {
-      phone: "", // 手机号
-      verificationCode: "", // 验证码
+      email: "", // 手机号
+      password: "", // 密码
       isSendingCode: false, // 是否正在发送验证码
       countdown: 60, // 验证码倒计时
-      isAgreed: false, // 是否同意协议
-      isPasswordLogin: false, // 是否切换到账号密码登录
+      isRegisterModalVisible: false, // 是否显示注册弹窗
+      isFindPasswordModalVisible: false, // 是否显示找回密码弹窗
     };
   },
   components: {
-    Footer,
-    PasswordLogin, // 注册密码登录组件
+    Register, // 注册组件
+    FindPassword, // 找回密码组件
   },
   methods: {
-    // 切换到账号密码登录
-    switchToPasswordLogin() {
-      this.isPasswordLogin = true;
-    },
-
-    // 切换到验证码登录
-    switchToVerificationLogin() {
-      this.isPasswordLogin = false;
-    },
-
-    // 登录处理
     async handleLogin() {
-      console.log("当前登录方式:", this.isPasswordLogin ? "账号密码登录" : "验证码登录");
-      // 验证码登录
-      if (!this.isPasswordLogin) {
-        if (!this.phone || !this.verificationCode) {
-          alert("请输入手机号和验证码！");
-          return;
+      if (!this.email || !this.password) {
+        alert("请输入账号和密码！");
+        return;
+      }
+      try {
+        const response = await axios.post("http://49.233.82.133:9091/user/login/", {
+          userName: this.email,
+          password: this.password,
+        });
+        const data = response.data;
+        if (data.success) {
+          alert("登录成功！");
+          // 保存 Token 到 localStorage
+          localStorage.setItem('token', response.data.data.token);
+          localStorage.setItem('userName', response.data.data.userName);
+          const urlParams = new URLSearchParams(window.location.search);
+          const redirectUrl = urlParams.get('redirect') || '/';
+          window.location.href = redirectUrl;
+        } else {
+          alert(data.errorMsg || "登录失败，请检查账号和密码！");
         }
-        if (!this.isAgreed) {
-          alert("请同意服务协议和隐私政策！");
-          return;
+      } catch (error) {
+        alert("网络错误或后端异常，请稍后再试");
+        console.error(error);
+      }
+    },
+
+    checkEmailOrPhone(input) {
+      // 判断是否为电子邮箱
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (emailRegex.test(input)) {
+        return "email"; // 是电子邮箱
+      }
+
+      // 判断是否为手机号（以中国大陆手机号为例）
+      const phoneRegex = /^1[3-9]\d{9}$/;
+      if (phoneRegex.test(input)) {
+        return "phone"; // 是手机号
+      }
+
+      return "invalid"; // 既不是电子邮箱也不是手机号
+    },
+
+    // 显示找回密码弹窗
+    showFindPasswordModal() {
+      this.isFindPasswordModalVisible = true;
+    },
+    //关闭找回密码弹窗
+    closeFindPasswordModal() {
+      this.isFindPasswordModalVisible = false;
+    },
+    // 显示注册弹窗
+    showRegisterModal() {
+      this.isRegisterModalVisible = true;
+    },
+
+    // 关闭注册弹窗
+    closeRegisterModal() {
+      this.isRegisterModalVisible = false;
+    },
+
+    async handleLogin() {
+      if (!this.email || !this.password) {
+        alert("请输入账号和密码！");
+        return;
+      }
+      try {
+        const response = await axios.post("http://49.233.82.133:9091/user/login/", {
+          userName: this.email,
+          password: this.password,
+        });
+        const data = response.data;
+        if (data.success) {
+          alert("登录成功！");
+          // 保存 Token 到 localStorage
+          localStorage.setItem('token', response.data.data.token);
+          localStorage.setItem('userName', response.data.data.userName);
+          const urlParams = new URLSearchParams(window.location.search);
+          const redirectUrl = urlParams.get('redirect') || '/';
+          window.location.href = redirectUrl;
+        } else {
+          alert(data.errorMsg || "登录失败，请检查账号和密码！");
         }
-        try {
-          const response = await axios.post("http://49.233.82.133:9091/user/login/", {
-            phone: this.phone,
-            code: this.verificationCode,
-          });
-          const data = response.data;
-          if (data.success) {
-            alert("登录成功！");
-            localStorage.setItem("token", data.data.token);
-            localStorage.setItem("userName", data.data.userName);
-            window.location.href = "/";
-          } else {
-            alert(data.errorMsg || "登录失败，请检查手机号和验证码！");
-          }
-          }catch (error) {
-            alert("网络错误或后端异常，请稍后再试");
-            console.error(error);
-          }
-        }
-      // 密码登录
-      else {
-        this.$refs.passwordLogin.handleLogin(); // 调用密码登录组件的方法
+      } catch (error) {
+        alert("网络错误或后端异常，请稍后再试");
+        console.error(error);
       }
     },
 
@@ -209,8 +213,8 @@ export default {
 .page {
   background-color: rgba(248, 249, 251, 1);
   position: relative;
-  width: auto;
-  height: auto;
+  width: 1605px;
+  height: 745px;
   overflow: hidden;
   margin: 0; /* 移除默认外边距 */
   padding: 0; /* 移除默认内边距 */
@@ -218,8 +222,8 @@ export default {
 
 .section_1 {
   background-image: url(https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/45006df7cce64cb7a3510e61fd9cab90_mergeImage.png);
-  width: 100%;
-  height: 772px;
+  width: 1605px;
+  height: 745px;
   background-size: cover; /* 确保图片覆盖整个容器 */
   background-position: center; /* 将背景图片居中 */
   background-repeat: no-repeat; /* 防止背景图片重复 */
@@ -230,14 +234,13 @@ export default {
 }
 
 .group_1 {
-  width: 430px;
+  width: 700px;
   height: 500px;
-  background: rgba(255, 255, 255, 0.755) -32px -32px
+  background: url(https://lanhu-oss-2537-2.lanhuapp.com/SketchPng7ea32a015400c7d33fcc970ee5cf377d38327bbce71656952c1d729d86cd397d) -32px -32px
     no-repeat;
   background-size: 500px 560px;
   margin: 145px 0 0 1000px;
   position: relative; /* 设置为相对定位，方便子元素绝对定位 */
-  border-radius: 8px;
 }
 
 .image-text_1 {
@@ -267,7 +270,7 @@ export default {
 
 .text_2 {
   width: 196px;
-  height: auto;
+  height: 40px;
   overflow-wrap: break-word;
   color: rgba(30, 36, 55, 1);
   font-size: 28px;
@@ -276,15 +279,15 @@ export default {
   text-align: center;
   white-space: nowrap;
   line-height: 40px;
-  margin-top: 15px;
+  margin-top: 10px;
   margin-left: 40px;
 }
 
 .block_1 {
   width: 72px;
   height: 95px;
-  background: url('@/assets/images/矩形.png')
-  100% no-repeat;
+  background: url(https://lanhu-oss-2537-2.lanhuapp.com/SketchPng4f175480528a2b80d8be8f72fb6251c9850507f630e7666e41bb4822474c23ee)
+    100% no-repeat;
   background-size: 100% 100%;
   margin-left: 325px;
   display: flex; /* 添加 flex 布局 */
@@ -293,7 +296,6 @@ export default {
   justify-content: center; /* 垂直居中对齐 */
   position: absolute; /* 绝对定位 */
   z-index: 10; /* 确保浮于其他组件上方 */
-  cursor: pointer; /* 鼠标悬停时显示手指 */
 }
 
 .label_1 {
@@ -418,8 +420,34 @@ export default {
   cursor: pointer; /* 鼠标悬停时显示手指 */
 }
 
+.text-wrapper_2 {
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 4px;
+  height: 48px;
+  width: 340px;
+  margin: 10px 0 0 45px;
+  display: flex; /* 使用 flex 布局 */
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  cursor: pointer; /* 鼠标悬停时显示手指 */
+  border: 1px solid rgba(135, 0, 102, 1); /* 添加边框颜色 */
+}
+
 .text_4 {
   color: rgba(255, 255, 255, 1); /* 按钮文字颜色 */
+  font-size: 14px; /* 字体大小 */
+  font-weight: normal; /* 字体粗细 */
+  text-align: center; /* 居中对齐 */
+  white-space: nowrap; /* 防止文字换行 */
+  line-height: normal; /* 让文字垂直居中 */
+  margin: 0; /* 移除多余的外边距 */
+  background: none; /* 移除按钮默认背景 */
+  border: none; /* 移除按钮默认边框 */
+  cursor: pointer; /* 鼠标悬停时显示手指 */
+}
+
+.new_text_4 {
+  color: rgba(135, 0, 102, 1); /* 按钮文字颜色 */
   font-size: 14px; /* 字体大小 */
   font-weight: normal; /* 字体粗细 */
   text-align: center; /* 居中对齐 */
@@ -486,6 +514,18 @@ export default {
   line-height: 20px;
 }
 
+.text-wrapper_3 {
+  width: 126px;
+  height: 20px;
+  overflow-wrap: break-word;
+  font-size: 0;
+  font-weight: normal;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 20px;
+  margin: 16px 0 44px 150px;
+}
+
 .text_5 {
   width: 316px;
   height: 60px;
@@ -506,5 +546,6 @@ export default {
   font-weight: normal;
   text-align: left;
   line-height: 20px;
+  cursor: pointer;
 }
 </style>

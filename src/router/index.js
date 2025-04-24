@@ -31,7 +31,11 @@ const routes = [
     {
         path: '/center',
         component: () => import("@/views/PersonalCenter.vue"),
-    }
+    },
+    {
+        path: '/EvalData',
+        component: () => import("@/views/TestData.vue"),
+    },
 ];
 
 const router = createRouter({

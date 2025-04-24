@@ -169,15 +169,11 @@ export default {
     },
     methods: {
         processImagePath(data) {
-            const BASE_URL = "http://49.233.82.133:5174";
             return data.map((item) => ({
                 ...item,
                 model_image_path: item.model_image_path
-                    ? `${BASE_URL}${this.getSubstringAfterKeyword(
-                          item.model_image_path,
-                          "public"
-                      )}`
-                    : item.model_image_path,
+                    ? `/images/${item.model_image_path.split('/images/')[1]}` // 提取 /images/ 后面的部分并拼接
+                    : '',
             }));
         },
         sortByJsonOrder(data) {

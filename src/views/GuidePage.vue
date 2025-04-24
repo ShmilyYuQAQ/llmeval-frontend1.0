@@ -73,7 +73,12 @@
                             </div>
                         </div>
                         <div class="right-content">
+<<<<<<< HEAD
                             <img src="@/components/guidePage/images/doubao.png" alt="豆包" class="pyramid-image" />
+=======
+                            <img src="@\components\guidePage\images\doubao.png"
+                                alt="豆包" class="pyramid-image" />
+>>>>>>> 9afdd172b16f1c8ad4ab282136421f91369fb634
                         </div>
                     </div>
                     <div class="level">

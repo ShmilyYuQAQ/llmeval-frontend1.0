@@ -1,260 +1,133 @@
 <template>
-  <NavBar></NavBar>
-  <div class="page flex-col">
-    <div class="box_1 flex-row">
-      <div class="section_1 flex-col">
-      <div class="box_6 flex-col">
-        <span class="text_7">模型详情</span>
-        <div class="text-wrapper_2">
-          <span class="text_8" @click="goToHome">主页&nbsp;/</span>
-          <span class="text_9" @click="refreshPage">模型详情</span>
-        </div>
-      </div>
-      <div class="box_15 flex-row">
-        <div class="group_1 flex-row">
-          <div class="box_16 flex-col">
-            <img 
-              :src="getModelImageUrl(modelData.data.model_image_path)" 
-              alt="模型形象图片" 
-              class="model-image"
-            />
-          </div>
-          <div class="box_17 flex-col justify-between">
-            <div class="box_18 flex-row justify-between">
-              <span class="text_41">{{ modelData.data.name }}</span>
-              <div class="favorite-container" @mouseover="showTooltip = true" @mouseleave="showTooltip = false">
-                <img
-                  class="label_8"
-                  @click="toggleFavorite()"
-                  referrerpolicy="no-referrer"
-                  :src="isFavorited 
-                    ? 'https://lanhu-oss-2537-2.lanhuapp.com/SketchPng3cc872b4bf49ad002ddcbd8f1e744719404a37750157a05f0929e1c1b5e386fc' 
-                    : 'https://lanhu-oss-2537-2.lanhuapp.com/SketchPngab621b6efaf7d0824226ba1762b16f7dbcc30d0e400c533159bdcefd3732cde0'"
-                  alt="收藏状态"
-                />
-                <div v-if="showTooltip" class="text-wrapper_52 flex-col">
-                  <span class="text_96">{{ isFavorited ? '取消收藏' : '收藏模型' }}</span>
-                </div>
-              </div>
-              <div class="group_2 flex-row justify-between" v-if="!modelData.data.isOpenSource">
-                <img
-                  class="thumbnail_11"
-                  referrerpolicy="no-referrer"
-                  src="https://lanhu-oss-2537-2.lanhuapp.com/SketchPng8dbd2b6f2cee1a4a1b75a8f4e568b2ea3cf6426e0be1c2c7e518c69f21923744"
-                />
-                <span class="text_42">不开源</span>
-              </div>
-              <div class="group_3 flex-row justify-between" v-if="modelData.data.isOpenSource">
-                <img
-                  class="thumbnail_12"
-                  referrerpolicy="no-referrer"
-                  src="https://lanhu-oss-2537-2.lanhuapp.com/SketchPng1b8cd4b5b4b34458a62e854cea507e549acfe3dd9e5862c88595473eb3d3be9d"
-                />
-                <span class="text_43">开源</span>
-              </div>
-            </div>
-            <div class="box_19 flex-row">
-              <img
-                class="thumbnail_13"
-                referrerpolicy="no-referrer"
-                src="https://lanhu-oss-2537-2.lanhuapp.com/SketchPng03d5cb3b1c3c9a06e9d51b1869c6e27f9d428a133060bd5c4c2328c0816aeb47"
-              />
-              <span class="text_44"
-                >{{ modelData.data.description }}</span
-              >
-            </div>
-          </div>
-          <div class="text-wrapper_7 flex-col justify-between">
-            <span class="text_45">{{ modelData.data.institution }}</span>
-            <span class="text_46">发布机构</span>
-          </div>
-          <div class="text-wrapper_8 flex-col justify-between">
-            <span class="text_47">{{ modelData.data.releaseDate }}</span>
-            <span class="text_48">发布时间</span>
-          </div>
-          <div class="text-wrapper_9 flex-col" @click="openModelLink">
-            <span class="text_49">模型试用</span>
-          </div>
-        </div>
+    <div class="group_4 flex-row justify-between">
         <img
-          class="image_5"
+          class="thumbnail_14"
           referrerpolicy="no-referrer"
-          src="https://lanhu-oss-2537-2.lanhuapp.com/SketchPng37f956792f11a6fcb3dbabde47cafdb68f75a42243075563f119ecaccf221fc5"
+          src="https://lanhu-oss-2537-2.lanhuapp.com/SketchPngd2b56223b4cfb55c65c26d00333ac77da1032d6766dafbd41d2eb557e367e449"
         />
-        <ShowTag :tags="tags"></ShowTag>
-
-      </div>
-      <!-- 在 box_15 后面，加一个新 div 包住评论区 -->
-      <div class="comment-wrapper">
-        <CommentList :modelId="modelData.data.modelId" />
-      </div>
+        <span class="text_50">能力标签（{{ getTagCount() }}）</span>
     </div>
-  </div> 
-</div>
-  <Footer></Footer>
+    <EmptyTags v-if="getTagCount() === 0" />
+    <span class="text_51" v-if="filteredTags.count > 0">卓越</span>
+    <div class="group_5 flex-row justify-between" v-if="filteredTags.count > 0">
+        <div
+          v-for="(tag, index) in filteredTags.tags"
+          :key="index"
+          class="text-wrapper_11 flex-col"
+        >
+          <span class="text_52">{{ tag.tagName }}{{ tag.tagGrade }}</span>
+        </div>
+    </div>
+    <span class="text_60" v-if="excellentTags.count > 0">优秀</span>
+    <div class="group_5 flex-row justify-between" v-if="excellentTags.count > 0">
+        <div
+          v-for="(tag, index) in excellentTags.tags"
+          :key="index"
+          class="text-wrapper_47 flex-col"
+        >
+          <span class="text_91">{{ tag.tagName }}{{ tag.tagGrade }}</span>
+        </div>
+    </div>
+    <span class="text_72" v-if="goodTags.count > 0">良好</span>
+    <div class="group_5 flex-row justify-between" v-if="goodTags.count > 0">
+        <div
+          v-for="(tag, index) in goodTags.tags"
+          :key="index"
+          class="text-wrapper_31 flex-col"
+        >
+          <span class="text_73">{{ tag.tagName }}{{ tag.tagGrade }}</span>
+        </div>
+    </div>
+    <span class="text_80" v-if="averageTags.count > 0">一般</span>
+    <div class="group_5 flex-row justify-between" v-if="averageTags.count > 0">
+        <div
+          v-for="(tag, index) in averageTags.tags"
+          :key="index"
+          class="text-wrapper_40 flex-col"
+        >
+          <span class="text_83">{{ tag.tagName }}{{ tag.tagGrade }}</span>
+        </div>
+    </div>
+    <span class="text_80" v-if="weakTags.count > 0">薄弱</span>
+    <div class="group_5 flex-row justify-between" v-if="weakTags.count > 0">
+        <div
+          v-for="(tag, index) in weakTags.tags"
+          :key="index"
+          class="text-wrapper_39 flex-col"
+        >
+          <span class="text_82">{{ tag.tagName }}{{ tag.tagGrade }}</span>
+        </div>
+    </div>
 </template>
 
 <script>
-import axios from 'axios';
-import NavBar from './guidePage/NavBar.vue';
-import ShowTag from './ModelDetailPage/ShowTags.vue';
-import ShowReviews from './ModelDetailPage/ShowReview.vue';
-import CommentList from './Comments/CommentList.vue';
-import Footer from './Footer.vue';
-import { useRouter } from "vue-router";
-export default{
-  props: ['name'], // 接收路由参数
-  data() {
-    return {
-      modelData: null,
-      newComment: "", // 存储输入的评论
-      comments: [],
-      userId: 7,
-      deep: 0,
-      answerId: null,
-      status: true,
-      tags: [],
-      isFavorited: false, // 存储收藏状态
-      modelId: null,
-      showTooltip: false, // 控制提示文本的显示
-    }
+import EmptyTags from './EmptyTags.vue';
+export default {
+  name: "ShowTags",
+  props: {
+    tags: {
+      type: Array, // 接收一个数组类型的 tags
+      required: true, // 确保父组件必须传递该属性
+    },
   },
-
-  async created() {
-    try {
-      const modelResponse = await axios.get(`http://49.233.82.133:9091/model/name?name=${this.name}`);
-      if (modelResponse.data) {
-        console.log(modelResponse.data);
-        this.modelData = modelResponse.data;
-        this.modelId = modelResponse.data.data.modelId;
-      }
-      
-      const modelTagResponse = await axios.get(`http://49.233.82.133:9091/tag/model?modelId=${this.modelId}`);
-      if (modelTagResponse.data.success){
-        this.tags = modelTagResponse.data.data;
-      }
-      const token = localStorage.getItem('token');
-      // 检查用户是否已经收藏该模型
-      const favoriteResponse = await axios.get(`http://49.233.82.133:9091/user/favorites/check?modelId=${this.modelId}`,{
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      if (favoriteResponse.data.success) {
-        this.isFavorited = favoriteResponse.data.data.isFavorited;
-      }
-
-      const commentsResponse = await axios.get(`http://49.233.82.133:9091/model/comment/tree?modelId=${this.modelId}`);
-      if(commentsResponse.data.success){
-        this.comments = commentsResponse.data.data;
-        console.log(this.comments);
-      }
-
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
+  components: {
+    EmptyTags, // 引入 EmptyTags 组件
   },
-
-  setup() {
-    const router = useRouter();
-
-    const goToHome = () => {
-      router.push("/home"); // 跳转到主页
-    };
-
-    const refreshPage = () => {
-      window.location.reload(); // 刷新当前页面
-    };
-
-    return {
-      goToHome,
-      refreshPage,
-    };
+  mounted() {
+    console.log("tags:", this.tags); // 在组件挂载时打印 tags 的值
   },
-  components:{
-    NavBar,
-    ShowTag,
-    ShowReviews,
-    CommentList,
-    Footer,
+  computed: {
+    filteredTags() {
+      // 过滤出 tagGrade 为 "能力卓越" 的标签，并返回数组和数量
+      const tags = this.tags.filter((tag) => tag.tagGrade === "能力卓越");
+      return { tags, count: tags.length };
+    },
+    excellentTags() {
+      // 过滤出 tagGrade 为 "能力优秀" 的标签，并返回数组和数量
+      const tags = this.tags.filter((tag) => tag.tagGrade === "能力优秀");
+      return { tags, count: tags.length };
+    },
+    goodTags() {
+      // 过滤出 tagGrade 为 "能力良好" 的标签，并返回数组和数量
+      const tags = this.tags.filter((tag) => tag.tagGrade === "能力良好");
+      return { tags, count: tags.length };
+    },
+    averageTags() {
+      // 过滤出 tagGrade 为 "能力一般" 的标签，并返回数组和数量
+      const tags = this.tags.filter((tag) => tag.tagGrade === "能力一般");
+      return { tags, count: tags.length };
+    },
+    weakTags() {
+      // 过滤出 tagGrade 为 "能力薄弱" 的标签，并返回数组和数量
+      const tags = this.tags.filter((tag) => tag.tagGrade === "能力薄弱");
+      return { tags, count: tags.length };
+    },
   },
   methods: {
-    openModelLink() {
-      if (this.modelData && this.modelData.data && this.modelData.data.model_link) {
-        window.open(this.modelData.data.model_link, "_blank"); // 在新选项卡中打开链接
-      } else {
-        alert("模型链接不可用！");
-      }
-    },
-
-    getModelImageUrl(imagePath) {
-      if (!imagePath) {
-        return ''; // 如果路径为空，返回空字符串
-      }
-      // 提取 /images/ 后面的部分
-      const relativePath = imagePath.split('/images/')[1];
-      // 拼接 ../public/images 和提取的部分
-      return `/images/${relativePath}`;
-    },
-
-    async toggleFavorite() {
-      try {
-        const url = this.isFavorited
-          ? `http://49.233.82.133:9091/user/favorites/delete?modelId=${this.modelId}`
-          : `http://49.233.82.133:9091/user/favorites/add?modelId=${this.modelId}`
-        
-        // 立即更新按钮状态
-        const token = localStorage.getItem('token');
-        const response = this.isFavorited
-          ? await axios.delete(url, {headers: {'Authorization': `Bearer ${token}`}})
-          : await axios.post(url, null, {headers: {'Authorization': `Bearer ${token}`}})
-        if (response.data.success) {
-          // 操作成功后，调用检查接口来确定收藏按钮的状态
-          const checkResponse = await axios.get(`http://49.233.82.133:9091/user/favorites/check?modelId=${this.modelId}`,{headers: {'Authorization': `Bearer ${token}`}});
-          if (checkResponse.data.success) {
-            this.isFavorited = checkResponse.data.data.isFavorited;
-            const modelResponse = await axios.get(`http://49.233.82.133:9091/model/modelId?modelId=${this.modelId}`);
-            if (modelResponse.data) {
-              this.modelData = modelResponse.data;
-            }
-          } else {
-            alert("检查收藏状态失败：" + checkResponse.data.errorMsg);
-          }
-        } else {
-          alert("操作失败：" + response.data.errorMsg);
-          // 如果操作失败，恢复原来的状态
-          this.isFavorited = !this.isFavorited;
-        }
-      } catch (error) {
-        // 如果操作失败，恢复原来的状态
-        alert("请先登录！")
-      }
+    getTagCount() {
+        return this.tags.length; // 返回 tags 数组的长度
     },
   },
-
 }
-
 </script>
 
 <style scoped>
 .page {
   background-color: rgba(248, 249, 251, 1);
   position: relative;
-  width: 100%;
-  height: auto;
-  overflow: visible;
+  width: 1440px;
+  height: 1861px;
+  overflow: hidden;
 }
 
 .box_1 {
-  width: 100%;
-  height: auto;
+  width: 1440px;
+  height: 1831px;
 }
 
 .section_1 {
-  width: 1600px;
+  width: 1440px;
   height: auto;
-  display: flex;
-  flex-direction: column;
 }
 
 .box_2 {
@@ -404,17 +277,9 @@ export default{
 
 .box_6 {
   background-image: url(https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/d04fe58e7908474bac11499b05c126d2_mergeImage.png);
-  width: 100%; /* 宽度与父容器一致 */
-  max-width: 1600px; /* 设置最大宽度，防止过宽 */
-  height: 240px; /* 高度保持不变 */
-  background-size: cover; /* 确保背景图片覆盖整个容器 */
-  background-position: center; /* 将背景图片居中 */
-  background-repeat: no-repeat; /* 防止背景图片重复 */
-  margin: 0 auto; /* 水平居中 */
-  margin-bottom: auto; /* 保持原有的下边距 */
-  display: flex; /* 如果需要在背景上添加内容，可以使用 flex 布局 */
-  flex-direction: column; /* 设置为垂直排列 */
-  position: relative; /* 使子元素可以绝对定位 */
+  width: 1440px;
+  height: 240px;
+  margin-bottom: 686px;
 }
 
 .text_7 {
@@ -424,14 +289,11 @@ export default{
   color: rgba(135, 0, 102, 1);
   font-size: 32px;
   font-family: PingFangSC-Medium;
-  font-weight: bold; /* 设置加粗 */
   font-weight: 500;
   text-align: left;
   white-space: nowrap;
   line-height: 45px;
-  margin: 58px 0 0 0; /* 移除固定的 margin-left */
-  padding-left: 180px; /* 确保子元素的左边距一致 */
-  display: block; /* 确保是块级元素 */
+  margin: 52px 0 0 120px;
 }
 
 .text-wrapper_2 {
@@ -444,9 +306,7 @@ export default{
   text-align: left;
   white-space: nowrap;
   line-height: 18px;
-  margin: 15px 0 106px 0; /* 移除固定的 margin-left */
-  padding-left: 180px; /* 使用 padding-left 确保与父容器对齐 */
-  display: block; /* 确保是块级元素 */
+  margin: 24px 0 101px 120px;
 }
 
 .text_8 {
@@ -460,7 +320,6 @@ export default{
   text-align: left;
   white-space: nowrap;
   line-height: 18px;
-  cursor: pointer; /* 鼠标悬停时变为手指形状 */
 }
 
 .text_9 {
@@ -474,9 +333,16 @@ export default{
   text-align: left;
   white-space: nowrap;
   line-height: 18px;
-  cursor: pointer; /* 鼠标悬停时变为手指形状 */
 }
 
+.section_2 {
+  background-color: rgba(255, 255, 255, 1);
+  border-radius: 16px;
+  width: 1200px;
+  height: 850px;
+  justify-content: flex-center;
+  margin: 981px 120px 0 -1320px;
+}
 
 .image-text_1 {
   width: 130px;
@@ -633,15 +499,14 @@ export default{
 
 .text_15 {
   width: 400px;
-  height: auto;
+  height: 40px;
   overflow-wrap: break-word;
   color: rgba(34, 34, 34, 1);
   font-size: 14px;
   font-weight: normal;
   text-align: justify;
-  text-align-last: justify; /* 强制最后一行两端对齐 */
   line-height: 20px;
-  margin: 10px 0 0 190px;
+  margin: 4px 0 0 114px;
 }
 
 .box_9 {
@@ -678,7 +543,7 @@ export default{
 }
 
 .text_16 {
-  width: 500px;
+  width: 736px;
   height: 40px;
   overflow-wrap: break-word;
   color: rgba(102, 106, 117, 1);
@@ -1169,47 +1034,25 @@ export default{
 .box_15 {
   background-color: rgba(255, 255, 255, 1);
   border-radius: 16px;
-
-  top: 150px; /* 距离顶部 150px */
-  width: 1200px; /* 固定宽度 */
-  height: auto; /* 固定高度 */
-  margin: -80px auto 0 auto; /* 👈 向上压 60px，其他保持不变 */
-  left: 0; /* 确保居中时从页面左侧开始计算 */
-  right: 0; /* 确保居中时从页面右侧结束计算 */
-  display: flex; /* 使用 flex 布局 */
-  flex-direction: column; /* 垂直排列子元素 */
-  justify-content: flex-start; /* 子元素从顶部开始排列 */
-  align-items: flex-start; /* 子元素靠左对齐 */
-  padding: 20px 20px 30px 20px; /* 上、右、下、左内边距 */
-  border: 1px solid #ddd;
-  z-index: 2; /* 可选，确保它在上面 */
+  position: absolute;
+  left: 120px;
+  top: 211px;
+  width: 1200px;
+  height: 750px;
+  justify-content: flex-center;
 }
 
 .group_1 {
-  display: flex; /* 使用 flex 布局 */
-  flex-direction: row; /* 水平排列子元素 */
-  align-items: center; /* 子元素垂直居中 */
-  justify-content: space-between; /* 子元素之间均匀分布 */
   width: 1160px;
   height: 64px;
-  margin: 10px 0 0 20px; /* 调整外边距 */
+  margin: 20px 0 0 20px;
 }
 
 .box_16 {
-  width: 150px; /* 设置容器宽度 */
-  height: 100px; /* 设置容器高度 */
-  display: flex;
-  align-items: center; /* 垂直居中 */
-  justify-content: center; /* 水平居中 */
-  overflow: hidden; /* 隐藏超出容器的部分 */
-  border-radius: 8px; /* 可选：添加圆角 */
-  background-color: #f5f5f5; /* 可选：添加背景色 */
-}
-
-.model-image {
-  width: 100%; /* 图片宽度占满容器 */
-  height: 100%; /* 图片高度占满容器 */
-  object-fit: contain; /* 保持图片比例，完整显示图片 */
+  border-radius: 12px;
+  background-image: url(https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/3cfd4b372e014ef6b6afd0381a2bc57c_mergeImage.png);
+  width: 64px;
+  height: 64px;
 }
 
 .box_17 {
@@ -1219,14 +1062,12 @@ export default{
 }
 
 .box_18 {
-  display: flex; /* 使用 flex 布局 */
-  flex-direction: row; /* 子元素水平排列 */
   width: 415px;
   height: 33px;
 }
 
 .text_41 {
-  width: auto;
+  width: 197px;
   height: 33px;
   overflow-wrap: break-word;
   color: rgba(30, 36, 55, 1);
@@ -1238,38 +1079,24 @@ export default{
   line-height: 33px;
 }
 
-.favorite-container {
-  position: relative; /* 确保提示文本相对于容器定位 */
-  display: inline-block;
-}
-
-.comment-wrapper {
-  margin-top: 40px; /* 距离 box_15 的距离，可调整 */
-}
-
-
 .label_8 {
   width: 24px;
   height: 23px;
-  margin: 5px 0 0 16px;
-  cursor: pointer;
+  margin: 5px 0 0 12px;
 }
 
 .group_2 {
-  background-color: rgba(237, 239, 242, 1);;
+  background-color: rgba(237, 239, 242, 1);
   border-radius: 8px;
-  width: 82px;
+  width: 86px;
   height: 28px;
-  margin: 3px 0 0 20px;
-  display: flex; /* 使用 flex 布局 */
-  flex-direction: row; /* 确保子元素水平排列 */
-  align-items: center; /* 子元素垂直居中 */
+  margin: 3px 0 0 12px;
 }
 
 .thumbnail_11 {
   width: 16px;
   height: 16px;
-  margin: 0 0 0 12px;
+  margin: 6px 0 0 12px;
 }
 
 .text_42 {
@@ -1283,25 +1110,21 @@ export default{
   text-align: left;
   white-space: nowrap;
   line-height: 18px;
-  flex-direction: row; /* 确保子元素水平排列 */
-  align-items: center; /* 子元素垂直居中 */
+  margin: 5px 12px 0 0;
 }
 
 .group_3 {
   background-color: rgba(237, 240, 250, 1);
   border-radius: 8px;
-  width: 70px;
+  width: 72px;
   height: 28px;
-  margin: 3px 0 0 20px;
-  display: flex; /* 使用 flex 布局 */
-  flex-direction: row; /* 确保子元素水平排列 */
-  align-items: center; /* 子元素垂直居中 */
+  margin: 3px 0 0 12px;
 }
 
 .thumbnail_12 {
   width: 16px;
   height: 16px;
-  margin-left: 12px;
+  margin: 6px 0 0 12px;
 }
 
 .text_43 {
@@ -1315,50 +1138,41 @@ export default{
   text-align: left;
   white-space: nowrap;
   line-height: 18px;
-  flex-direction: row; /* 确保子元素水平排列 */
-  align-items: center; /* 子元素垂直居中 */
+  margin: 5px 12px 0 0;
 }
 
 .box_19 {
   position: relative;
-  display: flex; /* 保持 flex 布局 */
-  flex-direction: row; /* 子元素水平排列 */
-  flex-wrap: wrap; /* 允许子元素换行 */
-  align-items: flex-start; /* 子元素顶部对齐 */
-  width: 900px;
+  width: 351px;
+  height: 20px;
   margin-top: 9px;
-  gap: 8px; /* 添加子元素间距 */
-  margin-left: -10px; /* 向左移动 10px */
 }
 
 .thumbnail_13 {
   width: 16px;
   height: 16px;
-  margin-top: 6px;
+  margin-top: 4px;
 }
 
 .text_44 {
-  max-width: 700px; /* 设置最大宽度 */
-  height: auto; /* 自动调整高度 */
-  overflow-wrap: break-word; /* 自动换行 */
-  word-break: break-word; /* 防止长单词溢出 */
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 351px;
+  height: 20px;
+  overflow-wrap: break-word;
   color: rgba(143, 148, 164, 1);
   font-size: 14px;
   font-weight: normal;
   text-align: justify;
-  white-space: normal; /* 允许换行 */
+  white-space: nowrap;
   line-height: 20px;
-  margin-left: -10px; /* 向左移动 10px */
 }
 
 .text-wrapper_7 {
   width: 64px;
   height: 54px;
-  margin: 5px 15px 0 320px;
-  display: flex; /* 使用 flex 布局 */
-  flex-direction: column; /* 垂直排列子元素 */
-  align-items: center; /* 子元素垂直居中 */
-  justify-content: center; /* 子元素垂直居中 */
+  margin: 5px 0 0 340px;
 }
 
 .text_45 {
@@ -1372,7 +1186,6 @@ export default{
   text-align: center;
   white-space: nowrap;
   line-height: 22px;
-  text-align: center; /* 水平居中对齐 */
 }
 
 .text_46 {
@@ -1385,14 +1198,13 @@ export default{
   text-align: left;
   white-space: nowrap;
   line-height: 20px;
-  margin: 4px 0 0 0;
-  text-align: center; /* 水平居中对齐 */
+  margin: 12px 0 0 4px;
 }
 
 .text-wrapper_8 {
-  width: auto;
+  width: 94px;
   height: 54px;
-  margin: 15px 0 0 25px;
+  margin: 5px 0 0 47px;
 }
 
 .text_47 {
@@ -1426,16 +1238,12 @@ export default{
   border-radius: 8px;
   height: 40px;
   width: 88px;
-  margin: 0 0 0 ;
-  display: flex; /* 使用 flex 布局 */
-  align-items: center; /* 垂直居中 */
-  justify-content: center; /* 水平居中 */
-  cursor: pointer;
+  margin: 12px 0 0 32px;
 }
 
 .text_49 {
-  width: auto; /* 自动适应文字宽度 */
-  height: auto; /* 自动适应文字高度 */
+  width: 56px;
+  height: 20px;
   overflow-wrap: break-word;
   color: rgba(255, 255, 255, 1);
   font-size: 14px;
@@ -1443,18 +1251,22 @@ export default{
   text-align: left;
   white-space: nowrap;
   line-height: 20px;
+  margin: 10px 0 0 16px;
 }
 
 .image_5 {
   width: 1160px;
   height: 1px;
-  margin: 30px 0 0 20px;
+  margin: 19px 0 0 20px;
 }
 
 .group_4 {
+  display: flex; /* 使用 flex 布局 */
+  flex-direction: row; /* 确保子元素水平排列 */  
   width: 140px;
   height: 22px;
   margin: 16px 0 0 20px;
+  gap: 12px; /* 增加子元素之间的间距 */
 }
 
 .thumbnail_14 {
@@ -1521,30 +1333,39 @@ export default{
 }
 
 .group_5 {
-  width: 1162px;
-  height: 32px;
-  margin: 1px 0 0 20px;
+  display: flex; /* 使用 flex 布局 */
+  flex-direction: row; /* 确保子元素水平排列 */
+  flex-wrap: wrap; /* 允许子元素换行 */
+  width: auto;
+  height: auto;
+  margin: 10px 0 0 16px;
+  gap: 10px; /* 子元素之间的间距 */
 }
 
 .text-wrapper_11 {
-  background-color: rgba(135, 0, 102, 0.1);
-  border-radius: 8px;
-  height: 32px;
-  width: 214px;
+  background-color: rgba(135, 0, 102, 0.1); /* 背景色 */
+  border-radius: 8px; /* 圆角 */
+  padding: 8px; /* 添加内边距 */
+  display: inline-flex; /* 使用 inline-flex 让宽度根据内容自动调整 */
+  align-items: center; /* 垂直居中对齐 */
+  height: auto; /* 高度根据内容自动调整 */
+  width: auto; /* 宽度根据内容自动调整 */
+  max-width: 100%; /* 防止超出父容器 */
 }
 
 .text_52 {
-  width: 182px;
-  height: 18px;
-  overflow-wrap: break-word;
-  color: rgba(135, 0, 102, 1);
-  font-size: 14px;
-  font-family: OPPOSans-R;
-  font-weight: normal;
-  text-align: left;
-  white-space: nowrap;
-  line-height: 18px;
-  margin: 7px 0 0 16px;
+  width: auto; /* 让宽度根据内容自动调整 */
+  height: auto; /* 高度根据内容自动调整 */
+  overflow-wrap: break-word; /* 自动换行 */
+  word-break: break-word; /* 防止长单词溢出 */
+  color: rgba(135, 0, 102, 1); /* 文字颜色 */
+  font-size: 14px; /* 字体大小 */
+  font-family: OPPOSans-R; /* 字体 */
+  font-weight: normal; /* 字体粗细 */
+  text-align: left; /* 左对齐 */
+  white-space: normal; /* 允许换行 */
+  line-height: 18px; /* 行高 */
+  margin: 0; /* 移除多余的外边距 */
 }
 
 .text-wrapper_12 {
@@ -2091,23 +1912,28 @@ export default{
 
 .text-wrapper_31 {
   background-color: rgba(255, 112, 9, 0.1);
-  border-radius: 8px;
-  height: 32px;
-  width: 144px;
+  border-radius: 8px; /* 圆角 */
+  padding: 8px; /* 添加内边距 */
+  display: inline-flex; /* 使用 inline-flex 让宽度根据内容自动调整 */
+  align-items: center; /* 垂直居中对齐 */
+  height: auto; /* 高度根据内容自动调整 */
+  width: auto; /* 宽度根据内容自动调整 */
+  max-width: 100%; /* 防止超出父容器 */
 }
 
 .text_73 {
-  width: 112px;
-  height: 18px;
-  overflow-wrap: break-word;
-  color: rgba(255, 112, 9, 1);
-  font-size: 14px;
-  font-family: OPPOSans-R;
-  font-weight: normal;
-  text-align: left;
-  white-space: nowrap;
-  line-height: 18px;
-  margin: 7px 0 0 16px;
+    width: auto; /* 让宽度根据内容自动调整 */
+  height: auto; /* 高度根据内容自动调整 */
+  overflow-wrap: break-word; /* 自动换行 */
+  word-break: break-word; /* 防止长单词溢出 */
+  color: rgba(255, 112, 9, 1); /* 文字颜色 */
+  font-size: 14px; /* 字体大小 */
+  font-family: OPPOSans-R; /* 字体 */
+  font-weight: normal; /* 字体粗细 */
+  text-align: left; /* 左对齐 */
+  white-space: normal; /* 允许换行 */
+  line-height: 18px; /* 行高 */
+  margin: 0; /* 移除多余的外边距 */
 }
 
 .text-wrapper_32 {
@@ -2305,47 +2131,55 @@ export default{
 }
 
 .text-wrapper_39 {
-  background-color: rgba(237, 239, 242, 1);
-  border-radius: 8px;
-  height: 32px;
-  margin-left: 12px;
-  width: 186px;
+  background-color: rgba(234,75,75,0.1);
+  border-radius: 8px; /* 圆角 */
+  padding: 8px; /* 添加内边距 */
+  display: inline-flex; /* 使用 inline-flex 让宽度根据内容自动调整 */
+  align-items: center; /* 垂直居中对齐 */
+  height: auto; /* 高度根据内容自动调整 */
+  width: auto; /* 宽度根据内容自动调整 */
+  max-width: 100%; /* 防止超出父容器 */
 }
 
 .text_82 {
-  width: 154px;
-  height: 18px;
-  overflow-wrap: break-word;
-  color: rgba(30, 36, 55, 1);
-  font-size: 14px;
-  font-family: OPPOSans-R;
-  font-weight: normal;
-  text-align: left;
-  white-space: nowrap;
-  line-height: 18px;
-  margin: 7px 0 0 16px;
+    width: auto; /* 让宽度根据内容自动调整 */
+  height: auto; /* 高度根据内容自动调整 */
+  overflow-wrap: break-word; /* 自动换行 */
+  word-break: break-word; /* 防止长单词溢出 */
+  color: rgba(234, 75, 75, 1);; /* 文字颜色 */
+  font-size: 14px; /* 字体大小 */
+  font-family: OPPOSans-R; /* 字体 */
+  font-weight: normal; /* 字体粗细 */
+  text-align: left; /* 左对齐 */
+  white-space: normal; /* 允许换行 */
+  line-height: 18px; /* 行高 */
+  margin: 0; /* 移除多余的外边距 */
 }
 
 .text-wrapper_40 {
   background-color: rgba(237, 239, 242, 1);
-  border-radius: 8px;
-  height: 32px;
-  margin-left: 12px;
-  width: 144px;
+  border-radius: 8px; /* 圆角 */
+  padding: 8px; /* 添加内边距 */
+  display: inline-flex; /* 使用 inline-flex 让宽度根据内容自动调整 */
+  align-items: center; /* 垂直居中对齐 */
+  height: auto; /* 高度根据内容自动调整 */
+  width: auto; /* 宽度根据内容自动调整 */
+  max-width: 100%; /* 防止超出父容器 */
 }
 
 .text_83 {
-  width: 112px;
-  height: 18px;
-  overflow-wrap: break-word;
-  color: rgba(30, 36, 55, 1);
-  font-size: 14px;
-  font-family: OPPOSans-R;
-  font-weight: normal;
-  text-align: left;
-  white-space: nowrap;
-  line-height: 18px;
-  margin: 7px 0 0 16px;
+    width: auto; /* 让宽度根据内容自动调整 */
+  height: auto; /* 高度根据内容自动调整 */
+  overflow-wrap: break-word; /* 自动换行 */
+  word-break: break-word; /* 防止长单词溢出 */
+  color: rgba(30, 36, 55, 1);; /* 文字颜色 */
+  font-size: 14px; /* 字体大小 */
+  font-family: OPPOSans-R; /* 字体 */
+  font-weight: normal; /* 字体粗细 */
+  text-align: left; /* 左对齐 */
+  white-space: normal; /* 允许换行 */
+  line-height: 18px; /* 行高 */
+  margin: 0; /* 移除多余的外边距 */
 }
 
 .text_84 {
@@ -2531,23 +2365,28 @@ export default{
 
 .text-wrapper_47 {
   background-color: rgba(23, 177, 13, 0.1);
-  border-radius: 8px;
-  height: 32px;
-  width: 144px;
+  border-radius: 8px; /* 圆角 */
+  padding: 8px; /* 添加内边距 */
+  display: inline-flex; /* 使用 inline-flex 让宽度根据内容自动调整 */
+  align-items: center; /* 垂直居中对齐 */
+  height: auto; /* 高度根据内容自动调整 */
+  width: auto; /* 宽度根据内容自动调整 */
+  max-width: 100%; /* 防止超出父容器 */
 }
 
 .text_91 {
-  width: 112px;
-  height: 18px;
-  overflow-wrap: break-word;
-  color: rgba(23, 177, 13, 1);
-  font-size: 14px;
-  font-family: OPPOSans-R;
-  font-weight: normal;
-  text-align: left;
-  white-space: nowrap;
-  line-height: 18px;
-  margin: 7px 0 0 16px;
+  width: auto; /* 让宽度根据内容自动调整 */
+  height: auto; /* 高度根据内容自动调整 */
+  overflow-wrap: break-word; /* 自动换行 */
+  word-break: break-word; /* 防止长单词溢出 */
+  color: rgba(23, 177, 13, 1); /* 文字颜色 */
+  font-size: 14px; /* 字体大小 */
+  font-family: OPPOSans-R; /* 字体 */
+  font-weight: normal; /* 字体粗细 */
+  text-align: left; /* 左对齐 */
+  white-space: normal; /* 允许换行 */
+  line-height: 18px; /* 行高 */
+  margin: 0; /* 移除多余的外边距 */
 }
 
 .text-wrapper_48 {
@@ -2655,16 +2494,14 @@ export default{
 }
 
 .text-wrapper_52 {
-  height: 38px;
+  height: 37px;
   background: url(https://lanhu-oss-2537-2.lanhuapp.com/SketchPnge6219e007b728b8e85b31c701e1c57a584415aaccfc9eb67906efbe87a37f511) -36px -27px
     no-repeat;
   background-size: 144px 108px;
   width: 72px;
   position: absolute;
-  bottom: 90%; /* 向下偏移 */
-  left: 70%; /* 向右偏移 */
-  transform: translate(-50%, 10%); /* 修正水平居中并向下偏移 */
-  z-index: 10; /* 确保在其他元素之上 */
+  left: 285px;
+  top: -16px;
 }
 
 .text_96 {
@@ -2680,13 +2517,4 @@ export default{
   margin: 5px 0 0 8px;
 }
 
-.section_2 {
-background-color: rgba(255, 255, 255, 1);
-border-radius: 16px;
-width: 1240px;
-height: 850px;
-justify-content: flex-center;
-margin: 960px 120px 0 -1338px;
-position: absolute; /* 相对于最近的定位父容器 */
-}
 </style>

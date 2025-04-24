@@ -13,14 +13,6 @@
                 </div>
                 <div class="nav-center">
                     <nav class="navbar-menu">
-                        <router-link to="/home" class="link-item" active-class="active"
-                                     @mouseenter="hovering.home = true"
-                                     @mouseleave="hovering.home = false">
-                            <img :src="homeIcon" 
-                                 alt="主页" 
-                                 class="nav-icon">
-                            <span>主页</span>
-                        </router-link>
                         <router-link to="/" class="link-item" active-class="active"
                                      @mouseenter="hovering.guide = true"
                                      @mouseleave="hovering.guide = false">
@@ -28,6 +20,14 @@
                                  alt="指南" 
                                  class="nav-icon">
                             <span>指南</span>
+                        </router-link>
+                        <router-link to="/home" class="link-item" active-class="active"
+                                     @mouseenter="hovering.home = true"
+                                     @mouseleave="hovering.home = false">
+                            <img :src="homeIcon" 
+                                 alt="主页" 
+                                 class="nav-icon">
+                            <span>主页</span>
                         </router-link>
                         <router-link to="/news" class="link-item" active-class="active"
                                      @mouseenter="hovering.news = true"
