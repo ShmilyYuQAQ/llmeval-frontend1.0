@@ -252,7 +252,7 @@ export default {
 .box_1 {
   width: 400px;
   padding: 20px;
-  background: url(https://lanhu-oss-2537-2.lanhuapp.com/SketchPng9d9090d4fc4cc43b83053b402b489eeb624a7fbabaf9eddecf39e698b8085cdf) -50px;
+  background: rgba(255, 255, 255, 0.995) -50px;
   background-size: 650px 645px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);

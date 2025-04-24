@@ -91,6 +91,7 @@
     </div>
   </div> 
 </div>
+  <Footer></Footer>
 </template>
 
 <script>
@@ -99,6 +100,7 @@ import NavBar from './guidePage/NavBar.vue';
 import ShowTag from './ModelDetailPage/ShowTags.vue';
 import ShowReviews from './ModelDetailPage/ShowReview.vue';
 import CommentList from './Comments/CommentList.vue';
+import Footer from './Footer.vue';
 import { useRouter } from "vue-router";
 export default{
   props: ['name'], // 接收路由参数
@@ -174,6 +176,7 @@ export default{
     ShowTag,
     ShowReviews,
     CommentList,
+    Footer,
   },
   methods: {
     openModelLink() {
@@ -188,9 +191,10 @@ export default{
       if (!imagePath) {
         return ''; // 如果路径为空，返回空字符串
       }
-      const baseUrl = 'http://49.233.82.133:5174'; // 基础 URL
-      const relativePath = imagePath.split('/public')[1]; // 获取 public 后面的部分路径
-      return `${baseUrl}${relativePath}`; // 拼接完整的图片链接
+      // 提取 /images/ 后面的部分
+      const relativePath = imagePath.split('/images/')[1];
+      // 拼接 ../public/images 和提取的部分
+      return `/images/${relativePath}`;
     },
 
     async toggleFavorite() {

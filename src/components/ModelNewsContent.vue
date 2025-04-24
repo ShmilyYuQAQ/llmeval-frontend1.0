@@ -27,10 +27,17 @@
       </div>
 
       <!-- 分页 -->
-      <div class="group_3 flex-row">
-        <button class="pagination-button" @click="loadLastPage" :disabled="currentPage === 1">上一页</button>
-        <span>第 {{ currentPage }} 页，共 {{ totalPages }} 页</span>
-        <button class="pagination-button" @click="loadNextPage" :disabled="currentPage === totalPages">下一页</button>
+      <div class="pagination-container">
+        <el-pagination
+          background
+          :current-page="currentPage"
+          :page-size="pageSize"
+          :total="newsItems.length"
+          layout="prev, pager, next"
+          @current-change="handleCurrentChange"
+          class="custom-pagination"
+        >
+        </el-pagination>
       </div>
     </div>
   </div>
@@ -45,9 +52,7 @@ const newsItems = ref([]);
 const currentPage = ref(1);
 const pageSize = 6;
 
-const totalPages = computed(() => {
-  return Math.ceil(newsItems.value.length / pageSize);
-});
+const shouldShowPagination = computed(() => newsItems.value.length > pageSize.value);
 
 const paginatedNews = computed(() => {
   const start = (currentPage.value - 1) * pageSize;
@@ -55,16 +60,8 @@ const paginatedNews = computed(() => {
   return newsItems.value.slice(start, end);
 });
 
-const loadNextPage = () => {
-  if (currentPage.value < totalPages.value) {
-    currentPage.value++;
-  }
-};
-
-const loadLastPage = () => {
-  if (currentPage.value > 1) {
-    currentPage.value--;
-  }
+const handleCurrentChange = (page) => {
+  currentPage.value = page;
 };
 
 const fetchNews = async () => {
@@ -96,6 +93,64 @@ onMounted(fetchNews);
 </script>
 
 <style scoped>
+.custom-pagination {
+    /* 自定义分页组件类 */
+    font-size: 13px;
+}
+/* 分页容器样式 */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* 自定义分页样式 */
+:deep(.el-pagination.is-background .el-pager li:not(.is-disabled).is-active) {
+    background-color: #870066 !important;
+    color: #ffffff !important;
+    transition: all 0.3s ease;
+}
+
+:deep(.el-pagination.is-background .el-pager li:not(.is-disabled):hover) {
+    color: #870066 !important;
+    transition: color 0.3s ease;
+}
+
+:deep(.el-pagination .btn-next:hover, .el-pagination .btn-prev:hover) {
+    color: #870066 !important;
+    transition: color 0.3s ease;
+}
+
+:deep(.el-pagination .el-pager li:not(.disabled).active) {
+    color: #ffffff !important;
+    background-color: #870066 !important;
+    transition: all 0.3s ease;
+}
+
+:deep(.el-pagination button:hover) {
+    color: #870066 !important;
+}
+
+:deep(.el-pagination.is-background .btn-next, 
+      .el-pagination.is-background .btn-prev, 
+      .el-pagination.is-background .el-pager li) {
+    background-color: #f4f4f5;
+    transition: all 0.3s ease;
+}
+
+:deep(.el-pagination.is-background .btn-next:hover:not(:disabled), 
+      .el-pagination.is-background .btn-prev:hover:not(:disabled)) {
+    color: #870066 !important;
+}
+
+:deep(.el-pagination.is-background .el-pager li:not(.disabled).active) {
+    background-color: #870066 !important;
+}
+
+:deep(.el-pagination) {
+    font-weight: normal;
+    padding: 0;
+}
 
 .page-container {
   display: flex;

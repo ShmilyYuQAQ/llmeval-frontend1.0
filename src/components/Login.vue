@@ -230,13 +230,14 @@ export default {
 }
 
 .group_1 {
-  width: 700px;
+  width: 430px;
   height: 500px;
-  background: url(https://lanhu-oss-2537-2.lanhuapp.com/SketchPng7ea32a015400c7d33fcc970ee5cf377d38327bbce71656952c1d729d86cd397d) -32px -32px
+  background: rgba(255, 255, 255, 0.755) -32px -32px
     no-repeat;
   background-size: 500px 560px;
   margin: 145px 0 0 1000px;
   position: relative; /* 设置为相对定位，方便子元素绝对定位 */
+  border-radius: 8px;
 }
 
 .image-text_1 {
@@ -282,8 +283,8 @@ export default {
 .block_1 {
   width: 72px;
   height: 95px;
-  background: url(https://lanhu-oss-2537-2.lanhuapp.com/SketchPng4f175480528a2b80d8be8f72fb6251c9850507f630e7666e41bb4822474c23ee)
-    100% no-repeat;
+  background: url('@/assets/images/矩形.png')
+  100% no-repeat;
   background-size: 100% 100%;
   margin-left: 325px;
   display: flex; /* 添加 flex 布局 */
