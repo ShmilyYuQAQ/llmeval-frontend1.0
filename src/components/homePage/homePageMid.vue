@@ -5,7 +5,7 @@
             <div class="hero-section">
                 <div class="hero-content content-container">
                     <div class="text-container">
-                        <h1 class="hero-title">LLMEval</h1>
+                        <h1 class="hero-title">琅琊海评</h1>
                         <div class="divider"></div>
                         <p class="hero-description">
                             一个标签化展示大模型能力，为用户提供大模型选择建议的平台
@@ -946,7 +946,7 @@ export default {
 }
 
 .hero-title {
-    width: 125px;
+    width: auto;
     height: 45px;
     font-family: PingFangSC, PingFang SC;
     font-weight: 400;

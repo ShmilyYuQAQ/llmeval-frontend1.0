@@ -580,7 +580,7 @@ export default {
 
 <style scoped>
 .title {
-    width: 100%;
+    width: 98%;
     aspect-ratio: 1440 / 160;
     font-size: 24px;
     font-weight: 600;
