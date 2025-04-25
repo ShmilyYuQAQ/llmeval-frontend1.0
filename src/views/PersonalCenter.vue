@@ -480,7 +480,7 @@ export default {
                         return {
                             modelName: item.modelName,
                             modelId: item.modelId,
-                            modelUrl: `/model-detail/${item.modelId}`,
+                            modelUrl: `/model-detail/${item.modelName}`,
                             content: comment.commentDetail,
                             createTime: comment.createTime,
                             modelImagePath: modelImageMap[modelIdKey] || null
@@ -580,7 +580,7 @@ export default {
 
 <style scoped>
 .title {
-    width: 100%;
+    width: 98%;
     aspect-ratio: 1440 / 160;
     font-size: 24px;
     font-weight: 600;
