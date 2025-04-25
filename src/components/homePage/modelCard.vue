@@ -21,9 +21,12 @@
                         }}</span>
                     </div>
 
-                    <div class="favorite-count" @click.stop="toggleFavorite">
+                    <div class="favorite-count" @click.stop="toggleFavorite" :class="{ 'disabled': isLoading }">
                         <div class="favorite-icon-container">
+                            <!-- 加载中状态显示加载指示器 -->
+                            <div v-if="isLoading" class="loading-spinner"></div>
                             <img
+                                v-else
                                 :src="isFavorited ? favoriteActiveIcon : favoriteIcon"
                                 alt="Favorite"
                                 class="favorite-img"
@@ -65,6 +68,11 @@
             </div>
         </div>
 
+        <!-- 错误提示 -->
+        <div v-if="showError" class="error-message">
+            {{ errorMessage }}
+        </div>
+
         <!-- 卡片下部：详情按钮 -->
         <div class="card-footer">
             <button class="details-button" @click="goToDetail(model.name)">
@@ -76,8 +84,8 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
-import { useRouter } from "vue-router";
+import axios from 'axios';
+import { ElMessage } from 'element-plus';
 
 // 导入图片资源
 import arrowRightIcon from './images/arrow_right.png';
@@ -86,7 +94,10 @@ import favoriteIcon from './images/favorite.png';
 import favoriteActiveIcon from './images/favorite_active.png';
 import defaultLogoIcon from './images/logo1.png';
 import timeIcon from './images/time.png';
+
 export default {
+    name: 'ModelCard',
+    
     props: {
         model: {
             type: Object,
@@ -94,44 +105,12 @@ export default {
         }
     },
     
-    setup(props) {
-        const defaultUrl = ref(defaultLogoIcon);
-        const router = useRouter();
-        const isFavorited = ref(false); // 收藏状态
-        const localFavoriteCount = ref(0); // 本地收藏计数器，用于处理UI更新
-
-        // 计算显示的收藏数量
-        const displayFavoriteCount = computed(() => {
-            const baseCount = props.model.favoriteCount || 0;
-            return isFavorited.value ? baseCount + localFavoriteCount.value : baseCount;
-        });
-
-        // 切换收藏状态
-        function toggleFavorite() {
-            // 这里可以添加与后端交互的逻辑
-            isFavorited.value = !isFavorited.value;
-            console.log(isFavorited.value);
-            // 更新本地计数，仅用于UI展示
-            if (isFavorited.value) {
-                localFavoriteCount.value = 1;
-            } else {
-                localFavoriteCount.value = 0;
-            }
-            
-            // 这里可以添加实际的收藏/取消收藏API调用
-            // 例如: await api.toggleFavorite(props.model.id)
-        }
-
-        function goToDetail(name) {
-            router.push({ name: "ModelDetail", params: { name } });
-        }
-
+    data() {
         return {
-            defaultUrl,
-            isFavorited,
-            displayFavoriteCount,
-            toggleFavorite,
-            goToDetail,
+            defaultUrl: defaultLogoIcon,
+            isLoading: false, // 加载状态
+            showError: false, // 是否显示错误
+            errorMessage: '', // 错误信息
             // 导出图标路径
             favoriteActiveIcon,
             favoriteIcon,
@@ -139,8 +118,127 @@ export default {
             arrowRightIcon,
             timeIcon
         };
+    },
+    
+    computed: {
+        // 计算收藏状态
+        isFavorited() {
+            return this.model.isFavorited;
+        },
+        
+        // 计算显示的收藏数量
+        displayFavoriteCount() {
+            const baseCount = this.model.favoritesCount || 0;
+            return this.isFavorited ? baseCount : baseCount;
+        }
+    },
+    
+    methods: {
+        // 获取认证Token
+        getAuthToken() {
+            return localStorage.getItem('token');
+        },
+        
+        // 获取认证头
+        getAuthHeaders() {
+            const token = this.getAuthToken();
+            return token ? {
+                'Authorization': `Bearer ${token}`
+            } : {};
+        },
+        
+        // 检查用户是否登录
+        checkUserLogin() {
+            const token = this.getAuthToken();
+            return !!token;
+        },
+        
+        // 跳转到登录页面
+        goToLogin() {
+            ElMessage({
+                message: '请先登录后再收藏模型',
+                type: 'warning'
+            });
+            this.$router.push({ 
+                name: 'Login', 
+                query: { redirect: this.$router.currentRoute.value.fullPath } 
+            });
+        },
+        
+        // 切换收藏状态 - 使用axios
+        async toggleFavorite() {
+            // 如果正在加载中，不执行任何操作
+            if (this.isLoading) return;
+            
+            // 检查用户是否登录
+            if (!this.checkUserLogin()) {
+                this.goToLogin();
+                return;
+            }
+            
+            // 设置加载状态
+            this.isLoading = true;
+            this.showError = false;
+            
+            try {
+                const modelId = this.model.modelId;
+                if (!modelId) {
+                    throw new Error('模型ID不存在');
+                }
+                
+                // API基础URL
+                const baseUrl = 'http://49.233.82.133:9091/user/favorites';
+                
+                let response;
+                if (this.isFavorited) {
+                    // 取消收藏 - DELETE请求
+                    response = await axios.delete(`${baseUrl}/delete`, {
+                        params: { modelId },
+                        headers: this.getAuthHeaders()
+                    });
+                } else {
+                    // 添加收藏 - POST请求
+                    response = await axios.post(`${baseUrl}/add`, null, {
+                        params: { modelId },
+                        headers: this.getAuthHeaders()
+                    });
+                }
+                
+                // 检查响应中的success属性
+                if (response.data && response.data.success) {
+                    // 成功处理
+                    const action = this.isFavorited ? '取消收藏' : '收藏';
+                    // 更新收藏量
+                    this.model.isFavorited = !this.isFavorited;
+                    this.model.favoritesCount = this.isFavorited ? this.model.favoritesCount + 1 : this.model.favoritesCount - 1;
+                    
+                } else {
+                    // 业务逻辑错误处理
+                    throw new Error(response.data.message || '操作未成功完成');
+                }
+                
+            } catch (error) {
+                // 显示错误消息
+                console.error('收藏操作失败', error);
+                this.errorMessage = error.response?.data?.message || error.message || '操作失败，请稍后重试';
+                this.showError = true;
+                
+                // 自动隐藏错误信息
+                setTimeout(() => {
+                    this.showError = false;
+                }, 3000);
+            } finally {
+                // 完成后重置加载状态
+                this.isLoading = false;
+            }
+        },
+        
+        // 跳转到详情页
+        goToDetail(name) {
+            this.$router.push({ name: "ModelDetail", params: { name } });
+        }
     }
-}
+};
 </script>
 
 <style scoped>
@@ -159,6 +257,7 @@ export default {
     background-color: white;
     overflow: hidden;
     margin: 0 auto; /* 居中显示 */
+    position: relative; /* 添加相对定位，用于错误提示定位 */
 }
 
 .model-card:hover {
@@ -470,5 +569,52 @@ export default {
     .content {
         line-height: 1.5;
     }
+}
+
+/* 添加收藏按钮禁用状态 */
+.favorite-count.disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* 添加加载动画 */
+.loading-spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(135, 0, 102, 0.1);
+    border-left-color: #870066;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* 错误提示样式 */
+.error-message {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(245, 108, 108, 0.9);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    z-index: 10;
+    white-space: nowrap;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translate(-50%, 10px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
 }
 </style>
