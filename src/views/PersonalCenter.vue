@@ -480,7 +480,7 @@ export default {
                         return {
                             modelName: item.modelName,
                             modelId: item.modelId,
-                            modelUrl: `/model-detail/${item.modelId}`,
+                            modelUrl: `/model-detail/${item.modelName}`,
                             content: comment.commentDetail,
                             createTime: comment.createTime,
                             modelImagePath: modelImageMap[modelIdKey] || null
