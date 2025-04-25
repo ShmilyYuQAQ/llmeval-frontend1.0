@@ -5,7 +5,7 @@
             <div style="position: relative;">
                 <div class="home-page">
                     <div class="banner">
-                        <h1>LLMeval</h1>
+                        <h1>琅琊海评</h1>
                         <p>一个标签化展示大模型能力，为用户提供大模型选择建议的平台</p>
                     </div>
                     <!-- <div class="image-container">
