@@ -29,6 +29,14 @@
                                  class="nav-icon">
                             <span>主页</span>
                         </router-link>
+                        <router-link to="/EvalData" class="link-item" active-class="active"
+                                     @mouseenter="hovering.dataset = true"
+                                     @mouseleave="hovering.dataset = false">
+                            <img :src="datasetIcon" 
+                                 alt="数据集" 
+                                 class="nav-icon">
+                            <span>数据集</span>
+                        </router-link>
                         <router-link to="/news" class="link-item" active-class="active"
                                      @mouseenter="hovering.news = true"
                                      @mouseleave="hovering.news = false">
@@ -84,6 +92,13 @@
                 <span>指南</span>
             </router-link>
             
+            <router-link to="/EvalData" class="mobile-link-item" active-class="active"
+                         @mouseenter="hovering.dataset = true"
+                         @mouseleave="hovering.dataset = false">
+                <img :src="datasetIcon" alt="数据集" class="nav-icon">
+                <span>数据集</span>
+            </router-link>
+            
             <router-link to="/news" class="mobile-link-item" active-class="active"
                          @mouseenter="hovering.news = true"
                          @mouseleave="hovering.news = false">
@@ -118,6 +133,8 @@
 import defaultAvatar from '@/assets/images/default.png';
 import centerLogoNormal from './images/center_logo.png';
 import centerLogoActive from './images/center_logo_active.png';
+import dataLogoNormal from './images/data_logo.png';
+import dataLogoActive from './images/data_logo_active.png';
 import guideLogoNormal from './images/guide_logo.png';
 import guideLogoActive from './images/guide_logo_active.png';
 import homeLogoNormal from './images/home_logo.png';
@@ -142,6 +159,10 @@ export default {
                     normal: guideLogoNormal,
                     active: guideLogoActive
                 },
+                dataset: {
+                    normal: dataLogoNormal,
+                    active: dataLogoActive
+                },
                 news: {
                     normal: newsLogoNormal,
                     active: newsLogoActive
@@ -154,6 +175,7 @@ export default {
             hovering: {
                 home: false,
                 guide: false,
+                dataset: false,
                 news: false,
                 center: false,
                 login: false,
@@ -167,6 +189,9 @@ export default {
         },
         guideIcon() {
             return this.$route.path === '/' || this.hovering.guide ? this.icons.guide.active : this.icons.guide.normal;
+        },
+        datasetIcon() {
+            return this.$route.path === '/EvalData' || this.hovering.dataset ? this.icons.dataset.active : this.icons.dataset.normal;
         },
         newsIcon() {
             return this.$route.path === '/news' || this.hovering.news ? this.icons.news.active : this.icons.news.normal;

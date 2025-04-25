@@ -1,12 +1,15 @@
 <template>
-    <div class="outer">   
+    <div class="outer">
         <div class="model-card-container">
             <div
                 v-for="(item, index) in paginatedModel"
                 :key="index"
                 class="container-c"
             >
-                <ModelCard :model="item"></ModelCard>
+                <ModelCard
+                    :model="item"
+                    @favorite-change="handleFavoriteChange"
+                ></ModelCard>
             </div>
         </div>
         <div class="pagination-container">
@@ -27,6 +30,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import ModelCard from "./modelCard.vue";
 export default {
     components: {
@@ -56,62 +60,102 @@ export default {
             error: null,
             models: [],
             screenWidth: window.innerWidth,
-            isDevelopment: process.env.NODE_ENV === 'development',
+            isDevelopment: process.env.NODE_ENV === "development",
         };
     },
     props: ["datas"],
     methods: {
-        handleCurrentChange(newPage) {
-            const maxPage = Math.max(Math.ceil(this.models.length / this.pagination.pageSize), 1);
-            if (newPage > maxPage) {
-                this.$message.error(`页码 ${newPage} 超出范围，最大页码为 ${maxPage}`);
-                this.pagination.currentPage = 1;
-            } else {
-                this.pagination.currentPage = newPage;
+        updatePaginatedModel(newModels) {
+            if (newModels) {
+                this.models = newModels;
             }
-            this.updatePaginatedModel();
-            if (this.$parent && this.$parent.updateUrlParams) {
-                this.$parent.updateUrlParams();
-            }
-        },
-        handleSizeChange(newSize) {
-            this.pagination.pageSize = newSize;
-            this.updatePaginatedModel();
-        },
-        updatePaginatedModel(datas = null) {
-            if (datas !== null) {
-                this.models = datas || [];
-                // 当提供新数据时始终重置为第一页
-                this.pagination.currentPage = 1;
-            }
-            
-            if (!this.models || this.models.length === 0) {
+            if (!this.models.length) {
                 this.paginatedModel = [];
                 return;
             }
-            
-            const maxPage = Math.max(Math.ceil(this.models.length / this.pagination.pageSize), 1);
+
+            const startIndex =
+                (this.pagination.currentPage - 1) * this.pagination.pageSize;
+            const endIndex = startIndex + this.pagination.pageSize;
+
+            if (startIndex > this.models.length) {
+                this.pagination.currentPage = 1; // 重置到第一页
+                this.updatePaginatedModel(); // 递归调用以更新
+                return;
+            }
+
+            this.paginatedModel = this.models.slice(startIndex, endIndex);
+        },
+
+        handleCurrentChange(newPage) {
+            this.pagination.currentPage = newPage;
+            this.updatePaginatedModel();
+
+            // 如果不处于恢复状态，则更新URL
+            this.$parent?.updateUrlParams?.();
+
+            // 切换页面后滚动到顶部
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        },
+
+        handleSizeChange(newSize) {
+            this.pagination.pageSize = newSize;
+            // 如果更改每页显示数量后，当前页码已超出范围，则重置为第一页
+            const maxPage = Math.ceil(this.models.length / newSize);
             if (this.pagination.currentPage > maxPage) {
-                console.warn(`页码 ${this.pagination.currentPage} 超出范围，最大页码为 ${maxPage}，已自动调整`);
                 this.pagination.currentPage = 1;
             }
-            
-            const start = (this.pagination.currentPage - 1) * this.pagination.pageSize;
-            const end = start + this.pagination.pageSize;
-            this.paginatedModel = this.models.slice(start, end);
-            console.log(`当前页: ${this.pagination.currentPage}, 每页数量: ${this.pagination.pageSize}, 显示数据: ${this.paginatedModel.length}/${this.models.length}`);
+            this.updatePaginatedModel();
         },
+
+        // 处理模型收藏状态改变
+
         updateScreenWidth() {
-            this.screenWidth = window.innerWidth
+            this.screenWidth = window.innerWidth;
+        },
+        getAuthHeaders() {
+            const token = localStorage.getItem("token");
+            return token
+                ? {
+                      Authorization: `Bearer ${token}`,
+                  }
+                : {};
+        },
+        findFavorite() {
+            // 调用后端接口，获取被收藏的模型id,带请求头
+            axios
+                .get("http://49.233.82.133:9091/user/favorites", {
+                    headers: this.getAuthHeaders(),
+                })
+                .then((response) => {
+                    const favoriteIds = response.data.data;
+                    
+                    // 在获取到favoriteIds后再处理模型数据
+                    console.log(favoriteIds, "favoriteIds");
+                    console.log(this.models, "this.models");
+                    
+                    // 遍历models，找到被收藏的模型，设置isFavorite为true
+                    this.models.forEach((model) => {
+                        if (favoriteIds.includes(model.modelId)) {
+                            model.isFavorited = true;
+                            console.log(model, "ssmodel");
+                        }
+                    });
+                })
+                .catch((error) => {
+                    console.error("获取收藏列表失败:", error);
+                });
         },
     },
     created() {
         this.models = this.datas || [];
+        console.log(this.models, "得到的models");
+        this.findFavorite();
         this.updatePaginatedModel();
-        window.addEventListener('resize', this.updateScreenWidth);
+        window.addEventListener("resize", this.updateScreenWidth);
     },
     unmounted() {
-        window.removeEventListener('resize', this.updateScreenWidth);
+        window.removeEventListener("resize", this.updateScreenWidth);
     },
     computed: {
         totalModels() {
@@ -119,16 +163,20 @@ export default {
         },
         shouldShowPagination() {
             return this.models.length > this.pagination.pageSize;
-        }
+        },
     },
     watch: {
         datas: {
             handler(newData) {
                 if (newData?.length) {
                     this.models = newData;
-                    const maxPage = Math.ceil(newData.length / this.pagination.pageSize);
+                    const maxPage = Math.ceil(
+                        newData.length / this.pagination.pageSize
+                    );
                     if (this.pagination.currentPage > maxPage) {
-                        this.$message.error(`当前页码超出范围，已自动跳转到第一页`);
+                        this.$message.error(
+                            `当前页码超出范围，已自动跳转到第一页`
+                        );
                         this.pagination.currentPage = 1;
                     }
                     this.updatePaginatedModel();
@@ -137,9 +185,9 @@ export default {
                     this.paginatedModel = [];
                 }
             },
-            immediate: true
-        }
-    }
+            immediate: true,
+        },
+    },
 };
 </script>
 
@@ -212,15 +260,19 @@ export default {
     color: #870066 !important;
 }
 
-:deep(.el-pagination.is-background .btn-next, 
-      .el-pagination.is-background .btn-prev, 
-      .el-pagination.is-background .el-pager li) {
+:deep(
+        .el-pagination.is-background .btn-next,
+        .el-pagination.is-background .btn-prev,
+        .el-pagination.is-background .el-pager li
+    ) {
     background-color: #f4f4f5;
     transition: all 0.3s ease;
 }
 
-:deep(.el-pagination.is-background .btn-next:hover:not(:disabled), 
-      .el-pagination.is-background .btn-prev:hover:not(:disabled)) {
+:deep(
+        .el-pagination.is-background .btn-next:hover:not(:disabled),
+        .el-pagination.is-background .btn-prev:hover:not(:disabled)
+    ) {
     color: #870066 !important;
 }
 
@@ -239,25 +291,25 @@ export default {
         grid-template-columns: 1fr; /* 单列 */
         gap: 20px;
     }
-    
+
     .container-c {
         width: 100%;
         min-height: 242px; /* 保持最小高度 */
         justify-self: center; /* 单元格内居中 */
     }
-    
+
     .pagination-container {
         justify-content: center; /* 小屏幕上居中显示 */
         padding: 0;
         margin-top: 20px;
         margin-bottom: 30px;
     }
-    
+
     :deep(.el-pagination) {
         padding: 0;
         margin: 0;
     }
-    
+
     :deep(.el-pagination .el-pager li) {
         min-width: 30px;
     }
@@ -269,12 +321,12 @@ export default {
         grid-template-columns: minmax(320px, 1fr); /* 单列但限制最大宽度 */
         gap: 25px;
     }
-    
+
     .container-c {
         width: 100%;
         justify-self: center;
     }
-    
+
     .pagination-container {
         justify-content: flex-end; /* 平板依然右对齐 */
         padding-right: 10px;
@@ -305,7 +357,7 @@ export default {
         width: 90%; /* 收窄一点宽度，提供更多留白 */
         max-width: 1400px;
     }
-    
+
     .pagination-container {
         width: 90%;
         max-width: 1400px;

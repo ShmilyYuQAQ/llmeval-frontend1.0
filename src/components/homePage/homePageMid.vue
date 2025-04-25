@@ -5,8 +5,8 @@
             <div class="hero-section">
                 <div class="hero-content content-container">
                     <div class="text-container">
-                        <h1 class="hero-title">LLMEval</h1>
-                        <div class="divider"></div>
+                        <h1 class="hero-title">琅琊海评</h1>
+                       <div class="divider"></div>
                         <p class="hero-description">
                             一个标签化展示大模型能力，为用户提供大模型选择建议的平台
                         </p>
@@ -946,8 +946,8 @@ export default {
 }
 
 .hero-title {
-    width: 125px;
-    height: 45px;
+    width: auto; /* 改为自动宽度，而不是固定的125px */
+    height: auto; /* 允许高度自适应内容 */
     font-family: PingFangSC, PingFang SC;
     font-weight: 400;
     font-size: 32px;
@@ -956,12 +956,13 @@ export default {
     text-align: left;
     font-style: normal;
     margin-bottom: 10px;
+    white-space: nowrap; /* 防止文本换行 */
 }
 
 .divider {
     height: 2px;
     background-color: #870066;
-    width: 125px;
+    width: 180px; /* 增加分隔线宽度，与标题文本宽度匹配 */
     margin-bottom: 10px;
 }
 
@@ -1107,10 +1108,12 @@ export default {
     .hero-title {
         text-align: center;
         margin: 0 auto 10px;
+        white-space: nowrap; /* 确保在移动设备上也不换行 */
     }
 
     .divider {
         margin: 0 auto 10px;
+        width: 180px; /* 保持与桌面版一致 */
     }
 
     .hero-description {
