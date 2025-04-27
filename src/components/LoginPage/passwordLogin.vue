@@ -147,26 +147,61 @@ export default {
         alert("请输入账号和密码！");
         return;
       }
-      try {
-        const response = await axios.post("http://49.233.82.133:9091/user/login/", {
-          userName: this.email,
-          password: this.password,
-        });
-        const data = response.data;
-        if (data.success) {
-          alert("登录成功！");
-          // 保存 Token 到 localStorage
-          localStorage.setItem('token', response.data.data.token);
-          localStorage.setItem('userName', response.data.data.userName);
-          const urlParams = new URLSearchParams(window.location.search);
-          const redirectUrl = urlParams.get('redirect') || '/';
-          window.location.href = redirectUrl;
-        } else {
-          alert(data.errorMsg || "登录失败，请检查账号和密码！");
+      if(this.checkEmailOrPhone(this.email) === "invalid") {
+        alert("请输入有效的电子邮箱或手机号！");
+        return;
+      }
+
+      //邮箱登录
+      if (this.checkEmailOrPhone(this.email) === "email") {
+        try {
+          const response = await axios.post("http://49.233.82.133:9091/user/loginByEmail", {
+            email: this.email,
+            password: this.password,
+          });
+          const data = response.data;
+          if (data.success) {
+            alert("登录成功！");
+            // 保存 Token 到 localStorage
+            localStorage.setItem('token', response.data.data.token);
+            localStorage.setItem('userName', response.data.data.userName);
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirectUrl = urlParams.get('redirect') || '/';
+            window.location.href = redirectUrl;
+            this.clearInput(); // 清空输入框
+          } else {
+            alert(data.errorMsg || "登录失败，请检查账号和密码！");
+          }
+        } catch (error) {
+          alert("网络错误或后端异常，请稍后再试");
+          console.error(error);
         }
-      } catch (error) {
-        alert("网络错误或后端异常，请稍后再试");
-        console.error(error);
+      }
+
+      //手机号登录
+      else if (this.checkEmailOrPhone(this.email) === "phone") {
+        try {
+          const response = await axios.post(`http://49.233.82.133:9091/user/loginByPhone`, {
+            phone: this.email,
+            password: this.password,
+          });
+          const data = response.data;
+          if (data.success) {
+            alert("登录成功！");
+            // 保存 Token 到 localStorage
+            localStorage.setItem('token', response.data.data.token);
+            localStorage.setItem('userName', response.data.data.userName);
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirectUrl = urlParams.get('redirect') || '/';
+            window.location.href = redirectUrl;
+            this.clearInput(); // 清空输入框
+          } else {
+            alert(data.errorMsg || "登录失败，请检查账号和密码！");
+          }
+        } catch (error) {
+          alert("网络错误或后端异常，请稍后再试");
+          console.error(error);
+        }
       }
     },
 
@@ -204,6 +239,12 @@ export default {
           this.isSendingCode = false;
         }
       }, 1000);
+    },
+
+    //清空输入框
+    clearInput() {
+      this.email = ""; // 清空手机号输入框
+      this.password = ""; // 清空密码输入框
     },
   },
 };

@@ -172,8 +172,8 @@ export default {
       if (this.checkEmailOrPhone(this.email) === "phone") {
         try {
           const response = await axios.post(
-            `http://49.233.82.133:9091/user/register?code=${this.verificationCode}`,
-            { userName: this.username, email: this.email, password: this.password },
+            `http://49.233.82.133:9091/user/phone-register/?code=${this.verificationCode}`,
+            { userName: this.username, phone: this.email, password: this.password },
             {
               headers: {
                 "Content-Type": "application/json",
@@ -212,6 +212,7 @@ export default {
       }
       if(this.checkEmailOrPhone(this.email) === "email") {
         try {
+          console.log('邮箱注册');
           const response = await axios.post(`http://49.233.82.133:9091/user/sendEmailCode?email=${this.email}`);
           const data = response.data;
           
@@ -228,10 +229,12 @@ export default {
       } 
       else if(this.checkEmailOrPhone(this.email) === "phone") {
         try {
-          const response = axios.post(`http://49.233.82.133:9091/user/sendEmailCode?email=${this.email}`);
+          console.log('手机号注册');
+          const response = await axios.post(`http://49.233.82.133:9091/user/sendPhoneCode/?phone=${this.email}`);
           const data = response.data;
           if (data.success) {
             alert("验证码已发送到您的手机！");
+            this.startCountdown(); // 启动倒计时
           } else {
             alert(data.errorMsg || "发送验证码失败，请重试！");
           }
