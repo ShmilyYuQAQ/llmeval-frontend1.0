@@ -20,6 +20,59 @@
                             一个标签化展示大模型能力，为用户提供大模型选择建议的平台
                         </p>
                     </div>
+                    <div class="level">
+                        <h1>
+                            能力等级
+                        </h1>
+                        <p>Capability level</p>
+                        <div class="pyramid-container" style="width: 80%;margin-bottom:100px;position:relative;">
+                            <img src="@/components/guidePage/images/level.png" alt="" style="width: 90%" />
+                            <div class="level-descriptions">
+                                <div class="level-item">
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;模型表现明显不足，与平均水平差距较大，需要较大改进</p>
+                                </div>
+                                <div class="level-item">
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;能力表现略低于平均水平，需要进一步提升。</p>
+                                </div>
+                                <div class="level-item good">
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;模型表现尚可，达到一般水平，但仍有一定的提升空间。</p>
+                                    <h4 class="model-title">代表模型</h4>
+                                    <div class="model-list">
+                                        <a href="/model-detail/ERNIE 4.0" target="_blank" class="model-card" style="color: #ffcc00;">
+                                            ERNIE 4.0<br><span>文本生成较稳定</span>
+                                        </a>
+                                        <a href="/model-detail/ChatGLM3-6B" target="_blank" class="model-card" style="color: #ffcc00;">
+                                            ChatGLM3-6B<br><span>支持多语言</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="level-item excellent">
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;模型表现优异，超过大多数模型，仅有一些轻微不足。</p>
+                                    <h4 class="model-title">代表模型</h4>
+                                    <div class="model-list">
+                                        <a href="/model-detail/Yi-1.5-9B-Chat" target="_blank" class="model-card" style="color: #33cc33;">
+                                            Yi-1.5-9B-Chat<br><span>推理速度快</span>
+                                        </a>
+                                        <a href="/model-detail/DeepSeek-R1" target="_blank" class="model-card" style="color: #33cc33;">
+                                            DeepSeek-R1<br><span>语义理解强</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="level-item top">
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;模型能力非常出色，远超平均水平，几乎无明显缺陷。</p>
+                                    <h4 class="model-title">代表模型</h4>
+                                    <div class="model-list">
+                                        <a href="/model-detail/Doubao-pro-32k" target="_blank" class="model-card" style="color: #9933cc;">
+                                            Doubao-pro-32k<br><span>综合能力极强</span>
+                                        </a>
+                                        <a href="/model-detail/GPT-4o" target="_blank" class="model-card" style="color: #9933cc;">
+                                            GPT-4o<br><span>多模态支持</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="content-container">
                         <div class="cards">
                             <p class="card-title">标签识能，交互荐优，个性匹配</p>
@@ -75,32 +128,6 @@
                         <div class="right-content">
                             <img src="@\components\guidePage\images\doubao.png"
                                 alt="豆包" class="pyramid-image" />
-                        </div>
-                    </div>
-                    <div class="level">
-                        <h1>
-                            能力等级
-                        </h1>
-                        <p>Capability level</p>
-                        <div class="pyramid-container" style="width: 80%;margin-bottom:100px;position:relative;">
-                            <img src="@/components/guidePage/images/level.png" alt="" style="width: 90%" />
-                            <div class="level-descriptions">
-                                <div class="level-item">
-                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;模型表现明显不足，与平均水平差距较大，需要较大改进</p>
-                                </div>
-                                <div class="level-item">
-                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;能力表现略低于平均水平，需要进一步提升。</p>
-                                </div>
-                                <div class="level-item">
-                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;模型表现尚可，达到一般水平，但仍有一定的提升空间。</p>
-                                </div>
-                                <div class="level-item">
-                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;模型表现优异，超过大多数模型，仅有一些轻微不足。</p>
-                                </div>
-                                <div class="level-item">
-                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;模型能力非常出色，远超平均水平，几乎无明显缺陷。</p>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -165,12 +192,12 @@ export default {
 
 .banner {
     text-align: center;
-    margin-bottom: 20px;
     width: 100%;
     height: 197px;
     background-image: url("@/components/guidePage/images/LLM_BK.png");
     background-size: cover;
     background-repeat: no-repeat;
+    z-index: 10; /* 设置较高的 z-index 值，使其显示在上层 */
 }
 
 .banner>h1 {
@@ -237,6 +264,54 @@ export default {
     margin: 0 0 16px 0;
 }
 
+.model-title {
+  font-weight: bold;
+  margin-top: 10px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.model-list {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.model-card {
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+  width: 120px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.model-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.level-item.good .model-card {
+  border-left: 4px solid #ff9900;
+  border-right: 4px solid #ff9900;
+  margin: 0 auto; /* 添加此行 */
+}
+
+.level-item.excellent .model-card {
+  border-left: 4px solid #33cc33;
+  border-right: 4px solid #33cc33;
+    margin: 0 auto; /* 添加此行 */
+}
+
+.level-item.top .model-card {
+  border-left: 4px solid #9933cc;
+  border-right: 4px solid #9933cc;
+  margin: 0 auto; /* 添加此行 */
+}
+
 /* 卡片列表样式 */
 .cards {
     display: flex;
@@ -255,11 +330,6 @@ export default {
     height: 149px;
 }
 
-.guide-card:hover {
-    transform: scale(1.02);
-    border-radius: 16px;
-    border: 2px solid #870066;
-}
 
 /* 卡片内部样式 */
 .card-body {
@@ -303,10 +373,6 @@ export default {
     margin-top: 8px;
 }
 
-.guide-card:hover .text_container h2 {
-    color: #870066;
-}
-
 /* 列表样式 */
 .text_container ul {
     padding-left: 20px;
@@ -337,18 +403,13 @@ ul li {
 
 /* 图片样式 */
 .pyramid-image {
-    width: 627px;
-    max-width: 100%;
-    height: 550px;
+    width: 115%; 
+    height: auto; /* 放大图片高度 */
     object-fit: contain;
-    transition: transform 0.3s ease;
-    padding-right: 180px;
+    right:100px;
     position: relative;
     top: 40px;
-}
-
-.pyramid-image:hover {
-    transform: scale(1.02);
+    transition: none; /* 取消动画效果 */
 }
 
 /* 响应式设计 */
@@ -373,11 +434,11 @@ ul li {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    margin-top: 20px;
     background-image: url("@/components/guidePage/images/level_BK.png");
     background-size: cover;
     background-repeat: no-repeat;
-    height: auto;
+    height: 900px;
+    margin-top: -60px; /* 添加此行，向上移动20px */
 }
 
 .level h1 {
@@ -416,7 +477,7 @@ ul li {
     width: 88.5%;
     display: flex;
     justify-content: space-between;
-    bottom: 10px;
+    top:380px;
 }
 
 .level-item {

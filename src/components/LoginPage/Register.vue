@@ -1,5 +1,5 @@
 <template>
-  <div class="register-overlay" @click.self="$emit('close')">
+  <div class="register-overlay">
     <div class="box_1 flex-col">
       <span class="close-button" @click="$emit('close')">×</span>
       <span class="text_1">注册账号</span>

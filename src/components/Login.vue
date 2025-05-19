@@ -182,7 +182,7 @@ export default {
       }
       try {
         const response = await axios.post(
-          `http://49.233.82.133:9091/user/sendPhoneCode/?phone=${phone}`
+          `http://49.233.82.133:9091/user/sendCodeAndPasswordByPhone/?phone=${phone}`
         );
         const data = response.data;
         if (data.success) {

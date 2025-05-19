@@ -10,14 +10,14 @@
                             class="logo"
                         />
                     </a>
-                    <a href="#" target="_blank" class="logo-link">
+                    <a href="https://www.hl-it.cn/" target="_blank" class="logo-link">
                         <img
                             src="./images/xinchuang_logo.png"
                             alt="信创海河实验室"
                             class="logo"
                         />
                     </a>
-                    <a href="#" target="_blank" class="logo-link">
+                    <a href="http://www.datum.com.cn/" target="_blank" class="logo-link">
                         <img
                             src="./images/diantong_logo.png"
                             alt="点通"
