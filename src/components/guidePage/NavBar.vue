@@ -20,7 +20,7 @@
                     <a href="#" target="_blank" class="logo-link">
                         <img
                             src="./images/diantong_logo.png"
-                            alt="点通 "
+                            alt="点通"
                             class="logo"
                         />
                     </a>
