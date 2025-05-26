@@ -14,6 +14,9 @@
                     <div class="cards">
                         <GuideCard v-for="formData in cardDatas" :key="formData.titile" :cardData="formData"></GuideCard>
                     </div>
+                    <div class="flex justify-center mt-12">
+                        <GuideCarousel />
+                    </div>
                 </div>
             </div>
         </div>
@@ -24,11 +27,13 @@
 import NavBar from './NavBar.vue';
 import GuideCard from './guideCard.vue';
 import SponsorCard from './sponsorCard.vue';
+import GuideCarousel from './GuideCarousel.vue';
 export default {
     components:{
         NavBar,
         SponsorCard,
-        GuideCard
+        GuideCard,
+        GuideCarousel
     },
     data(){
         return{
