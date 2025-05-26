@@ -128,6 +128,12 @@ export default {
       this.isPasswordLogin = false;
     },
 
+    //清空输入框
+    clearInput() {
+      this.phone = "";
+      this.verificationCode = "";
+    },
+
     // 登录处理
     async handleLogin() {
       console.log("当前登录方式:", this.isPasswordLogin ? "账号密码登录" : "验证码登录");
@@ -142,17 +148,19 @@ export default {
           return;
         }
         try {
-          const response = await axios.post("http://49.233.82.133:9091/user/login/", {
-            phone: this.phone,
-            code: this.verificationCode,
-          });
+          const response = await axios.post(`http://49.233.82.133:9091/user/phone-login-register/?phone=${this.phone}&code=${this.verificationCode}`);
           const data = response.data;
           if (data.success) {
             alert("登录成功！");
             localStorage.setItem("token", data.data.token);
             localStorage.setItem("userName", data.data.userName);
-            window.location.href = "/";
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirectUrl = urlParams.get('redirect') || '/';
+            window.location.href = redirectUrl;
+
+            this.clearInput(); // 清空输入框
           } else {
+            console.log(data);
             alert(data.errorMsg || "登录失败，请检查手机号和验证码！");
           }
           }catch (error) {
@@ -174,7 +182,7 @@ export default {
       }
       try {
         const response = await axios.post(
-          `http://49.233.82.133:9091/user/sendPhoneCode?phone=${phone}`
+          `http://49.233.82.133:9091/user/sendCodeAndPasswordByPhone/?phone=${phone}`
         );
         const data = response.data;
         if (data.success) {

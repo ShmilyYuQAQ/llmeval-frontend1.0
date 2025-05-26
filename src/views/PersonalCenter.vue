@@ -580,7 +580,7 @@ export default {
 
 <style scoped>
 .title {
-    width: 98%;
+    width: auto;
     aspect-ratio: 1440 / 160;
     font-size: 24px;
     font-weight: 600;
@@ -627,7 +627,7 @@ export default {
 
 .personal-center-container {
     display: flex;
-    height: calc(100vh - 100px);
+    height: auto;
     margin: 20px 120px 20px 120px;
     gap: 20px;
 }

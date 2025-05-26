@@ -1,5 +1,5 @@
 <template>
-  <div class="register-overlay" @click.self="$emit('close')">
+  <div class="register-overlay">
     <div class="box_1 flex-col">
       <span class="close-button" @click="$emit('close')">×</span>
       <span class="text_1">找回密码</span>
@@ -130,7 +130,7 @@ export default {
       // 手机号找回密码
       if (this.checkEmailOrPhone(this.email) === "phone") {
         try {
-          const response = await axios.post(`http://49.233.82.133:9091/user/findPassword?email=${this.email}&code=${this.verificationCode}&newPassword=${this.password}`);
+          const response = await axios.put(`http://49.233.82.133:9091/user/updatePasswordByPhone?phone=${this.email}&code=${this.verificationCode}&newPassword=${this.password}`);
           const data = response.data;
           if (data.success) {
             alert(data.data || "找回密码成功！");
@@ -192,10 +192,11 @@ export default {
       } 
       else if(this.checkEmailOrPhone(this.email) === "phone") {
         try {
-          const response = axios.post(`http://49.233.82.133:9091/user/sendEmailCode?email=${this.email}`);
+          const response = await axios.post(`http://49.233.82.133:9091/user/sendPhoneCode/?phone=${this.email}`);
           const data = response.data;
           if (data.success) {
             alert("验证码已发送到您的手机！");
+            this.startCountdown(); // 启动倒计时
           } else {
             alert(data.errorMsg || "发送验证码失败，请重试！");
           }

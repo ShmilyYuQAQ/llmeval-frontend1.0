@@ -235,7 +235,8 @@ export default {
         
         // 跳转到详情页
         goToDetail(name) {
-            this.$router.push({ name: "ModelDetail", params: { name } });
+            const url = this.$router.resolve({ name: "ModelDetail", params: { name } }).href;
+            window.open(url, "_blank");
         }
     }
 };
