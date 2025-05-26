@@ -2,6 +2,7 @@
     <NavBar></NavBar>
     <main class="page-content">
         <div class="main-content">
+            <!-- 原有的页面内容 -->
             <div style="
                     position: relative;
                     display: flex;
@@ -134,6 +135,10 @@
             </div>
         </div>
     </main>
+    <!-- 页面底部轮播图 -->
+    <div style="display: flex; justify-content: center;background-color: white;margin-bottom:20px">
+        <GuideCarousel style="max-width: 800px; width: 100%;" />
+    </div>
 </template>
 
 <script>
@@ -141,12 +146,15 @@ import NavBar from "@/components/guidePage/NavBar.vue";
 import Pyramid from "@/components/guidePage/Pyramid.vue";
 import GuideCard from "@/components/guidePage/guideCard.vue";
 import SponsorCard from "@/components/guidePage/sponsorCard.vue";
+import GuideCarousel from "@/components/guidePage/GuideCarousel.vue";
+
 export default {
     components: {
         NavBar,
         SponsorCard,
         GuideCard,
         Pyramid,
+        GuideCarousel,
     },
     data() {
         return {
@@ -176,12 +184,19 @@ export default {
                     icon: 2,
                 },
             ],
+            currentIndex: 0
         };
     },
+    mounted() {
+        setInterval(() => {
+            this.currentIndex = (this.currentIndex + 1) % this.images.length;
+        }, 3000);
+    }
 };
 </script>
 
 <style scoped>
+/* 原有的样式 */
 .page-content {
     background-color: rgb(255, 255, 255);
 }
@@ -265,51 +280,51 @@ export default {
 }
 
 .model-title {
-  font-weight: bold;
-  margin-top: 10px;
-  font-size: 16px;
-  text-align: center;
+    font-weight: bold;
+    margin-top: 10px;
+    font-size: 16px;
+    text-align: center;
 }
 
 .model-list {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 8px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 8px;
 }
 
 .model-card {
-  background-color: #f7f7f7;
-  border-radius: 10px;
-  padding: 12px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  transition: transform 0.2s;
-  width: 120px;
-  font-size: 14px;
-  text-align: center;
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    padding: 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    width: 120px;
+    font-size: 14px;
+    text-align: center;
 }
 
 .model-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .level-item.good .model-card {
-  border-left: 4px solid #ff9900;
-  border-right: 4px solid #ff9900;
-  margin: 0 auto; /* 添加此行 */
+    border-left: 4px solid #ff9900;
+    border-right: 4px solid #ff9900;
+    margin: 0 auto; /* 添加此行 */
 }
 
 .level-item.excellent .model-card {
-  border-left: 4px solid #33cc33;
-  border-right: 4px solid #33cc33;
+    border-left: 4px solid #33cc33;
+    border-right: 4px solid #33cc33;
     margin: 0 auto; /* 添加此行 */
 }
 
 .level-item.top .model-card {
-  border-left: 4px solid #9933cc;
-  border-right: 4px solid #9933cc;
-  margin: 0 auto; /* 添加此行 */
+    border-left: 4px solid #9933cc;
+    border-right: 4px solid #9933cc;
+    margin: 0 auto; /* 添加此行 */
 }
 
 /* 卡片列表样式 */
@@ -403,10 +418,10 @@ ul li {
 
 /* 图片样式 */
 .pyramid-image {
-    width: 115%; 
+    width: 115%;
     height: auto; /* 放大图片高度 */
     object-fit: contain;
-    right:100px;
+    right: 100px;
     position: relative;
     top: 40px;
     transition: none; /* 取消动画效果 */
@@ -477,7 +492,7 @@ ul li {
     width: 88.5%;
     display: flex;
     justify-content: space-between;
-    top:380px;
+    top: 380px;
 }
 
 .level-item {
@@ -515,5 +530,47 @@ ul li {
     line-height: 1.4;
     text-align: start;
     margin: 0;
+}
+
+/* 新增的轮播图样式 */
+.slider-container {
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    position: relative;
+}
+
+.slider {
+    display: flex;
+    width: calc(100% * 3);
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slider img {
+    width: calc(100% / 3);
+    height: 100%;
+    object-fit: cover;
+}
+
+.slider-dots {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+}
+
+.slider-dots span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ccc;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.slider-dots span.active {
+    background-color: #333;
 }
 </style>
