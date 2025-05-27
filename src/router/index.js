@@ -36,6 +36,10 @@ const routes = [
         path: '/EvalData',
         component: () => import("@/views/TestData.vue"),
     },
+    {
+        path: '/about-us',
+        component: () => import("@/components/Footer/AboutUs.vue"),
+    },
 ];
 
 const router = createRouter({
