@@ -17,6 +17,7 @@
               :src="getModelImageUrl(modelData.data.model_image_path)" 
               alt="模型形象图片" 
               class="model-image"
+              @error="onImageError"
             />
           </div>
           <div class="box_17 flex-col justify-between">
@@ -186,13 +187,21 @@ export default{
       }
     },
 
+    onImageError(event) {
+      // 只在不是默认图片时才切换，避免死循环
+      if (!event.target.src.includes('/images/logo1.png')) {
+        event.target.src = '/images/logo1.png';
+      }
+    },
+
     getModelImageUrl(imagePath) {
       if (!imagePath) {
-        return ''; // 如果路径为空，返回空字符串
+        return '/images/logo1.png';
       }
-      // 提取 /images/ 后面的部分
       const relativePath = imagePath.split('/images/')[1];
-      // 拼接 ../public/images 和提取的部分
+      if (!relativePath) {
+        return '/images/logo1.png';
+      }
       return `/images/${relativePath}`;
     },
 
