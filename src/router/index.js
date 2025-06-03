@@ -40,6 +40,14 @@ const routes = [
         path: '/about-us',
         component: () => import("@/components/Footer/AboutUs.vue"),
     },
+    {
+        path: '/cooperate',
+        component: () => import("@/components/Footer/Cooperate.vue"),
+    },
+    {
+        path: '/opinion',
+        component: () => import("@/components/Footer/Opinion.vue"),
+    },
 ];
 
 const router = createRouter({

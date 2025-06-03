@@ -4,11 +4,11 @@
     <div class="footer-links">
       <a href="/about-us" target="_blank" style="color: white; text-decoration: none;">关于我们</a>
       <span style="margin: 0 10px;">|</span>
-      商务合作
+      <a href="/cooperate" style="color: white; text-decoration: none;">商务合作</a>
       <span style="margin: 0 10px;">|</span>
       寻求报道
       <span style="margin: 0 10px;">|</span>
-      意见反馈
+      <a href="/opinion" style="color: white; text-decoration: none;">意见反馈</a>
       <br>
       <br>
       <span>Copyright ©南开大学, All Rights Reserved</span>
