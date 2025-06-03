@@ -1,0 +1,121 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>意见反馈</title>
+</head>
+<body>
+  <div class="container">
+    <h1>意见反馈</h1>
+    <p>您也可以选择邮箱联系：langyahaiping@datumdata.com</p>
+    <div id="contact-form">
+      <div class="form-group">
+        <label for="title">标题：</label>
+        <input type="text" id="title" name="title" required>
+      </div>
+      <div class="form-group">
+        <label for="name">您的姓名：</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div class="form-group">
+        <label for="email">电子邮件：</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="content">内容：</label>
+        <textarea id="content" name="content" rows="8" cols="40" required></textarea>
+      </div>
+      <button onclick="submitForm()">提交</button>
+      <p id="form-message" style="display: none;"></p>
+    </div>
+  </div>
+  <script>
+    async function submitForm() {
+      const title = document.getElementById('title').value;
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const content = document.getElementById('content').value;
+      const messageElement = document.getElementById('form-message');
+
+      // 客户端验证
+      if (!title || !name || !email || !content) {
+        messageElement.style.display = 'block';
+        messageElement.style.color = 'red';
+        messageElement.textContent = '请填写所有必填字段！';
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost:3000/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ title, name, email, content }),
+        });
+
+        if (response.ok) {
+          messageElement.style.display = 'block';
+          messageElement.style.color = 'green';
+          messageElement.textContent = '提交成功！我们会尽快与您联系。';
+          // 清空表单
+          document.getElementById('title').value = '';
+          document.getElementById('name').value = '';
+          document.getElementById('email').value = '';
+          document.getElementById('content').value = '';
+        } else {
+          const error = await response.json();
+          messageElement.style.display = 'block';
+          messageElement.style.color = 'red';
+          messageElement.textContent = `提交失败：${error.message || '请稍后再试'}`;
+        }
+      } catch (error) {
+        messageElement.style.display = 'block';
+        messageElement.style.color = 'red';
+        messageElement.textContent = '提交失败：网络错误，请稍后再试';
+      }
+    }
+  </script>
+</body>
+</html>

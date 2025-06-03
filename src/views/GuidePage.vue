@@ -3,18 +3,23 @@
     <main class="page-content">
         <div class="main-content">
             <!-- 原有的页面内容 -->
-            <div style="
+            <div
+                style="
                     position: relative;
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                ">
-                <div class="home-page" style="
+                "
+            >
+                <div
+                    class="home-page"
+                    style="
                         display: flex;
                         justify-content: center;
                         align-items: center;
                         flex-direction: column;
-                    ">
+                    "
+                >
                     <div class="banner">
                         <h1>琅琊海评</h1>
                         <p>
@@ -22,52 +27,111 @@
                         </p>
                     </div>
                     <div class="level">
-                        <h1>
-                            能力等级
-                        </h1>
+                        <h1>能力等级</h1>
                         <p>Capability level</p>
-                        <div class="pyramid-container" style="width: 80%;margin-bottom:100px;position:relative;">
-                            <img src="@/components/guidePage/images/level.png" alt="" style="width: 90%" />
+                        <div
+                            class="pyramid-container"
+                            style="
+                                width: 80%;
+                                margin-bottom: 100px;
+                                position: relative;
+                            "
+                        >
+                            <img
+                                src="@/components/guidePage/images/level.png"
+                                alt=""
+                                style="width: 90%"
+                            />
                             <div class="level-descriptions">
                                 <div class="level-item">
-                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;模型表现明显不足，与平均水平差距较大，需要较大改进</p>
+                                    <p>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;模型表现明显不足，与平均水平差距较大，需要较大改进
+                                    </p>
                                 </div>
                                 <div class="level-item">
-                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;能力表现略低于平均水平，需要进一步提升。</p>
+                                    <p>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;能力表现略低于平均水平，需要进一步提升。
+                                    </p>
                                 </div>
                                 <div class="level-item good">
-                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;模型表现尚可，达到一般水平，但仍有一定的提升空间。</p>
+                                    <p>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;模型表现尚可，达到一般水平，但仍有一定的提升空间。
+                                    </p>
                                     <h4 class="model-title">代表模型</h4>
                                     <div class="model-list">
-                                        <a href="/model-detail/ERNIE 4.0" target="_blank" class="model-card" style="color: #ffcc00;">
-                                            ERNIE 4.0<br><span>文本生成较稳定</span>
+                                        <a
+                                            href="/model-detail/ERNIE 4.0"
+                                            target="_blank"
+                                            class="model-card"
+                                            style="color: #ffcc00"
+                                        >
+                                            ERNIE 4.0<br /><span
+                                                >文本生成较稳定</span
+                                            >
                                         </a>
-                                        <a href="/model-detail/ChatGLM3-6B" target="_blank" class="model-card" style="color: #ffcc00;">
-                                            ChatGLM3-6B<br><span>支持多语言</span>
+                                        <a
+                                            href="/model-detail/ChatGLM3-6B"
+                                            target="_blank"
+                                            class="model-card"
+                                            style="color: #ffcc00"
+                                        >
+                                            ChatGLM3-6B<br /><span
+                                                >支持多语言</span
+                                            >
                                         </a>
                                     </div>
                                 </div>
                                 <div class="level-item excellent">
-                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;模型表现优异，超过大多数模型，仅有一些轻微不足。</p>
+                                    <p>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;模型表现优异，超过大多数模型，仅有一些轻微不足。
+                                    </p>
                                     <h4 class="model-title">代表模型</h4>
                                     <div class="model-list">
-                                        <a href="/model-detail/Yi-1.5-9B-Chat" target="_blank" class="model-card" style="color: #33cc33;">
-                                            Yi-1.5-9B-Chat<br><span>推理速度快</span>
+                                        <a
+                                            href="/model-detail/Yi-1.5-9B-Chat"
+                                            target="_blank"
+                                            class="model-card"
+                                            style="color: #33cc33"
+                                        >
+                                            Yi-1.5-9B-Chat<br /><span
+                                                >推理速度快</span
+                                            >
                                         </a>
-                                        <a href="/model-detail/DeepSeek-R1" target="_blank" class="model-card" style="color: #33cc33;">
-                                            DeepSeek-R1<br><span>语义理解强</span>
+                                        <a
+                                            href="/model-detail/DeepSeek-R1"
+                                            target="_blank"
+                                            class="model-card"
+                                            style="color: #33cc33"
+                                        >
+                                            DeepSeek-R1<br /><span
+                                                >语义理解强</span
+                                            >
                                         </a>
                                     </div>
                                 </div>
                                 <div class="level-item top">
-                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;模型能力非常出色，远超平均水平，几乎无明显缺陷。</p>
+                                    <p>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;模型能力非常出色，远超平均水平，几乎无明显缺陷。
+                                    </p>
                                     <h4 class="model-title">代表模型</h4>
                                     <div class="model-list">
-                                        <a href="/model-detail/Doubao-pro-32k" target="_blank" class="model-card" style="color: #9933cc;">
-                                            Doubao-pro-32k<br><span>综合能力极强</span>
+                                        <a
+                                            href="/model-detail/Doubao-pro-32k"
+                                            target="_blank"
+                                            class="model-card"
+                                            style="color: #9933cc"
+                                        >
+                                            Doubao-pro-32k<br /><span
+                                                >综合能力极强</span
+                                            >
                                         </a>
-                                        <a href="/model-detail/GPT-4o" target="_blank" class="model-card" style="color: #9933cc;">
-                                            GPT-4o<br><span>多模态支持</span>
+                                        <a
+                                            href="/model-detail/GPT-4o"
+                                            target="_blank"
+                                            class="model-card"
+                                            style="color: #9933cc"
+                                        >
+                                            GPT-4o<br /><span>多模态支持</span>
                                         </a>
                                     </div>
                                 </div>
@@ -76,19 +140,33 @@
                     </div>
                     <div class="content-container">
                         <div class="cards">
-                            <p class="card-title">标签识能，交互荐优，个性匹配</p>
-                            <p class="card-subtitle">Interactive recommendation, personalized matching</p>
+                            <p class="card-title">
+                                标签识能，交互荐优，个性匹配
+                            </p>
+                            <p class="card-subtitle">
+                                Interactive recommendation, personalized
+                                matching
+                            </p>
                             <div class="guide-card">
                                 <div class="card-body">
                                     <div class="card-icon">
-                                        <img src="@/components/guidePage/images/biaoqian.png" alt="标签" />
+                                        <img
+                                            src="@/components/guidePage/images/biaoqian.png"
+                                            alt="标签"
+                                        />
                                     </div>
                                     <div class="text_container">
                                         <h2>标签化：充分展现各模型特色</h2>
                                         <ul>
-                                            <li>没有分数的直观对比，而是以标签的形式去描述模型</li>
-                                            <li>各模型的能力、特色可以在网站上充分体现出来</li>
-                                            <li>细粒度的模型能力对比,200+标签</li>
+                                            <li>
+                                                没有分数的直观对比，而是以标签的形式去描述模型
+                                            </li>
+                                            <li>
+                                                各模型的能力、特色可以在网站上充分体现出来
+                                            </li>
+                                            <li>
+                                                细粒度的模型能力对比,200+标签
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -97,14 +175,25 @@
                             <div class="guide-card">
                                 <div class="card-body">
                                     <div class="card-icon">
-                                        <img src="@/components/guidePage/images/jiaohu.png" alt="交互" />
+                                        <img
+                                            src="@/components/guidePage/images/jiaohu.png"
+                                            alt="交互"
+                                        />
                                     </div>
                                     <div class="text_container">
-                                        <h2>交互性：用户导向的评测与推荐网站</h2>
+                                        <h2>
+                                            交互性：用户导向的评测与推荐网站
+                                        </h2>
                                         <ul>
-                                            <li>根据用户搜索、收藏历史个性化推荐模型</li>
-                                            <li>用户可以输入任务需求，得到模型推荐结果</li>
-                                            <li>用户可以对各大模型进行评论，交互性强</li>
+                                            <li>
+                                                根据用户搜索、收藏历史个性化推荐模型
+                                            </li>
+                                            <li>
+                                                用户可以输入任务需求，得到模型推荐结果
+                                            </li>
+                                            <li>
+                                                用户可以对各大模型进行评论，交互性强
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -113,12 +202,19 @@
                             <div class="guide-card">
                                 <div class="card-body">
                                     <div class="card-icon">
-                                        <img src="@/components/guidePage/images/gexing.png" alt="个性" />
+                                        <img
+                                            src="@/components/guidePage/images/gexing.png"
+                                            alt="个性"
+                                        />
                                     </div>
                                     <div class="text_container">
-                                        <h2>个性化：给用户提供选择模型的参考</h2>
+                                        <h2>
+                                            个性化：给用户提供选择模型的参考
+                                        </h2>
                                         <ul>
-                                            <li>划分五级能力标签，让用户了解模型能力</li>
+                                            <li>
+                                                划分五级能力标签，让用户了解模型能力
+                                            </li>
                                             <li>根据用户收藏个性化推荐模型</li>
                                             <li>针对用户特定需求推荐模型</li>
                                         </ul>
@@ -127,8 +223,11 @@
                             </div>
                         </div>
                         <div class="right-content">
-                            <img src="@\components\guidePage\images\doubao.png"
-                                alt="豆包" class="pyramid-image" />
+                            <img
+                                src="@\components\guidePage\images\doubao.png"
+                                alt="豆包"
+                                class="pyramid-image"
+                            />
                         </div>
                     </div>
                 </div>
@@ -136,17 +235,24 @@
         </div>
     </main>
     <!-- 页面底部轮播图 -->
-    <div style="display: flex; justify-content: center;background-color: white;margin-bottom:20px">
-        <GuideCarousel style="max-width: 800px; width: 100%;" />
+    <div
+        style="
+            display: flex;
+            justify-content: center;
+            background-color: white;
+            margin-bottom: 20px;
+        "
+    >
+        <GuideCarousel :imgArray="imgArray"></GuideCarousel>
     </div>
 </template>
 
 <script>
+import GuideCarousel from "@/components/guidePage/GuideCarousel.vue";
 import NavBar from "@/components/guidePage/NavBar.vue";
 import Pyramid from "@/components/guidePage/Pyramid.vue";
 import GuideCard from "@/components/guidePage/guideCard.vue";
 import SponsorCard from "@/components/guidePage/sponsorCard.vue";
-import GuideCarousel from "@/components/guidePage/GuideCarousel.vue";
 
 export default {
     components: {
@@ -158,6 +264,14 @@ export default {
     },
     data() {
         return {
+            imgArray: [
+                '/images/guidePage/guide/guide1.png',
+                '/images/guidePage/guide/guide2.png',
+                '/images/guidePage/guide/guide3.png',
+                '/images/guidePage/guide/guide4.png',
+                '/images/guidePage/guide/guide5.png',
+                '/images/guidePage/guide/guide6.png',
+            ],
             sponsor: {
                 name: "南开大学软件学院",
                 logo: "./public/images/guidePage/logo.png",
@@ -184,14 +298,14 @@ export default {
                     icon: 2,
                 },
             ],
-            currentIndex: 0
+            currentIndex: 0,
         };
     },
     mounted() {
         setInterval(() => {
             this.currentIndex = (this.currentIndex + 1) % this.images.length;
         }, 3000);
-    }
+    },
 };
 </script>
 
@@ -215,7 +329,7 @@ export default {
     z-index: 10; /* 设置较高的 z-index 值，使其显示在上层 */
 }
 
-.banner>h1 {
+.banner > h1 {
     font-size: 32px;
     font-weight: 400;
     margin: 50px;
@@ -226,19 +340,19 @@ export default {
     position: relative;
 }
 
-.banner>h1::after {
-    content: '';
+.banner > h1::after {
+    content: "";
     position: absolute;
     bottom: -15px;
     left: 50%;
     transform: translateX(-50%);
     width: 600px;
     height: 1px;
-    background-color: #C4C5CC;
+    background-color: #c4c5cc;
     display: block;
 }
 
-.banner>p {
+.banner > p {
     font-size: 16px;
     color: #870066;
     margin: -15px;
@@ -261,7 +375,7 @@ export default {
     font-family: PingFangSC, PingFang SC;
     font-weight: 700;
     font-size: 28px;
-    color: #1E2437;
+    color: #1e2437;
     line-height: 40px;
     text-align: left;
     font-style: normal;
@@ -272,7 +386,7 @@ export default {
     font-family: PingFangSC, PingFang SC;
     font-weight: 600;
     font-size: 16px;
-    color: #C2C5CE;
+    color: #c2c5ce;
     line-height: 22px;
     text-align: left;
     font-style: normal;
@@ -344,7 +458,6 @@ export default {
     width: 498px;
     height: 149px;
 }
-
 
 /* 卡片内部样式 */
 .card-body {
@@ -460,7 +573,7 @@ ul li {
     font-family: PingFangSC, PingFang SC;
     font-weight: 500;
     font-size: 28px;
-    color: #1E2437;
+    color: #1e2437;
     line-height: 40px;
     text-align: left;
     font-style: normal;
@@ -472,7 +585,7 @@ ul li {
     font-family: PingFangSC, PingFang SC;
     font-weight: 400;
     font-size: 16px;
-    color: #C2C5CE;
+    color: #c2c5ce;
     line-height: 22px;
     text-align: center;
     font-style: normal;
@@ -526,7 +639,7 @@ ul li {
     font-family: PingFangSC, PingFang SC;
     font-weight: 400;
     font-size: 16px;
-    color: #1E2437;
+    color: #1e2437;
     line-height: 1.4;
     text-align: start;
     margin: 0;

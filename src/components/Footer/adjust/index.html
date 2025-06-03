@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="styles.css">
+    <title>琅琊海评商务合作调查问卷</title>
+</head>
+<body>
+    <h1>琅琊海评商务合作</h1>
+    <p>如果您有以下需求，欢迎联系我们!</p>
+        <p>也可以选择邮箱：langyahaiping@datumdata.com</p>
+    <form id="cooperationForm" onsubmit="return validateForm(event)">
+        <p>
+            <strong>1、您希望合作的方向</strong><br>
+            <label><input type="checkbox" name="cooperation_direction" value="推广公司产品/技术">推广公司产品/技术</label>
+            <label><input type="checkbox" name="cooperation_direction" value="获取开发者人群">获取开发者人群</label>
+            <label><input type="checkbox" name="cooperation_direction" value="获取开发者人群">新闻推送</label>
+            <label><input type="checkbox" name="cooperation_direction" value="参与评测">参与评测</label>
+            <label><input type="checkbox" name="cooperation_direction" value="开发者生态合作">开发者生态合作</label>
+            <span id="directionError" class="error">请至少选择一个合作方向</span>
+        </p>
+        <p>
+            <strong>2、您希望合作的时间点</strong><br>
+            <label><input type="radio" name="cooperation_time" value="马上合作">马上合作</label>
+            <label><input type="radio" name="cooperation_time" value="未来一个月合作">未来一个月合作</label>
+            <label><input type="radio" name="cooperation_time" value="未来三个月及以上时间合作">未来三个月及以上时间合作</label>
+            <span id="timeError" class="error">请选择合作时间点</span>
+        </p>
+        <p>
+            <strong>3、是否曾和琅琊海评合作过</strong><br>
+            <label><input type="radio" name="past_cooperation" value="合作过">合作过</label>
+            <label><input type="radio" name="past_cooperation" value="没有合作过">没有合作过</label>
+            <span id="pastCooperationError" class="error">请选择是否曾合作过</span>
+        </p>
+        <p>
+            <strong>4、您的预算</strong><br>
+            <input type="text" name="budget" id="budget" placeholder="请输入预算（如：5000元）">
+            <span id="budgetError" class="error">请输入预算</span>
+        </p>
+        <p>
+            <strong>5、您公司的名称</strong><br>
+            <input type="text" name="company_name" id="company_name" placeholder="请输入公司名称">
+            <span id="companyNameError" class="error">请输入公司名称</span>
+        </p>
+        <p>
+            <strong>6、您公司的产品或技术介绍</strong><br>
+            <textarea name="product_intro" id="product_intro" placeholder="请输入产品或技术介绍"></textarea>
+            <span id="productIntroError" class="error">请输入产品或技术介绍</span>
+        </p>
+        <p>
+            <strong>7、联系人姓名</strong><br>
+            <input type="text" name="contact_name" id="contact_name" placeholder="请输入联系人姓名">
+            <span id="contactNameError" class="error">请输入联系人姓名</span>
+        </p>
+        <p>
+            <strong>8、联系人职位</strong><br>
+            <input type="text" name="contact_position" id="contact_position" placeholder="请输入联系人职位">
+            <span id="contactPositionError" class="error">请输入联系人职位</span>
+        </p>
+        <p>
+            <strong>9、联系人电话</strong><br>
+            <input type="text" name="contact_phone" id="contact_phone" placeholder="请输入联系人电话">
+            <span id="contactPhoneError" class="error">请输入有效的电话号码</span>
+        </p>
+        <button type="submit">提交</button>
+    </form>
+
+    <script>
+        function validateForm(event) {
+            event.preventDefault();
+            let isValid = true;
+
+            // 验证合作方向
+            const directions = document.querySelectorAll('input[name="cooperation_direction"]:checked');
+            const directionError = document.getElementById('directionError');
+            if (directions.length === 0) {
+                directionError.style.display = 'block';
+                isValid = false;
+            } else {
+                directionError.style.display = 'none';
+            }
+
+            // 验证合作时间
+            const time = document.querySelector('input[name="cooperation_time"]:checked');
+            const timeError = document.getElementById('timeError');
+            if (!time) {
+                timeError.style.display = 'block';
+                isValid = false;
+            } else {
+                timeError.style.display = 'none';
+            }
+
+            // 验证是否合作过
+            const pastCooperation = document.querySelector('input[name="past_cooperation"]:checked');
+            const pastCooperationError = document.getElementById('pastCooperationError');
+            if (!pastCooperation) {
+                pastCooperationError.style.display = 'block';
+                isValid = false;
+            } else {
+                pastCooperationError.style.display = 'none';
+            }
+
+            // 验证预算
+            const budget = document.getElementById('budget').value.trim();
+            const budgetError = document.getElementById('budgetError');
+            if (budget === '') {
+                budgetError.style.display = 'block';
+                isValid = false;
+            } else {
+                budgetError.style.display = 'none';
+            }
+
+            // 验证公司名称
+            const companyName = document.getElementById('company_name').value.trim();
+            const companyNameError = document.getElementById('companyNameError');
+            if (companyName === '') {
+                companyNameError.style.display = 'block';
+                isValid = false;
+            } else {
+                companyNameError.style.display = 'none';
+            }
+
+            // 验证产品/技术介绍
+            const productIntro = document.getElementById('product_intro').value.trim();
+            const productIntroError = document.getElementById('productIntroError');
+            if (productIntro === '') {
+                productIntroError.style.display = 'block';
+                isValid = false;
+            } else {
+                productIntroError.style.display = 'none';
+            }
+
+            // 验证联系人姓名
+            const contactName = document.getElementById('contact_name').value.trim();
+            const contactNameError = document.getElementById('contactNameError');
+            if (contactName === '') {
+                contactNameError.style.display = 'block';
+                isValid = false;
+            } else {
+                contactNameError.style.display = 'none';
+            }
+
+            // 验证联系人职位
+            const contactPosition = document.getElementById('contact_position').value.trim();
+            const contactPositionError = document.getElementById('contactPositionError');
+            if (contactPosition === '') {
+                contactPositionError.style.display = 'block';
+                isValid = false;
+            } else {
+                contactPositionError.style.display = 'none';
+            }
+
+            // 验证联系人电话
+            const contactPhone = document.getElementById('contact_phone').value.trim();
+            const contactPhoneError = document.getElementById('contactPhoneError');
+            const phoneRegex = /^1[3-9]\d{9}$/;
+            if (!phoneRegex.test(contactPhone)) {
+                contactPhoneError.style.display = 'block';
+                isValid = false;
+            } else {
+                contactPhoneError.style.display = 'none';
+            }
+
+            if (isValid) {
+                alert('表单提交成功！');
+                // 示例数据收集：console.log({ directions: [...directions].map(d => d.value), time: time.value, pastCooperation: pastCooperation.value, budget, companyName, productIntro, contactName, contactPosition, contactPhone });
+                document.getElementById('cooperationForm').reset();
+            }
+
+            return isValid;
+        }
+    </script>
+</body>
+</html>
