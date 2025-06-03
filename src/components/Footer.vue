@@ -6,8 +6,6 @@
       <span style="margin: 0 10px;">|</span>
       <a href="/cooperate" style="color: white; text-decoration: none;">商务合作</a>
       <span style="margin: 0 10px;">|</span>
-      寻求报道
-      <span style="margin: 0 10px;">|</span>
       <a href="/opinion" style="color: white; text-decoration: none;">意见反馈</a>
       <br>
       <br>
