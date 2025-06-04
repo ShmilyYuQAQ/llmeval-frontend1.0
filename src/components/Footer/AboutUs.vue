@@ -30,8 +30,8 @@
         <h2 class="introduce" style="margin-top: 30px;">深圳点通数据有限公司联系方式</h2>
         <p class="introduce2">地 址：广东省深圳市梅林路梅林阁南三楼</p>
         <p class="introduce2">邮 编：518049</p>
-        <p class="introduce2">电 话：(86) 755-83970989,755-83177010</p>
-        <p class="introduce2">传 真： (86) 755-8310 4770</p>
+        <p class="introduce2">电 话：(86) 0755-83970989,0755-83177010</p>
+        <p class="introduce2">传 真： (86) 0755-83104770</p>
         <p class="introduce2">E-mail：szdatum@datumdata.com</p>
     </div>  
 </template>

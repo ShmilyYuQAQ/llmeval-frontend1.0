@@ -10,6 +10,11 @@
       <br>
       <br>
       <span>Copyright ©南开大学, All Rights Reserved</span>
+      <br>
+      <br>
+      <span style="color: white;">地址：广东省深圳市梅林路梅林阁南三楼</span>
+      <span style="margin: 0 10px;">|</span>
+      <span style="color: white;">电话：(86)0755-83970989,0755-83177010</span>
       <span style="margin: 0 10px;">|</span>
       <a href="https://beian.miit.gov.cn" target="_blank" class="beian-link">
         粤ICP备16101032号-4
@@ -18,7 +23,7 @@
       <a href="mailto:langyahaiping@datumdata.com" class="email-link" style="color: white; text-decoration: none; vertical-align: middle;">
         电子邮箱：langyahaiping@datumdata.com
       </a>
-      <a class="wechat-link" style="color: white; text-decoration: none; display: inline-block; text-align: center; margin-top: 50px;">
+      <a class="wechat-link" style="color: white; text-decoration: none; display: inline-block; text-align: center; margin-top: 65px;">
         <img src="/images/wechat.jpg" alt="微信公众号" style="width: 80px; height: 80px; display: block; margin: 0 auto 4px auto;" />
         官方微信公众号
       </a>
@@ -36,7 +41,7 @@
   position: relative; /* 新增 */
 }
 .footer-links {
-  margin-top: 20px;
+  margin-top: 0;
   position: relative; /* 新增 */
 }
 .wechat-link {
