@@ -15,7 +15,7 @@
           :key="index"
           class="text-wrapper_11 flex-col"
         >
-          <span class="text_52">{{ tag.tagName }}{{ tag.tagGrade }}</span>
+          <span class="text_52">{{ tag.tagName }}</span>
         </div>
     </div>
     <span class="text_60" v-if="excellentTags.count > 0">优秀</span>
@@ -25,7 +25,7 @@
           :key="index"
           class="text-wrapper_47 flex-col"
         >
-          <span class="text_91">{{ tag.tagName }}{{ tag.tagGrade }}</span>
+          <span class="text_91">{{ tag.tagName }}</span>
         </div>
     </div>
     <span class="text_72" v-if="goodTags.count > 0">良好</span>
@@ -35,7 +35,7 @@
           :key="index"
           class="text-wrapper_31 flex-col"
         >
-          <span class="text_73">{{ tag.tagName }}{{ tag.tagGrade }}</span>
+          <span class="text_73">{{ tag.tagName }}</span>
         </div>
     </div>
     <span class="text_80" v-if="averageTags.count > 0">一般</span>
@@ -45,17 +45,17 @@
           :key="index"
           class="text-wrapper_40 flex-col"
         >
-          <span class="text_83">{{ tag.tagName }}{{ tag.tagGrade }}</span>
+          <span class="text_83">{{ tag.tagName }}</span>
         </div>
     </div>
-    <span class="text_80" v-if="weakTags.count > 0">薄弱</span>
+    <span class="text_81" v-if="weakTags.count > 0">薄弱</span>
     <div class="group_5 flex-row justify-between" v-if="weakTags.count > 0">
         <div
           v-for="(tag, index) in weakTags.tags"
           :key="index"
           class="text-wrapper_39 flex-col"
         >
-          <span class="text_82">{{ tag.tagName }}{{ tag.tagGrade }}</span>
+          <span class="text_82">{{ tag.tagName }}</span>
         </div>
     </div>
 </template>
@@ -1292,14 +1292,14 @@ export default {
   width: 35px;
   height: 20px;
   overflow-wrap: break-word;
-  color: rgba(143, 148, 164, 1);
+  color: rgba(135, 0, 102, 1);;
   font-size: 14px;
   font-family: PingFangSC-Medium;
   font-weight: 500;
   text-align: justify;
   white-space: nowrap;
   line-height: 20px;
-  margin: 12px 0 0 20px;
+  margin: 30px 0 0 20px;
 }
 
 .text-wrapper_10 {
@@ -1552,14 +1552,14 @@ export default {
   width: 35px;
   height: 20px;
   overflow-wrap: break-word;
-  color: rgba(143, 148, 164, 1);
+  color: rgba(23, 177, 13, 1);
   font-size: 14px;
   font-family: PingFangSC-Medium;
   font-weight: 500;
   text-align: justify;
   white-space: nowrap;
   line-height: 20px;
-  margin: 9px 0 0 20px;
+  margin: 30px 0 0 20px;
 }
 
 .text-wrapper_19 {
@@ -1894,14 +1894,14 @@ export default {
   width: 35px;
   height: 20px;
   overflow-wrap: break-word;
-  color: rgba(143, 148, 164, 1);
+  color: rgba(255, 112, 9, 1);
   font-size: 14px;
   font-family: PingFangSC-Medium;
   font-weight: 500;
   text-align: justify;
   white-space: nowrap;
   line-height: 20px;
-  margin: 9px 0 0 20px;
+  margin: 30px 0 0 20px;
 }
 
 .group_9 {
@@ -2093,14 +2093,14 @@ export default {
   width: 35px;
   height: 20px;
   overflow-wrap: break-word;
-  color: rgba(143, 148, 164, 1);
+  color: rgba(30, 36, 55, 1);
   font-size: 14px;
   font-family: PingFangSC-Medium;
   font-weight: 500;
   text-align: justify;
   white-space: nowrap;
   line-height: 20px;
-  margin: 9px 0 0 20px;
+  margin: 30px 0 0 20px;
 }
 
 .group_10 {
@@ -2120,7 +2120,7 @@ export default {
   width: 112px;
   height: 18px;
   overflow-wrap: break-word;
-  color: rgba(30, 36, 55, 1);
+  color: rgba(234, 75, 75, 1);
   font-size: 14px;
   font-family: OPPOSans-R;
   font-weight: normal;
@@ -2146,7 +2146,7 @@ export default {
   height: auto; /* 高度根据内容自动调整 */
   overflow-wrap: break-word; /* 自动换行 */
   word-break: break-word; /* 防止长单词溢出 */
-  color: rgba(234, 75, 75, 1);; /* 文字颜色 */
+  color: rgba(234, 75, 75, 1); /* 文字颜色 */
   font-size: 14px; /* 字体大小 */
   font-family: OPPOSans-R; /* 字体 */
   font-weight: normal; /* 字体粗细 */
