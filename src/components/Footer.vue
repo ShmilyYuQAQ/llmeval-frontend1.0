@@ -10,15 +10,20 @@
       <br>
       <br>
       <span>Copyright ©南开大学, All Rights Reserved</span>
+      <span style="margin: 0 10px;">|</span>
+      <img src="/images/gongan.png" alt="公安备案" style="width: 20px; height: 20px; vertical-align: middle; margin-bottom: 3px;" />
+      <a href="https://beian.mps.gov.cn/#/query/webSearch?code=44030002007126" rel="noreferrer" target="_blank" class="beian-link">
+        粤公网安备 44030002007126号
+      </a>
+      <span style="margin: 0 10px;">|</span>
+      <a href="https://beian.miit.gov.cn" target="_blank" class="beian-link">
+        粤ICP备16101032号-4
+      </a>
       <br>
       <br>
       <span style="color: white;">地址：广东省深圳市梅林路梅林阁南三楼</span>
       <span style="margin: 0 10px;">|</span>
       <span style="color: white;">电话：(86)0755-83970989,0755-83177010</span>
-      <span style="margin: 0 10px;">|</span>
-      <a href="https://beian.miit.gov.cn" target="_blank" class="beian-link">
-        粤ICP备16101032号-4
-      </a>
       <span style="margin: 0 10px;">|</span>
       <a href="mailto:langyahaiping@datumdata.com" class="email-link" style="color: white; text-decoration: none; vertical-align: middle;">
         电子邮箱：langyahaiping@datumdata.com
