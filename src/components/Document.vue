@@ -270,10 +270,10 @@ const toggleLike = (id) => {
   padding: 20px;
 }
 .text-wrapper_2 {
-  background-image: url(https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/020169b56f4e4d209b4ded3c2aa3db4f_mergeImage.png);
+  background-image: url(./DocumentPage/images/document_1.png);
   width: 100%;
   max-width: 1440px;
-  height: 190px;
+  height: 220px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
