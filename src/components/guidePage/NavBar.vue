@@ -59,6 +59,14 @@
                                  class="nav-icon">
                             <span>新闻</span>
                         </router-link>
+                        <router-link to="/document" class="link-item" active-class="active"
+                                     @mouseenter="hovering.document = true"
+                                     @mouseleave="hovering.document = false">
+                            <img :src="documentIcon" 
+                                 alt="文章" 
+                                 class="nav-icon">
+                            <span>文章</span>
+                        </router-link>
                         <router-link to="/center" class="link-item" active-class="active"
                                      @mouseenter="hovering.center = true"
                                      @mouseleave="hovering.center = false">
@@ -119,6 +127,12 @@
                 <img :src="newsIcon" alt="新闻" class="nav-icon">
                 <span>新闻</span>
             </router-link>
+            <router-link to="/document" class="mobile-link-item" active-class="active"
+                         @mouseenter="hovering.document = true"
+                         @mouseleave="hovering.document = false">
+                <img :src="documentIcon" alt="文章" class="nav-icon">
+                <span>文章</span>
+            </router-link>
             <router-link to="/center" class="mobile-link-item no-border" active-class="active"
                          @mouseenter="hovering.center = true"
                          @mouseleave="hovering.center = false">
@@ -155,7 +169,8 @@ import homeLogoNormal from './images/home_logo.png';
 import homeLogoActive from './images/home_logo_active.png';
 import newsLogoNormal from './images/news_logo.png';
 import newsLogoActive from './images/news_logo_active.png';
-
+import documentLogoNormal from './images/document_logo.png';
+import documentLogoActive from './images/document_logo_active.png';
 export default {
     data() {
         return {
@@ -181,6 +196,10 @@ export default {
                     normal: newsLogoNormal,
                     active: newsLogoActive
                 },
+                document:{
+                    normal: documentLogoNormal,
+                    active: documentLogoActive
+                },
                 center: {
                     normal: centerLogoNormal,
                     active: centerLogoActive
@@ -191,6 +210,7 @@ export default {
                 guide: false,
                 dataset: false,
                 news: false,
+                document:false,
                 center: false,
                 login: false,
                 logout: false
@@ -210,6 +230,10 @@ export default {
         newsIcon() {
             return this.$route.path === '/news' || this.hovering.news ? this.icons.news.active : this.icons.news.normal;
         },
+        documentIcon() {
+            return this.$route.path === '/document' || this.hovering.document ? this.icons.document.active : this.icons.document.normal;
+        },
+      
         centerIcon() {
             return this.$route.path === '/center' || this.hovering.center ? this.icons.center.active : this.icons.center.normal;
         }

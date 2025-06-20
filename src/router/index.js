@@ -48,6 +48,15 @@ const routes = [
         path: '/opinion',
         component: () => import("@/components/Footer/Opinion.vue"),
     },
+    {
+        path: "/document",
+        component: () => import("@/components/Document.vue"),
+    },
+    {
+  path: '/article/:id',
+  name: 'ArticleDetail',
+  component: () => import('../views/ArticleDetail.vue')
+},
 ];
 
 const router = createRouter({
