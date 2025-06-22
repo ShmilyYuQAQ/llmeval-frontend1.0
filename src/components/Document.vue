@@ -21,9 +21,7 @@
           </div>
           <div class="action-row">
             <span class="text_11">{{ news.publisher }}丨{{ news.publishDate }}</span>
-            <button @click.stop="toggleLike(news.id)" class="like-btn">
-              {{ likes.value && likes.value.has(news.id) ? '已点赞' : '点赞' }}
-            </button>
+            
           </div>
         </div>
       </div>
