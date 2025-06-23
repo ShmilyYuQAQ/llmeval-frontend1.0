@@ -2,8 +2,11 @@
     <div class="feature-sequencer">
         <el-radio-group v-model="radio">
             <el-radio :label="0">综合排序</el-radio>
-            <el-radio :label="1">发布时间排序</el-radio>
-            <el-radio :label="2">收藏量排序</el-radio>
+            <el-radio :label="1">发布时间从新到旧</el-radio>
+            <el-radio :label="2">发布时间从旧到新</el-radio>
+            <el-radio :label="3">收藏量排序</el-radio>
+            <el-radio :label="4">开源模型大小从大到小</el-radio>
+            <el-radio :label="5">开源模型大小从小到大</el-radio>
         </el-radio-group>
     </div>
 </template>
