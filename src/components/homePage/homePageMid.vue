@@ -6,7 +6,7 @@
                 <div class="hero-content content-container">
                     <div class="text-container">
                         <h1 class="hero-title">琅琊海评</h1>
-                       <div class="divider"></div>
+                        <div class="divider"></div>
 
                         <p class="hero-description">
                             一个标签化展示大模型能力，为用户提供大模型选择建议的平台
@@ -38,24 +38,17 @@
             </div>
         </div>
 
-        <!-- FeatureSelector 组件 -->
-        <div class="feature-selector-wrapper content-container">
-            <FeatureSelector
-                ref="featureSelector"
-                @custom-event="selectModel"
-                :selected_tag="selected_tag"
-                :tag_description="tag_description"
-                @change="openSourceChange"
-            />
-        </div>
-
         <!-- 新的白色背景区域，包含已选标签、结果计数、标签简介和排序控件 -->
         <div v-if="hasFilters" class="filter-info-container content-container">
             <div class="filter-info-top">
                 <!-- 左上：已选标签 -->
                 <div class="filter-tags">
                     <div
-                        v-if="!activeSearchQuery && !selected_tag[0]"
+                        v-if="
+                            !activeSearchQuery &&
+                            !selected_tag[0] &&
+                            !selected_org[0]
+                        "
                         class="no-tags-message"
                     >
                         已选：
@@ -63,7 +56,11 @@
                     <template v-else>
                         <span
                             class="select-prefix"
-                            v-if="activeSearchQuery || selected_tag[0]"
+                            v-if="
+                                activeSearchQuery ||
+                                selected_tag[0] ||
+                                selected_org[0]
+                            "
                             >选择：</span
                         >
                         <el-tag
@@ -81,6 +78,14 @@
                             class="filter-tag"
                         >
                             {{ selected_tag[0] }}
+                        </el-tag>
+                        <el-tag
+                            v-if="selected_org[0]"
+                            closable
+                            @close="clearOrg"
+                            class="filter-tag"
+                        >
+                            发布机构：{{ selected_org[0] }}
                         </el-tag>
                     </template>
                 </div>
@@ -119,7 +124,17 @@
                 </div>
             </div>
         </div>
-
+        <!-- FeatureSelector 组件 -->
+        <div class="feature-selector-wrapper content-container">
+            <FeatureSelector
+                ref="featureSelector"
+                @select-org="selectOrg"
+                @select-tag="selectTag"
+                :selected_tag="selected_tag"
+                :tag_description="tag_description"
+                @change="openSourceChange"
+            />
+        </div>
         <div class="model-card-container-wrapper content-container">
             <template v-if="isLoading">
                 <div class="loading-container">
@@ -150,7 +165,9 @@ export default {
         return {
             datas: [],
             selected_tag: ["", ""],
+            selected_org: ["", ""],
             originDatas: [],
+            orgDatas: [], // 新增：机构数据
             searchQuery: "",
             activeSearchQuery: "",
             isSearching: false,
@@ -173,8 +190,8 @@ export default {
             return data.map((item) => ({
                 ...item,
                 model_image_path: item.model_image_path
-                    ? `/images/${item.model_image_path.split('/images/')[1]}` // 提取 /images/ 后面的部分并拼接
-                    : '',
+                    ? `/images/${item.model_image_path.split("/images/")[1]}` // 提取 /images/ 后面的部分并拼接
+                    : "",
             }));
         },
         sortByJsonOrder(data) {
@@ -239,7 +256,7 @@ export default {
                 this.isLoading = false;
             }
         },
-        async selectModel(tag) {
+        async selectTag(tag) {
             try {
                 const [modelResponse, descResponse] = await Promise.all([
                     axiosInstance.get(`/model/tagName/?tagName=${tag[0]}`),
@@ -250,8 +267,6 @@ export default {
                     modelResponse.data.data || []
                 );
 
-                // 增加调试日志
-                console.log("获取到的标签描述:", descResponse.data.data);
                 this.tag_description =
                     descResponse.data.data || "该标签暂无描述";
 
@@ -363,6 +378,69 @@ export default {
                 this.isSearching = false;
             }
         },
+        async selectOrg(org) {
+    this.selected_org = org;
+
+    // 以 originDatas 为基础，依次应用标签、搜索、机构三重筛选
+    let filtered = [...this.originDatas];
+
+    // 标签筛选
+    if (this.selected_tag[0]) {
+        filtered = filtered.filter(item =>
+            this.tagDatas.some(tagItem => String(tagItem.name) === String(item.name))
+        );
+    }
+    // 搜索筛选
+    if (this.activeSearchQuery) {
+        filtered = filtered.filter(item =>
+            this.searchDatas.some(searchItem => String(searchItem.name) === String(item.name))
+        );
+    }
+    // 机构筛选
+    if (this.selected_org[0]) {
+        filtered = filtered.filter(item => item.institution === this.selected_org[0]);
+    }
+
+    // 关键：同步更新datas和originDatas，保证分页组件数据源一致
+    this.datas = [...filtered];
+    this.originDatas = [...filtered];
+
+    // 重新分页并重置到第一页
+    if (this.$refs.modelCardContainer) {
+        this.$refs.modelCardContainer.updatePaginatedModel(this.datas);
+        if (this.$refs.modelCardContainer.pagination.currentPage !== 1) {
+            this.$refs.modelCardContainer.pagination.currentPage = 1;
+            this.$refs.modelCardContainer.updatePaginatedModel();
+        }
+    }
+    this.$nextTick(() => this.updateUrlParams());
+},
+        async clearOrg() {
+            // 重置机构值
+            this.selected_org = ["", ""];
+            this.orgDatas = [];
+
+            // 清除URL中的机构相关参数
+            const url = new URL(window.location.href);
+            url.searchParams.delete("org");
+            url.searchParams.delete("orgId");
+
+            // 使用history API更新URL，不触发页面刷新
+            window.history.replaceState({}, document.title, url.toString());
+
+            // 然后刷新页面，重置所有状态
+            window.location.reload();
+        },
+        validateOrg(org, orgId) {
+            const featureSelector = this.$refs.featureSelector;
+            if (!featureSelector) return false;
+            const allOrgs = featureSelector.tags_4;
+            return allOrgs.some(
+                (item) =>
+                    item.value[0] === org &&
+                    String(item.value[1]) === String(orgId)
+            );
+        },
         async clearSearch() {
             this.searchQuery = this.activeSearchQuery = "";
             this.searchDatas = [];
@@ -374,21 +452,21 @@ export default {
             this.selected_tag = ["", ""];
             this.tag_description = "";
             this.tagDatas = [];
-            
+
             // 清除URL中的所有标签相关参数
             const url = new URL(window.location.href);
-            url.searchParams.delete('tag');
-            url.searchParams.delete('tagId');
-            
+            url.searchParams.delete("tag");
+            url.searchParams.delete("tagId");
+
             // 确保清除任何可能存在的子标签相关参数
-            const tagRelatedParams = ['tag', 'tagId', 'subtag', 'subtagId'];
-            tagRelatedParams.forEach(param => url.searchParams.delete(param));
-            
+            const tagRelatedParams = ["tag", "tagId", "subtag", "subtagId"];
+            tagRelatedParams.forEach((param) => url.searchParams.delete(param));
+
             // 使用history API更新URL，不触发页面刷新
             window.history.replaceState({}, document.title, url.toString());
-            
-            console.log('已清除所有标签参数，准备刷新页面');
-            
+
+            console.log("已清除所有标签参数，准备刷新页面");
+
             // 然后刷新页面，重置所有状态
             window.location.reload();
         },
@@ -447,12 +525,26 @@ export default {
                 this.datas = [...this.datas].sort((a, b) => {
                     switch (value) {
                         case 1:
+                            // 发布时间从新到旧
                             return (
                                 new Date(b.releaseDate) -
                                 new Date(a.releaseDate)
                             );
                         case 2:
+                            // 发布时间从旧到新
+                            return (
+                                new Date(a.releaseDate) -
+                                new Date(b.releaseDate)
+                            );
+                        case 3:
+                            // 收藏量排序
                             return b.favoritesCount - a.favoritesCount;
+                        case 4:
+                            // 模型大小从大到小
+                            return (b.modelSize || 0) - (a.modelSize || 0);
+                        case 5:
+                            // 模型大小从小到大
+                            return (a.modelSize || 0) - (b.modelSize || 0);
                         default:
                             return 0;
                     }
@@ -477,15 +569,33 @@ export default {
             this.datas = [...this.datas].sort((a, b) => {
                 switch (value) {
                     case 1:
+                        // 发布时间从新到旧
                         return (
                             new Date(b.releaseDate) - new Date(a.releaseDate)
                         );
                     case 2:
+                        // 发布时间从旧到新
+                        return (
+                            new Date(a.releaseDate) - new Date(b.releaseDate)
+                        );
+                    case 3:
+                        // 收藏量排序
                         return b.favoritesCount - a.favoritesCount;
+                    case 4:
+                        // 开源模型大小从大到小
+                        return (b.size || 0) - (a.size || 0);
+                    case 5:
+                        // 开源模型大小从小到大
+                        return (a.size || 0) - (b.size || 0);
                     default:
                         return 0;
                 }
             });
+            // 如果排序是模型大小，则需要根据开源闭源进行排序
+            if (value === 4 || value === 5) {
+                this.datas = this.datas.filter((item) => item.isOpenSource);
+                console.log("开源模型大小排序", this.datas);
+            }
         },
         validateTag(tag, tagId) {
             // 通过 ref 获取 featureSelector 组件的标签数据
@@ -526,7 +636,7 @@ export default {
         },
 
         validateSort(sort) {
-            return [0, 1, 2].includes(Number(sort));
+            return [0, 1, 2, 3, 4, 5].includes(Number(sort));
         },
 
         async restoreFromUrl() {
@@ -539,14 +649,12 @@ export default {
                 this.searchQuery = search;
                 await this.handleSearch();
             }
-
             // 验证并恢复标签
             if (tag && tagId) {
                 if (this.validateTag(tag, tagId)) {
-                    await this.selectModel([tag, tagId]);
+                    await this.selectTag([tag, tagId]);
                 } else {
                     this.$message.error(`无效的标签参数: ${tag}`);
-                    // 移除无效的标签参数
                     const query = { ...this.$route.query };
                     delete query.tag;
                     delete query.tagId;
@@ -611,7 +719,14 @@ export default {
                 query.tag = this.selected_tag[0];
                 query.tagId = this.selected_tag[1];
             }
-
+            // if (
+            //     this.selected_org[0] &&
+            //     this.selected_org[1] &&
+            //     this.validateOrg(this.selected_org[0], this.selected_org[1])
+            // ) {
+            //     query.org = this.selected_org[0];
+            //     query.orgId = this.selected_org[1];
+            // }
             if (
                 this.activeFilters.length &&
                 this.validateFilters(this.activeFilters)
@@ -829,7 +944,7 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    margin:20px;
+    margin: 20px;
 }
 
 .description-label {
@@ -1095,7 +1210,7 @@ export default {
         justify-content: center;
         padding-left: 0;
     }
-    
+
     .hero-content {
         padding-left: 0;
         width: 90%; /* 在移动设备上减小宽度 */
@@ -1128,12 +1243,12 @@ export default {
         max-width: 100%;
         padding: 0 15px;
     }
-    
+
     .search-input :deep(.el-input__wrapper) {
         height: 40px;
         border-radius: 20px !important;
     }
-    
+
     .search-button {
         height: 34px;
     }

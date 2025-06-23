@@ -24,6 +24,50 @@
             <div class="section-header">
                 <div class="title-container">
                     <img
+                        src="./images/logo6.png"
+                        alt="Logo"
+                        class="section-logo"
+                    />
+                    <span class="section-title">{{ tagTitle_4 }}</span>
+                </div>
+                <tagContainter
+                    :tags="tags_4"
+                    :tag-title="''"
+                    :selected-value="selected_org"
+                    @custom-event="selectModel"
+                ></tagContainter>
+            </div>
+            <!-- 子标签容器 -->
+            <div
+                v-if="
+                    activeTagIndex4 !== null &&
+                    tags_4[activeTagIndex4]?.subtags &&
+                    tags_4[activeTagIndex4].subtags.length > 0
+                "
+                class="subtags-wrapper"
+            >
+                <div class="subtags-container">
+                    <div class="parent-tag-name">
+                        {{ parentTagName4 + "：" }}
+                    </div>
+                    <div
+                        v-for="(subtag, subIndex) in tags_4[activeTagIndex4]
+                            .subtags"
+                        :key="subIndex"
+                        class="subtag"
+                        :class="{ active: isSubtagActive4(subtag.value) }"
+                        @click="selectSubTag4(subtag.value)"
+                    >
+                        <span class="subtag-text">{{ subtag.text }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="feature-section">
+            <div class="section-header">
+                <div class="title-container">
+                    <img
                         src="./images/logo2.png"
                         alt="Logo"
                         class="section-logo"
@@ -91,7 +135,9 @@
                 class="subtags-wrapper"
             >
                 <div class="subtags-container">
-                    <div class="parent-tag-name">{{ parentTagName1 + "：" }}</div>
+                    <div class="parent-tag-name">
+                        {{ parentTagName1 + "：" }}
+                    </div>
                     <div
                         v-for="(subtag, subIndex) in tags_1[activeTagIndex1]
                             .subtags"
@@ -133,7 +179,9 @@
                 class="subtags-wrapper"
             >
                 <div class="subtags-container">
-                    <div class="parent-tag-name">{{ parentTagName2 + "：" }}</div>
+                    <div class="parent-tag-name">
+                        {{ parentTagName2 + "：" }}
+                    </div>
                     <div
                         v-for="(subtag, subIndex) in tags_2[activeTagIndex2]
                             .subtags"
@@ -175,7 +223,9 @@
                 class="subtags-wrapper"
             >
                 <div class="subtags-container">
-                    <div class="parent-tag-name">{{ parentTagName3 + "：" }}</div>
+                    <div class="parent-tag-name">
+                        {{ parentTagName3 + "：" }}
+                    </div>
                     <div
                         v-for="(subtag, subIndex) in tags_3[activeTagIndex3]
                             .subtags"
@@ -216,6 +266,7 @@ export default {
             activeTagIndex1: null,
             activeTagIndex2: null,
             activeTagIndex3: null,
+            activeTagIndex4: null,
             selectedSubTag: null,
             openSourceTitle: "是否开源",
             openSourceChecked: ["开源", "不开源"],
@@ -546,159 +597,122 @@ export default {
                     ],
                 },
             ],
+            tags_4: [
+                {
+                    text: "阿里云",
+                    value: ["阿里云", 200],
+                    subtags: [],
+                },
+                {
+                    text: "上海人工智能实验室",
+                    value: ["上海人工智能实验室", 201],
+                    subtags: [],
+                },
+                {
+                    text: "智谱AI",
+                    value: ["智谱AI", 202],
+                    subtags: [],
+                },
+                {
+                    text: "零一万物",
+                    value: ["零一万物", 203],
+                    subtags: [],
+                },
+                {
+                    text: "字节跳动",
+                    value: ["字节跳动", 204],
+                    subtags: [],
+                },
+                {
+                    text: "Meta",
+                    value: ["Meta", 205],
+                    subtags: [],
+                },
+                {
+                    text: "科大讯飞",
+                    value: ["科大讯飞", 206],
+                    subtags: [],
+                },
+                {
+                    text: "百川智能",
+                    value: ["百川智能", 207],
+                    subtags: [],
+                },
+                {
+                    text: "MiniMax",
+                    value: ["MiniMax", 208],
+                    subtags: [],
+                },
+                {
+                    text: "OpenAI",
+                    value: ["OpenAI", 209],
+                    subtags: [],
+                },
+                {
+                    text: "Google",
+                    value: ["Google", 210],
+                    subtags: [],
+                },
+                {
+                    text: "深度求索",
+                    value: ["深度求索", 211],
+                    subtags: [],
+                },
+                {
+                    text: "Mistral AI",
+                    value: ["Mistral AI", 212],
+                    subtags: [],
+                },
+                {
+                    text: "腾讯",
+                    value: ["腾讯", 213],
+                    subtags: [],
+                },
+                {
+                    text: "商汤日日新",
+                    value: ["商汤日日新", 214],
+                    subtags: [],
+                },
+                {
+                    text: "百度",
+                    value: ["百度", 215],
+                    subtags: [],
+                },
+                {
+                    text: "其他",
+                    value: ["其他", 216],
+                    subtags: [],
+                },
+            ],
             selectedValue: null,
+            selectedValue4: null,
             tagTitle_0: "模型通用能力",
             tagTitle_1: "安全性",
             tagTitle_2: "实际应用能力",
             tagTitle_3: "中文特色能力",
+            tagTitle_4: "发布机构",
             parentTagName0: "模型通用能力",
             parentTagName1: "安全性",
             parentTagName2: "实际应用能力",
             parentTagName3: "中文特色能力",
+            parentTagName4: "发布机构",
         };
     },
     components: { featureElement, tagContainter },
-    props: ["selected_tag", "tag_description"],
+    props: ["selected_tag", "selected_org", "tag_description"],
     methods: {
         // 接收来自homePageMid组件的标签重置请求
         resetTagState(tagInfo) {
-            if (!tagInfo || !tagInfo[0] || !tagInfo[1]) return;
-
-            // 检查取消的是哪一类标签
-            const categoryIndex = Math.floor(tagInfo[1] / 30); // 假设每类标签范围30
-
-            // 遍历所有标签及其子标签，查找匹配的标签
-            const checkSubtags = (tags, category) => {
-                for (let i = 0; i < tags.length; i++) {
-                    const tag = tags[i];
-                    // 检查是否为父标签
-                    if (
-                        tag.value[0] === tagInfo[0] &&
-                        tag.value[1] === tagInfo[1]
-                    ) {
-                        return { isSubtag: false, index: i, category };
-                    }
-
-                    // 检查子标签
-                    if (tag.subtags && tag.subtags.length) {
-                        for (let j = 0; j < tag.subtags.length; j++) {
-                            const subtag = tag.subtags[j];
-                            if (
-                                subtag.value[0] === tagInfo[0] &&
-                                subtag.value[1] === tagInfo[1]
-                            ) {
-                                return {
-                                    isSubtag: true,
-                                    parentIndex: i,
-                                    category,
-                                };
-                            }
-                        }
-                    }
-                }
-                return null;
-            };
-
-            // 检查所有类别的标签
-            const categories = [
-                this.tags_0,
-                this.tags_1,
-                this.tags_2,
-                this.tags_3,
-            ];
-            let result = null;
-
-            for (let i = 0; i < categories.length; i++) {
-                result = checkSubtags(categories[i], i);
-                if (result) break;
-            }
-
-            // 根据结果重置状态
-            if (result) {
-                // 无论是子标签还是父标签，都重置所有状态
-                this.selectedSubTag = null;
-                this.selectedValue = null;
-
-                // 针对对应类别，重置activeTagIndex
-                if (result.category === 0) this.activeTagIndex0 = null;
-                if (result.category === 1) this.activeTagIndex1 = null;
-                if (result.category === 2) this.activeTagIndex2 = null;
-                if (result.category === 3) this.activeTagIndex3 = null;
-            }
+            
         },
         selectModel(value) {
-            // 提取标签组索引和标签索引
-            const categoryIndex = Math.floor(value[1] / 30); // 假设每类标签范围30
             const tagValue = value[1];
-            const tagIndex = value.length > 2 ? value[2] : -1; // 从子组件传来的索引
-
-            // 检查是否是点击相同标签
-            const isSameTag =
-                this.selectedValue &&
-                this.selectedValue[0] === value[0] &&
-                this.selectedValue[1] === value[1];
-
-            // 更新活动标签索引
-            // 如果是相同标签，则切换显示状态（null表示不显示）
-            if (categoryIndex === 0) {
-                if (isSameTag) {
-                    this.activeTagIndex0 =
-                        this.activeTagIndex0 === null ? tagIndex : null;
-                } else {
-                    this.activeTagIndex0 =
-                        tagIndex !== -1
-                            ? tagIndex
-                            : this.findTagIndexById(this.tags_0, tagValue);
-                    this.activeTagIndex1 = null;
-                    this.activeTagIndex2 = null;
-                    this.activeTagIndex3 = null;
-                }
-            } else if (categoryIndex === 1) {
-                if (isSameTag) {
-                    this.activeTagIndex1 =
-                        this.activeTagIndex1 === null ? tagIndex : null;
-                } else {
-                    this.activeTagIndex0 = null;
-                    this.activeTagIndex1 =
-                        tagIndex !== -1
-                            ? tagIndex
-                            : this.findTagIndexById(this.tags_1, tagValue);
-                    this.activeTagIndex2 = null;
-                    this.activeTagIndex3 = null;
-                }
-            } else if (categoryIndex === 2) {
-                if (isSameTag) {
-                    this.activeTagIndex2 =
-                        this.activeTagIndex2 === null ? tagIndex : null;
-                } else {
-                    this.activeTagIndex0 = null;
-                    this.activeTagIndex1 = null;
-                    this.activeTagIndex2 =
-                        tagIndex !== -1
-                            ? tagIndex
-                            : this.findTagIndexById(this.tags_2, tagValue);
-                    this.activeTagIndex3 = null;
-                }
-            } else if (categoryIndex === 3) {
-                if (isSameTag) {
-                    this.activeTagIndex3 =
-                        this.activeTagIndex3 === null ? tagIndex : null;
-                } else {
-                    this.activeTagIndex0 = null;
-                    this.activeTagIndex1 = null;
-                    this.activeTagIndex2 = null;
-                    this.activeTagIndex3 =
-                        tagIndex !== -1
-                            ? tagIndex
-                            : this.findTagIndexById(this.tags_3, tagValue);
-                }
+            console.log("selectModel", value);
+            if (tagValue >= 200) {
+                this.$emit("select-org", value); 
+            } else {
+                this.$emit("select-tag", value);
             }
-
-            // 更新选中值
-            this.selectedValue = value.slice(0, 2); // 只保留前两个值
-
-            // 发送给父组件
-            this.$emit("custom-event", this.selectedValue);
         },
         findTagIndexById(tags, id) {
             return tags.findIndex((tag) => tag.value[1] === id);
