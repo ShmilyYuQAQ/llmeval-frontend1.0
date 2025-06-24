@@ -280,45 +280,6 @@ const toggleLike = (id) => {
 
 
 
-
-:deep(.el-pagination.is-background .el-pager li:not(.is-disabled).is-active) {
-  background-color: #870066 !important;
-  color: #ffffff !important;
-  transition: all 0.3s ease;
-}
-:deep(.el-pagination.is-background .el-pager li:not(.is-disabled):hover) {
-  color: #870066 !important;
-  transition: color 0.3s ease;
-}
-:deep(.el-pagination .btn-next:hover, .el-pagination .btn-prev:hover) {
-  color: #870066 !important;
-  transition: color 0.3s ease;
-}
-:deep(.el-pagination .el-pager li:not(.disabled).active) {
-  color: #ffffff !important;
-  background-color: #870066 !important;
-  transition: all 0.3s ease;
-}
-:deep(.el-pagination button:hover) {
-  color: #870066 !important;
-}
-:deep(.el-pagination.is-background .btn-next, 
-      .el-pagination.is-background .btn-prev, 
-      .el-pagination.is-background .el-pager li) {
-  background-color: #f4f4f5;
-  transition: all 0.3s ease;
-}
-:deep(.el-pagination.is-background .btn-next:hover:not(:disabled), 
-      .el-pagination.is-background .btn-prev:hover:not(:disabled)) {
-  color: #870066 !important;
-}
-:deep(.el-pagination.is-background .el-pager li:not(.disabled).active) {
-  background-color: #870066 !important;
-}
-:deep(.el-pagination) {
-  font-weight: normal;
-  padding: 0;
-}
 .page-container {
   display: flex;
   flex-direction: column;

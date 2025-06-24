@@ -14,6 +14,7 @@
     "bigmodel": "file:",
     "element-plus": "^2.9.3",
     "front-matter": "^4.0.2",
+    "github-markdown-css": "^5.8.1",
     "katex": "^0.16.22",
     "marked": "^15.0.12",
     "mitt": "^3.0.1",

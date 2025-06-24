@@ -17,9 +17,13 @@ import { useRoute } from 'vue-router';
 import { marked } from 'marked';
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
+import 'highlight.js/styles/github.css';
+import 'github-markdown-css/github-markdown-light.css'; // ✅ GitHub 风格 Markdown 样式
+
+
 import fm from 'front-matter';
 import hljs from 'highlight.js';
-import 'highlight.js/styles/github.css';
+
 import NavBar from '../components/guidePage/NavBar.vue';
 
 // 自定义 marked 扩展以支持 LaTeX
@@ -64,13 +68,13 @@ const latexExtension = {
     }
   },
 };
-
+// ✅ marked 配置
 marked.use({
   extensions: [latexExtension],
   gfm: true,
   breaks: false,
-  pedantic: false,
-  mangle: false,
+  //pedantic: false,
+  //mangle: false,
   highlight: function (code, lang) {
     if (lang && hljs.getLanguage(lang)) {
       return hljs.highlight(code, { language: lang }).value;
@@ -82,7 +86,7 @@ marked.use({
 const route = useRoute();
 const article = ref(null);
 const loading = ref(true);
-
+// ✅ Markdown 内容解析
 const parsedContent = computed(() => {
   return article.value ? marked.parse(article.value.content) : '';
 });
@@ -132,7 +136,7 @@ onMounted(async () => {
       publishDate: attributes.publishDate || new Date().toISOString().split('T')[0],
     };
 
-    console.log('加载的文章:', article.value);
+    //console.log('加载的文章:', article.value);
     loading.value = false;
   } catch (error) {
     console.error('加载文章失败:', error);
