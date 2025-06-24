@@ -6,22 +6,53 @@
         <h3 class="toc-title">目录</h3>
         <ul class="toc-list">
           <li v-for="item in toc" :key="item.id" class="toc-item">
-            <a v-if="item.level === 2" :href="`#${item.id}`" @click.prevent="toggleSection(item.id); scrollToSection(item.id)">
-              {{ item.text }} <span :class="['toggle-icon', { open: isSectionOpen(item.id) }]">▶</span>
-            </a>
-            
-            <ul v-if="isSectionOpen(item.id)" class="sub-list">
-              <li v-for="subItem in item.children" :key="subItem.id" class="toc-item">
-                <a :href="`#${subItem.id}`" @click.prevent="scrollToSection(subItem.id)" class="sub-item">{{ subItem.text }}</a>
+            <div class="toc-line">
+              <!-- 标题跳转 -->
+              <a
+                :href="`#${item.id}`"
+                @click.prevent="scrollToSection(item.id)"
+                class="toc-text"
+              >
+                {{ item.text }}
+              </a>
+
+              <!-- ▶ 仅在一级标题且有子项时显示 -->
+              <span
+                v-if="item.level === 2 && item.children && item.children.length > 0"
+                class="toggle-icon"
+                :class="{ open: isSectionOpen(item.id) }"
+                @click.stop="toggleSection(item.id)"
+                style="cursor: pointer; margin-left: 6px;"
+              >
+                ▶
+              </span>
+            </div>
+
+            <!-- 展开子目录 -->
+            <ul
+              v-if="item.level === 2 && isSectionOpen(item.id)"
+              class="sub-list"
+            >
+              <li
+                v-for="subItem in item.children"
+                :key="subItem.id"
+                class="toc-sub-item"
+              >
+                <a
+                  :href="`#${subItem.id}`"
+                  @click.prevent="scrollToSection(subItem.id)"
+                >
+                  {{ subItem.text }}
+                </a>
               </li>
             </ul>
           </li>
         </ul>
       </aside>
+
       <div class="main-content">
         <div v-if="loading" class="loading">加载中...</div>
         <div v-else-if="article" class="article-content">
-          <h1>{{ article.title }}</h1>
           <p class="meta">{{ article.publisher }} | {{ article.publishDate }}</p>
           <div v-html="parsedContent" class="markdown-body"></div>
         </div>
@@ -31,14 +62,21 @@
   </div>
 </template>
 
+
 <script setup>
+
+
+
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { marked } from 'marked';
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
 import 'highlight.js/styles/github.css';
-import 'github-markdown-css/github-markdown-light.css';
+//import 'https://github.com/s1m4ne/typora-theme-notion-style/notion-style-light.css';
+import "@/assets/document/typora-theme-notion-style-main/notion-style-light.css";
+//import "@/assets/document/notion.css";
+//import 'github-markdown-css/github-markdown-light.css';
 import fm from 'front-matter';
 import hljs from 'highlight.js';
 import DOMPurify from 'dompurify';
@@ -119,22 +157,36 @@ const parsedContent = computed(() => {
     const doc = parser.parseFromString(html, 'text/html');
     const headers = doc.querySelectorAll('h2,h3');
     const tocMap = new Map();
-    toc.value = Array.from(headers).map((header, index) => {
-      const id = header.id || `toc-${index}`;
-      header.id = id;
-      const level = parseInt(header.tagName.toLowerCase().substring(1));
-      const item = { id, text: header.textContent.trim(), level, children: [] };
-      if (level === 2) {
-        tocMap.set(id, item);
-      } else if (level === 3) {
-        const parent = Array.from(headers).slice(0, index).reverse().find(h => parseInt(h.tagName.toLowerCase().substring(1)) === 2);
-        if (parent) {
-          const parentId = parent.id || `toc-${index - 1}`;
-          tocMap.get(parentId)?.children.push(item);
-        }
-      }
-      return item;
-    });
+const tocList = [];
+
+Array.from(headers).forEach((header, index) => {
+  const id = header.id || `toc-${index}`;
+  header.id = id;
+  const level = parseInt(header.tagName.toLowerCase().substring(1));
+  const item = {
+    id,
+    text: header.textContent.trim(),
+    level,
+    children: [],
+  };
+
+  if (level === 2) {
+    tocMap.set(id, item);
+    tocList.push(item); // 只把 h2 放进 tocList
+  } else if (level === 3) {
+    const parent = Array.from(headers)
+      .slice(0, index)
+      .reverse()
+      .find((h) => parseInt(h.tagName.toLowerCase().substring(1)) === 2);
+    if (parent) {
+      const parentId = parent.id || `toc-${index - 1}`;
+      tocMap.get(parentId)?.children.push(item);
+    }
+  }
+});
+
+toc.value = tocList; // 只包含 H2，H3 被挂载为 children
+
     const sanitized = DOMPurify.sanitize(html, {
       ADD_TAGS: ['katex', 'mark'],
       ADD_ATTR: ['class', 'style', 'id'],
@@ -230,7 +282,7 @@ onMounted(async () => {
       id: articleId,
       title: attributes.title || body.split('\n')[0]?.replace(/^#+\s*/, '') || fileName.replace('.md', ''),
       content: body,
-      publisher: attributes.publisher || '博客作者',
+      publisher: attributes.publisher || '作者',
       publishDate: attributes.publishDate || new Date().toISOString().split('T')[0],
     };
 
@@ -258,12 +310,14 @@ onUnmounted(() => {
 });
 </script>
 
+
 <style scoped>
 .article-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
+
 .content-wrapper {
   display: flex;
   flex: 1;
@@ -271,120 +325,240 @@ onUnmounted(() => {
   margin: 0 auto;
   padding: 20px;
 }
+
 .toc-sidebar {
   width: 250px;
   position: sticky;
   top: 20px;
   height: fit-content;
-  padding-right: 20px;
+  padding: 16px 20px;
+  background: linear-gradient(145deg, #ffffff, #f8f8fa);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #ccc;
 }
+
 .toc-title {
   font-size: 18px;
   font-weight: bold;
-  margin-bottom: 10px;
-  color: #333;
+  margin-bottom: 12px;
+  color: #222;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 6px;
 }
+
 .toc-list {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
+
 .toc-item {
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
-.sub-item {
+
+.toc-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 10px;
+  transition: background-color 0.3s;
+}
+
+.toc-line:hover {
+  background-color: #f0f0f5;
+}
+
+.toc-text {
   font-size: 14px;
-  color: #555;
+  color: #333;
   text-decoration: none;
-  display: block;
-  padding: 2px 0;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.sub-item:hover {
-  color: #870066;
-}
-.sub-list {
-  padding-left: 16px;
-  margin-top: 4px;
-}
+
 .toggle-icon {
-  transition: transform 0.2s;
-  display: inline-block;
+  font-size: 14px;
+  margin-left: 8px;
+  color: #555;
+  transition: transform 0.2s, color 0.3s;
+  cursor: pointer;
 }
+
 .toggle-icon.open {
   transform: rotate(90deg);
+  color: #870066;
 }
+
+.sub-list {
+  padding-left: 12px;
+  margin-top: 4px;
+  border-left: 2px solid #ccc;
+  margin-left: 4px;
+}
+
+.sub-item {
+  display: block;
+  padding: 4px 10px;
+  font-size: 13px;
+  color: #555;
+  border-radius: 8px;
+  transition: background-color 0.2s, color 0.2s;
+  text-decoration: none;
+  margin-top: 2px;
+}
+
+.sub-item:hover {
+  background-color: #f5f5f5;
+  color: #870066;
+}
+
 .main-content {
   flex: 1;
   max-width: 800px;
 }
+
 .article-content {
   padding: 20px;
+  background: linear-gradient(145deg, #ffffff, #f6f6f9);
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  border: 1px solid #ddd;
 }
+
+.markdown-body {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #333;
+  padding: 10px 20px;
+}
+
+/* Markdown 样式优化 */
+.markdown-body :deep(h1) {
+  font-size: 32px;
+  color: #222;
+  margin-bottom: 16px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.markdown-body :deep(h2) {
+  font-size: 24px;
+  margin: 30px 0 12px;
+  padding-bottom: 4px;
+  border-bottom: 2px solid #e0e0e0;
+  color: #333;
+  transition: color 0.3s;
+}
+.markdown-body :deep(h2):hover {
+  color: #990fa6;
+}
+
+.markdown-body :deep(h3) {
+  font-size: 20px;
+  margin: 20px 0 10px;
+  color: #444;
+}
+.markdown-body :deep(h3):hover {
+  color: #c961b4;
+}
+.markdown-body :deep(p) {
+  margin-bottom: 14px;
+  color: #444;
+}
+
+.markdown-body :deep(table) {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 16px 0;
+  background-color: #fafafa;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.markdown-body :deep(th),
+.markdown-body :deep(td) {
+  border: 1px solid #ddd;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.markdown-body :deep(th) {
+  background-color: #f4f4f5;
+  font-weight: 600;
+}
+
+.markdown-body :deep(pre) {
+  background-color: #f6f8fa;
+  padding: 12px 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.markdown-body :deep(code) {
+  background-color: #f0f0f0;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.markdown-body :deep(.katex) {
+  font-size: 1.1em;
+  margin: 0 2px;
+}
+
+.markdown-body :deep(.katex-display) {
+  margin: 1em 0;
+  text-align: center;
+}
+
 h1 {
   font-size: 32px;
   color: #222;
   margin-bottom: 10px;
 }
+
 .meta {
   font-size: 14px;
   color: #999;
   margin-bottom: 20px;
 }
-.markdown-body {
-  font-size: 16px;
-  line-height: 1.6;
-  color: #333;
-}
-.markdown-body :deep(h2) {
-  font-size: 24px;
-  margin: 20px 0 10px;
-}
-.markdown-body :deep(h3) {
-  font-size: 20px;
-  margin: 15px 0 8px;
-}
-.markdown-body :deep(p) {
-  margin-bottom: 10px;
-}
-.markdown-body :deep(table) {
-  border-collapse: collapse;
-  width: 100%;
-  margin: 10px 0;
-}
-.markdown-body :deep(th, td) {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
-.markdown-body :deep(th) {
-  background-color: #f4f4f5;
-}
-.markdown-body :deep(.katex) {
-  font-size: 1.1em;
-  margin: 0 2px;
-}
-.markdown-body :deep(.katex-display) {
-  margin: 1em 0;
-  text-align: center;
-}
+
 .loading {
   text-align: center;
   padding: 20px;
   color: #870066;
 }
+
 .error {
   text-align: center;
   padding: 20px;
   color: #f00;
 }
+
 @media (max-width: 900px) {
   .content-wrapper {
     flex-direction: column;
   }
+
   .toc-sidebar {
     width: 100%;
     position: static;
     padding-right: 0;
     margin-bottom: 20px;
   }
+}
+
+/* 小动画增强 */
+.toc-line,
+.sub-item {
+  transition: all 0.2s ease;
 }
 </style>
