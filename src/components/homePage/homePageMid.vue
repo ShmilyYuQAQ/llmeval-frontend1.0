@@ -258,34 +258,71 @@ export default {
 
             // 标签筛选（用 tagDatas 里的 name 做交集）
             if (this.selected_tag[0] && this.tagDatas.length > 0) {
-                filtered = filtered.filter(item =>
-                    this.tagDatas.some(tagItem => String(tagItem.name) === String(item.name))
+                filtered = filtered.filter((item) =>
+                    this.tagDatas.some(
+                        (tagItem) => String(tagItem.name) === String(item.name)
+                    )
                 );
             }
             // 搜索筛选
             if (this.activeSearchQuery && this.searchDatas.length > 0) {
-                filtered = filtered.filter(item =>
-                    this.searchDatas.some(searchItem => String(searchItem.name) === String(item.name))
+                filtered = filtered.filter((item) =>
+                    this.searchDatas.some(
+                        (searchItem) =>
+                            String(searchItem.name) === String(item.name)
+                    )
                 );
             }
             // 机构筛选
-            if (this.selected_org[0]) {
-                filtered = filtered.filter(item => item.institution === this.selected_org[0]);
+            // 假设 mainstreamOrgs 是主流机构名称数组
+            if (this.selected_org[0] === "其他") {
+                // 只展示 institution 不在主流机构里的模型
+                const mainstreamOrgs = [
+                    "阿里云",
+                    "上海人工智能实验室",
+                    "智谱AI",
+                    "零一万物",
+                    "字节跳动",
+                    "Meta",
+                    "科大讯飞",
+                    "百川智能",
+                    "MiniMax",
+                    "OpenAI",
+                    "Google",
+                    "深度求索",
+                    "Mistral AI",
+                    "腾讯",
+                    "商汤日日新",
+                    "百度",
+                ];
+                filtered = filtered.filter(
+                    (item) => !mainstreamOrgs.includes(item.institution)
+                );
+            } else if (this.selected_org[0]) {
+                filtered = filtered.filter(
+                    (item) => item.institution === this.selected_org[0]
+                );
             }
             // 开源筛选
-            if (this.activeFilters.length && this.activeFilters.length < 2) {
-                filtered = this.filterItems(this.activeFilters, filtered);
+            if (this.activeFilters.length === 1) {
+                filtered = filtered.filter(
+                    (item) =>
+                        (this.activeFilters[0] === "开源" &&
+                            item.isOpenSource) ||
+                        (this.activeFilters[0] === "不开源" &&
+                            !item.isOpenSource)
+                );
             }
 
             // 应用排序
-            if (this.sequencerValue) {
-                filtered = this.sortDatasByValue(filtered, this.sequencerValue);
-            }
+            filtered = this.sortDatasByValue(filtered, this.sequencerValue);
 
             this.datas = [...filtered];
             if (this.$refs.modelCardContainer) {
                 this.$refs.modelCardContainer.updatePaginatedModel(this.datas);
-                if (this.$refs.modelCardContainer.pagination.currentPage !== 1) {
+                if (
+                    this.$refs.modelCardContainer.pagination.currentPage !== 1
+                ) {
                     this.$refs.modelCardContainer.pagination.currentPage = 1;
                     this.$refs.modelCardContainer.updatePaginatedModel();
                 }
@@ -293,25 +330,32 @@ export default {
             this.$nextTick(() => this.updateUrlParams());
         },
         sortDatasByValue(data, value) {
+            if (value === 0) {
+                return this.sortByJsonOrder(data);
+            }
             if (value === 4) {
                 // 开源模型大小从大到小
                 return [...data]
-                    .filter(item => item.isOpenSource)
+                    .filter((item) => item.isOpenSource)
                     .sort((a, b) => (b.size || 0) - (a.size || 0));
             }
             if (value === 5) {
                 // 开源模型大小从小到大
                 return [...data]
-                    .filter(item => item.isOpenSource)
+                    .filter((item) => item.isOpenSource)
                     .sort((a, b) => (a.size || 0) - (b.size || 0));
             }
             // 其他排序
             return [...data].sort((a, b) => {
                 switch (value) {
                     case 1:
-                        return new Date(b.releaseDate) - new Date(a.releaseDate);
+                        return (
+                            new Date(b.releaseDate) - new Date(a.releaseDate)
+                        );
                     case 2:
-                        return new Date(a.releaseDate) - new Date(b.releaseDate);
+                        return (
+                            new Date(a.releaseDate) - new Date(b.releaseDate)
+                        );
                     case 3:
                         return b.favoritesCount - a.favoritesCount;
                     default:
