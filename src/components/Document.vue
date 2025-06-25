@@ -4,6 +4,10 @@
     <div class="text-wrapper_2 flex-col">
       <div>
         <span class="text_7">相关文章</span>
+        
+      </div>
+      <div>
+        <span class="text_8">聚焦领域：相关文章及技术报告专栏</span>
       </div>
     </div>
     <div class="main-content">
@@ -21,18 +25,15 @@
           </div>
           <div class="action-row">
             <span class="text_11">{{ news.publisher }}丨{{ news.publishDate }}</span>
-            <button @click.stop="toggleLike(news.id)" class="like-btn">
-              {{ likes.value && likes.value.has(news.id) ? '已点赞' : '点赞' }}
-            </button>
+            
           </div>
         </div>
       </div>
       <div v-else class="no-data">暂无文章</div>
 
-      <div v-if="newsItems.length" class="pagination-container">
-        <el-select v-model="pageSize" @change="handlePageSizeChange" style="margin-right: 10px;">
-          <el-option v-for="size in [6, 12, 18]" :key="size" :value="size" />
-        </el-select>
+
+      <!-- 分页 -->
+      <div class="pagination-container">
         <el-pagination
           background
           :current-page="currentPage"
@@ -41,7 +42,8 @@
           layout="prev, pager, next"
           @current-change="handleCurrentChange"
           class="custom-pagination"
-        />
+        >
+        </el-pagination>
       </div>
     </div>
   </div>
@@ -57,6 +59,7 @@ import 'katex/dist/katex.min.css';
 import fm from 'front-matter';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css';
+
 
 // 自定义 marked 扩展以支持 LaTeX
 const latexExtension = {
@@ -213,53 +216,71 @@ const toggleLike = (id) => {
 </script>
 
 <style scoped>
+
 .custom-pagination {
-  font-size: 13px;
+    /* 自定义分页组件类 */
+    font-size: 13px;
 }
+/* 分页容器样式 */
 .pagination-container {
   display: flex;
   justify-content: center;
   margin-top: 20px;
-  align-items: center;
 }
+/* 自定义分页样式 */
 :deep(.el-pagination.is-background .el-pager li:not(.is-disabled).is-active) {
-  background-color: #870066 !important;
-  color: #ffffff !important;
-  transition: all 0.3s ease;
+    background-color: #870066 !important;
+    color: #ffffff !important;
+    transition: all 0.3s ease;
 }
+
 :deep(.el-pagination.is-background .el-pager li:not(.is-disabled):hover) {
-  color: #870066 !important;
-  transition: color 0.3s ease;
+    color: #870066 !important;
+    transition: color 0.3s ease;
 }
+
 :deep(.el-pagination .btn-next:hover, .el-pagination .btn-prev:hover) {
-  color: #870066 !important;
-  transition: color 0.3s ease;
+    color: #870066 !important;
+    transition: color 0.3s ease;
 }
+
 :deep(.el-pagination .el-pager li:not(.disabled).active) {
-  color: #ffffff !important;
-  background-color: #870066 !important;
-  transition: all 0.3s ease;
+    color: #ffffff !important;
+    background-color: #870066 !important;
+    transition: all 0.3s ease;
 }
+
 :deep(.el-pagination button:hover) {
-  color: #870066 !important;
+    color: #870066 !important;
 }
+
 :deep(.el-pagination.is-background .btn-next, 
       .el-pagination.is-background .btn-prev, 
       .el-pagination.is-background .el-pager li) {
-  background-color: #f4f4f5;
-  transition: all 0.3s ease;
+    background-color: #f4f4f5;
+    transition: all 0.3s ease;
 }
+
 :deep(.el-pagination.is-background .btn-next:hover:not(:disabled), 
       .el-pagination.is-background .btn-prev:hover:not(:disabled)) {
-  color: #870066 !important;
+    color: #870066 !important;
 }
+
 :deep(.el-pagination.is-background .el-pager li:not(.disabled).active) {
-  background-color: #870066 !important;
+    background-color: #870066 !important;
 }
+
 :deep(.el-pagination) {
-  font-weight: normal;
-  padding: 0;
+    font-weight: normal;
+    padding: 0;
 }
+
+
+
+
+
+
+
 .page-container {
   display: flex;
   flex-direction: column;
@@ -270,10 +291,10 @@ const toggleLike = (id) => {
   padding: 20px;
 }
 .text-wrapper_2 {
-  background-image: url(https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/020169b56f4e4d209b4ded3c2aa3db4f_mergeImage.png);
+  background-image: url(./DocumentPage/images/document.png);
   width: 100%;
   max-width: 1440px;
-  height: 190px;
+  height: 250px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -286,8 +307,16 @@ const toggleLike = (id) => {
 }
 .text_7 {
   font-size: 32px;
+  padding-left: 1045px;
   font-weight: 500;
   color: rgba(135, 0, 102, 1);
+  margin-bottom: 10px;
+}
+.text_8 {
+  font-size: 15px;
+  padding-left: 1045px;
+  font-weight: 500;
+ 
   margin-bottom: 10px;
 }
 .group_2 {
