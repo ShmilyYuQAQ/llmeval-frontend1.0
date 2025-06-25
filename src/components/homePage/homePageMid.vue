@@ -273,14 +273,15 @@ export default {
                 filtered = filtered.filter(item => item.institution === this.selected_org[0]);
             }
             // 开源筛选
-            if (this.activeFilters.length && this.activeFilters.length < 2) {
-                filtered = this.filterItems(this.activeFilters, filtered);
+            if (this.activeFilters.length === 1) {
+                filtered = filtered.filter(item =>
+                    (this.activeFilters[0] === "开源" && item.isOpenSource) ||
+                    (this.activeFilters[0] === "不开源" && !item.isOpenSource)
+                );
             }
 
             // 应用排序
-            if (this.sequencerValue) {
-                filtered = this.sortDatasByValue(filtered, this.sequencerValue);
-            }
+            filtered = this.sortDatasByValue(filtered, this.sequencerValue);
 
             this.datas = [...filtered];
             if (this.$refs.modelCardContainer) {
@@ -293,6 +294,9 @@ export default {
             this.$nextTick(() => this.updateUrlParams());
         },
         sortDatasByValue(data, value) {
+            if (value === 0) {
+                return this.sortByJsonOrder(data);
+            }
             if (value === 4) {
                 // 开源模型大小从大到小
                 return [...data]
