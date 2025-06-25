@@ -21,6 +21,13 @@
             <div class="main-right">
                 <button @click="toggleReply" class="reply-btn">回复</button>
                 <button v-if="comment.userId === this.userId" class="delete-btn" @click="deleteComment(comment.commentId)">删除</button>
+                <button v-if="comment.userId !== this.userId" class="report-btn" @click="reportComment()">举报</button>
+                <ReportWindow
+                    v-if="showReportWindow"
+                    :comment-id="comment.commentId"
+                    :username="comment.userName"
+                    @close="showReportWindow = false"
+                />
                 <span class="comment-time"
                     >{{
                         comment.createTime
@@ -64,7 +71,7 @@
 <script>
 import axios from "axios";
 import { getUserIdFromToken } from '@/utils/token'; // 导入工具函数
-
+import ReportWindow from "./ReportWindow.vue"; // 导入举报窗口组件
 export default {
     name: "Comment",
     props: {
@@ -94,6 +101,7 @@ export default {
             replyContent: "",
             replyToUser: "",
             userId: null,
+            showReportWindow: false, // 控制举报窗口的显示
         };
     },
     created() {
@@ -106,7 +114,18 @@ export default {
         // 在组件加载时解析 token，获取 userId
         this.userId = getUserIdFromToken(localStorage.getItem('token'));
     },
+    components: {
+        ReportWindow, // 注册举报窗口组件
+    },
     methods: {
+        reportComment() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert("请先登录！");
+                return;
+            }
+            this.showReportWindow = true; // 显示举报窗口
+        },
         toggleReply() {
             this.showReplies = !this.showReplies;
         },
@@ -233,6 +252,18 @@ export default {
     margin-right: 10px;
     margin-bottom: 3px;
     margin-right: 15px;
+}
+
+.report-btn {
+    position: relative;
+    outline: none;
+    border: none;
+    background: transparent;
+    font-size: 13px;
+    cursor: pointer;
+    margin-left: 13px;
+    color: rgba(135, 0, 102, 1);
+    margin-bottom: 3px;
 }
 
 .delete-btn:hover {

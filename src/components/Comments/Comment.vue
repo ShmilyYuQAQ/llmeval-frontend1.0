@@ -10,6 +10,13 @@
             <div class="header-right">
                 <button @click="toggleReply" class="reply-btn">回复</button>
                 <button v-if="comment.userId === this.userId" class="delete-btn" @click="deleteComment(comment.commentId)">删除</button>
+                <button v-if="comment.userId !== this.userId" class="delete-btn" @click="reportComment()">举报</button>
+                <ReportWindow
+                    v-if="showReportWindow"
+                    :comment-id="comment.commentId"
+                    :username="comment.userName"
+                    @close="showReportWindow = false"
+                />
                 <span class="comment-time"
                     >{{
                         comment.createTime
@@ -56,6 +63,7 @@
 <script>
 import axios from "axios";
 import ChildComment from "./ChildComment.vue";
+import ReportWindow from "./ReportWindow.vue"; 
 import { getUserIdFromToken } from '@/utils/token'; // 导入工具函数
 
 export default {
@@ -79,10 +87,12 @@ export default {
     },
     components: {
         ChildComment,
+        ReportWindow, 
     },
     data() {
         return {
             showReplies: false,
+            showReportWindow: false, 
             replyContent: "",
             userId: null,
         };
@@ -92,6 +102,14 @@ export default {
         this.userId = getUserIdFromToken(localStorage.getItem('token'));
     },
     methods: {
+        reportComment() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert("请先登录！");
+                return;
+            }
+            this.showReportWindow = true; // 显示举报窗口
+        },
         toggleReply() {
             this.showReplies = !this.showReplies;
         },
