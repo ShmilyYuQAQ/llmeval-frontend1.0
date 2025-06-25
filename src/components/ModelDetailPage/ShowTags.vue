@@ -2117,17 +2117,17 @@ export default {
 }
 
 .text_81 {
-  width: 112px;
-  height: 18px;
+  width: 35px;
+  height: 20px;
   overflow-wrap: break-word;
   color: rgba(234, 75, 75, 1);
   font-size: 14px;
-  font-family: OPPOSans-R;
-  font-weight: normal;
-  text-align: left;
+  font-family: PingFangSC-Medium;
+  font-weight: 500;
+  text-align: justify;
   white-space: nowrap;
-  line-height: 18px;
-  margin: 7px 0 0 16px;
+  line-height: 20px;
+  margin: 30px 0 0 20px;
 }
 
 .text-wrapper_39 {
