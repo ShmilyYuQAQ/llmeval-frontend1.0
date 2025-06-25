@@ -60,6 +60,8 @@ export default {
         handleTagClick(tag, index) {
             // 发送标签和索引信息
             this.$emit('custom-event', [...tag.value, index]);
+            // 新增：点击父标签时，通知父组件当前 index
+            this.$emit('select-parent-tag', index);
         },
         isTagActive(tag) {
             return this.selectedValue && 

@@ -222,12 +222,11 @@ export default {
                     data: { data },
                 } = await axiosInstance.get("/model/");
                 const processedData = this.processImagePath(data);
-                // 在这里应用排序
+                // 只在初次加载时赋值 originDatas
+                this.originDatas = [...processedData];
                 this.datas = this.sortByJsonOrder(processedData);
-                this.originDatas = [...this.datas];
                 console.log(this.datas, "datas");
 
-                // 确保数据加载完成后，再更新组件
                 this.$nextTick(() => {
                     if (this.$refs.modelCardContainer) {
                         console.log(
@@ -237,8 +236,6 @@ export default {
                         this.$refs.modelCardContainer.updatePaginatedModel(
                             this.datas
                         );
-
-                        // 如果当前页不是第1页，先跳回第1页，确保能显示数据
                         if (
                             this.$refs.modelCardContainer.pagination
                                 .currentPage !== 1
@@ -256,6 +253,72 @@ export default {
                 this.isLoading = false;
             }
         },
+        filterAndSetDatas() {
+            let filtered = [...this.originDatas];
+
+            // 标签筛选（用 tagDatas 里的 name 做交集）
+            if (this.selected_tag[0] && this.tagDatas.length > 0) {
+                filtered = filtered.filter(item =>
+                    this.tagDatas.some(tagItem => String(tagItem.name) === String(item.name))
+                );
+            }
+            // 搜索筛选
+            if (this.activeSearchQuery && this.searchDatas.length > 0) {
+                filtered = filtered.filter(item =>
+                    this.searchDatas.some(searchItem => String(searchItem.name) === String(item.name))
+                );
+            }
+            // 机构筛选
+            if (this.selected_org[0]) {
+                filtered = filtered.filter(item => item.institution === this.selected_org[0]);
+            }
+            // 开源筛选
+            if (this.activeFilters.length && this.activeFilters.length < 2) {
+                filtered = this.filterItems(this.activeFilters, filtered);
+            }
+
+            // 应用排序
+            if (this.sequencerValue) {
+                filtered = this.sortDatasByValue(filtered, this.sequencerValue);
+            }
+
+            this.datas = [...filtered];
+            if (this.$refs.modelCardContainer) {
+                this.$refs.modelCardContainer.updatePaginatedModel(this.datas);
+                if (this.$refs.modelCardContainer.pagination.currentPage !== 1) {
+                    this.$refs.modelCardContainer.pagination.currentPage = 1;
+                    this.$refs.modelCardContainer.updatePaginatedModel();
+                }
+            }
+            this.$nextTick(() => this.updateUrlParams());
+        },
+        sortDatasByValue(data, value) {
+            if (value === 4) {
+                // 开源模型大小从大到小
+                return [...data]
+                    .filter(item => item.isOpenSource)
+                    .sort((a, b) => (b.size || 0) - (a.size || 0));
+            }
+            if (value === 5) {
+                // 开源模型大小从小到大
+                return [...data]
+                    .filter(item => item.isOpenSource)
+                    .sort((a, b) => (a.size || 0) - (b.size || 0));
+            }
+            // 其他排序
+            return [...data].sort((a, b) => {
+                switch (value) {
+                    case 1:
+                        return new Date(b.releaseDate) - new Date(a.releaseDate);
+                    case 2:
+                        return new Date(a.releaseDate) - new Date(b.releaseDate);
+                    case 3:
+                        return b.favoritesCount - a.favoritesCount;
+                    default:
+                        return 0;
+                }
+            });
+        },
         async selectTag(tag) {
             try {
                 const [modelResponse, descResponse] = await Promise.all([
@@ -270,65 +333,16 @@ export default {
                 this.tag_description =
                     descResponse.data.data || "该标签暂无描述";
 
-                // 先保存未排序的数据
-                const unsortedData = !this.activeSearchQuery
-                    ? [...this.tagDatas]
-                    : this.searchDatas.filter((searchItem) =>
-                          this.tagDatas.some(
-                              (tagItem) =>
-                                  String(tagItem.name) ===
-                                  String(searchItem.name)
-                          )
-                      );
-
-                // 设置为未排序的原始数据
-                this.originDatas = [...unsortedData];
-
-                // 然后应用排序
-                this.datas = [...unsortedData];
-                if (this.sequencerValue) {
-                    this.sortDatas(this.sequencerValue);
-                }
-
                 this.selected_tag = tag;
 
-                if (this.$refs.modelCardContainer) {
-                    this.$refs.modelCardContainer.updatePaginatedModel(
-                        this.datas
-                    );
-                }
-                this.$nextTick(() => this.updateUrlParams());
+                this.$nextTick(() => this.filterAndSetDatas());
             } catch (error) {
                 this.handleError("标签筛选失败");
             }
         },
-        getSubstringAfterKeyword(inputString, keyword) {
-            const index = inputString?.indexOf(keyword);
-            return index !== -1
-                ? inputString.substring(index + keyword.length)
-                : "";
-        },
-        filterItems(filterArray) {
-            if (!filterArray?.length) return this.originDatas;
-
-            const dataToFilter = this.selected_tag[0]
-                ? this.datas
-                : this.originDatas;
-            return dataToFilter.filter(
-                (item) =>
-                    (filterArray.includes("开源") && item.isOpenSource) ||
-                    (filterArray.includes("不开源") && !item.isOpenSource)
-            );
-        },
-        openSourceChange(value) {
-            if (!Array.isArray(value)) return;
-
-            this.activeFilters = [...value];
-            this.datas = this.filterItems(this.activeFilters);
-            if (this.$refs.modelCardContainer) {
-                this.$refs.modelCardContainer.updatePaginatedModel(this.datas);
-            }
-            this.$nextTick(() => this.updateUrlParams());
+        async selectOrg(org) {
+            this.selected_org = org;
+            this.filterAndSetDatas();
         },
         async handleSearch() {
             if (!this.searchQuery.trim()) {
@@ -346,75 +360,18 @@ export default {
                 this.searchDatas = this.processImagePath(data || []);
                 this.activeSearchQuery = this.searchQuery;
 
-                // 先保存未排序的数据
-                const unsortedData = !this.selected_tag[0]
-                    ? [...this.searchDatas]
-                    : this.searchDatas.filter((searchItem) =>
-                          this.tagDatas.some(
-                              (tagItem) =>
-                                  String(tagItem.name) ===
-                                  String(searchItem.name)
-                          )
-                      );
-
-                // 设置为未排序的原始数据
-                this.originDatas = [...unsortedData];
-
-                // 然后应用排序
-                this.datas = [...unsortedData];
-                if (this.sequencerValue) {
-                    this.sortDatas(this.sequencerValue);
-                }
-
-                if (this.$refs.modelCardContainer) {
-                    this.$refs.modelCardContainer.updatePaginatedModel(
-                        this.datas
-                    );
-                }
-                this.$nextTick(() => this.updateUrlParams());
+                this.filterAndSetDatas();
             } catch (error) {
                 this.handleError("搜索失败");
             } finally {
                 this.isSearching = false;
             }
         },
-        async selectOrg(org) {
-    this.selected_org = org;
-
-    // 以 originDatas 为基础，依次应用标签、搜索、机构三重筛选
-    let filtered = [...this.originDatas];
-
-    // 标签筛选
-    if (this.selected_tag[0]) {
-        filtered = filtered.filter(item =>
-            this.tagDatas.some(tagItem => String(tagItem.name) === String(item.name))
-        );
-    }
-    // 搜索筛选
-    if (this.activeSearchQuery) {
-        filtered = filtered.filter(item =>
-            this.searchDatas.some(searchItem => String(searchItem.name) === String(item.name))
-        );
-    }
-    // 机构筛选
-    if (this.selected_org[0]) {
-        filtered = filtered.filter(item => item.institution === this.selected_org[0]);
-    }
-
-    // 关键：同步更新datas和originDatas，保证分页组件数据源一致
-    this.datas = [...filtered];
-    this.originDatas = [...filtered];
-
-    // 重新分页并重置到第一页
-    if (this.$refs.modelCardContainer) {
-        this.$refs.modelCardContainer.updatePaginatedModel(this.datas);
-        if (this.$refs.modelCardContainer.pagination.currentPage !== 1) {
-            this.$refs.modelCardContainer.pagination.currentPage = 1;
-            this.$refs.modelCardContainer.updatePaginatedModel();
-        }
-    }
-    this.$nextTick(() => this.updateUrlParams());
-},
+        openSourceChange(value) {
+            if (!Array.isArray(value)) return;
+            this.activeFilters = [...value];
+            this.filterAndSetDatas();
+        },
         async clearOrg() {
             // 重置机构值
             this.selected_org = ["", ""];
@@ -499,71 +456,8 @@ export default {
         },
         sequencerChange(value) {
             if (typeof value !== "number") return;
-
             this.sequencerValue = value;
-
-            // 保存当前的筛选状态
-            const currentFilters = [...this.activeFilters];
-
-            // 首先根据排序更新数据
-            if (value === 0) {
-                // 综合排序：恢复到原始排序，但保持标签筛选
-                if (this.activeSearchQuery && this.selected_tag[0]) {
-                    // 如果同时有搜索和标签，使用现有数据
-                    this.datas = [...this.datas];
-                } else if (this.activeSearchQuery) {
-                    // 如果只有搜索，使用搜索数据
-                    this.datas = [...this.searchDatas];
-                } else if (this.selected_tag[0]) {
-                    // 如果只有标签，使用标签数据
-                    this.datas = [...this.tagDatas];
-                } else {
-                    // 如果没有任何筛选，使用原始数据
-                    this.datas = [...this.originDatas];
-                }
-            } else {
-                this.datas = [...this.datas].sort((a, b) => {
-                    switch (value) {
-                        case 1:
-                            // 发布时间从新到旧
-                            return (
-                                new Date(b.releaseDate) -
-                                new Date(a.releaseDate)
-                            );
-                        case 2:
-                            // 发布时间从旧到新
-                            return (
-                                new Date(a.releaseDate) -
-                                new Date(b.releaseDate)
-                            );
-                        case 3:
-                            // 收藏量排序
-                            return b.favoritesCount - a.favoritesCount;
-                        case 4:
-                            // 模型大小从大到小
-                            return (b.modelSize || 0) - (a.modelSize || 0);
-                        case 5:
-                            // 模型大小从小到大
-                            return (a.modelSize || 0) - (b.modelSize || 0);
-                        default:
-                            return 0;
-                    }
-                });
-            }
-
-            // 重新应用开源/不开源筛选
-            if (currentFilters.length && currentFilters.length < 2) {
-                // 只有当不是全选时才应用筛选
-                this.datas = this.filterItems(currentFilters);
-            }
-
-            // 添加组件引用检查
-            if (this.$refs.modelCardContainer) {
-                this.$refs.modelCardContainer.updatePaginatedModel(this.datas);
-            }
-
-            // 确保无论组件是否存在都更新URL参数
-            this.$nextTick(() => this.updateUrlParams());
+            this.filterAndSetDatas();
         },
         sortDatas(value) {
             this.datas = [...this.datas].sort((a, b) => {
@@ -583,10 +477,10 @@ export default {
                         return b.favoritesCount - a.favoritesCount;
                     case 4:
                         // 开源模型大小从大到小
-                        return (b.size || 0) - (a.size || 0);
+                        return b.size - a.size;
                     case 5:
                         // 开源模型大小从小到大
-                        return (a.size || 0) - (b.size || 0);
+                        return a.size - b.size;
                     default:
                         return 0;
                 }

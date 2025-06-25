@@ -35,6 +35,7 @@
                     :tag-title="''"
                     :selected-value="selected_org"
                     @custom-event="selectModel"
+                    @select-parent-tag="activeTagIndex4 = $event"
                 ></tagContainter>
             </div>
             <!-- 子标签容器 -->
@@ -79,6 +80,7 @@
                     :tag-title="''"
                     :selected-value="selectedValue"
                     @custom-event="selectModel"
+                    @select-parent-tag="activeTagIndex0 = $event"
                 ></tagContainter>
             </div>
             <!-- 子标签容器 -->
@@ -123,6 +125,7 @@
                     :tag-title="''"
                     :selected-value="selectedValue"
                     @custom-event="selectModel"
+                    @select-parent-tag="activeTagIndex1 = $event"
                 ></tagContainter>
             </div>
             <!-- 子标签容器 -->
@@ -167,6 +170,7 @@
                     :tag-title="''"
                     :selected-value="selectedValue"
                     @custom-event="selectModel"
+                    @select-parent-tag="activeTagIndex2 = $event"
                 ></tagContainter>
             </div>
             <!-- 子标签容器 -->
@@ -211,6 +215,7 @@
                     :tag-title="''"
                     :selected-value="selectedValue"
                     @custom-event="selectModel"
+                    @select-parent-tag="activeTagIndex3 = $event"
                 ></tagContainter>
             </div>
             <!-- 子标签容器 -->
@@ -706,25 +711,28 @@ export default {
             
         },
         selectModel(value) {
-            const tagValue = value[1];
-            console.log("selectModel", value);
+            // value 可能是 [tagName, tagId, index]（父标签）或 [subTagName, subTagId]（子标签）
+            let tagValue, tagName;
+            if (Array.isArray(value) && value.length >= 2) {
+                tagName = value[0];
+                tagValue = value[1];
+            }
+            // 机构判断
             if (tagValue >= 200) {
-                this.$emit("select-org", value); 
+                this.$emit("select-org", [tagName, tagValue]);
             } else {
-                this.$emit("select-tag", value);
+                // 同步高亮子标签
+                this.selectedSubTag = value;
+                this.selectedValue = value;
+                this.$emit("select-tag", [tagName, tagValue]);
             }
         },
         findTagIndexById(tags, id) {
             return tags.findIndex((tag) => tag.value[1] === id);
         },
         selectSubTag(value) {
-            // 记录选中的子标签
-            this.selectedSubTag = value;
-
-            // 更新selectedValue，用于高亮显示选中的子标签
-            this.selectedValue = value;
-
-            this.$emit("custom-event", value);
+            // 直接调用 selectModel，保证逻辑统一
+            this.selectModel(value);
         },
         isSubtagActive(value) {
             return (
