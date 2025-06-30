@@ -293,7 +293,7 @@ export default {
     font-weight: 400;
     font-family: Inter, Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
         Microsoft YaHei, 微软雅黑, Arial, sans-serif;
-    z-index: 200;
+    z-index: 8000;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 .navbar-wrapper {
