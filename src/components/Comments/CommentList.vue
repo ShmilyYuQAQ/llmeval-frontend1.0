@@ -8,6 +8,11 @@
             />
             <span class="text-group_1">用户反馈（{{totalComments}}）</span>
         </div>
+        <div class="score-tip-row" style="display: flex; align-items: center; margin-left: 20px; margin-bottom: 3px; margin-top: 6px;">
+            <span style="font-size: 15px; color: #870066; margin-right: 10px;">请为该模型打分：</span>
+            <el-rate v-model="newScore" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" style="font-size: 22px;"></el-rate>
+            <span v-if="newScore" style="margin-left: 10px; color: #F7BA2A;">{{ newScore }} 分</span>
+        </div>
         <div class="box_7 flex-row justify-between">
             <div class="text-wrapper_3 flex-col">
                 <textarea 
@@ -66,6 +71,7 @@ export default {
             userId: 7,
             newComment: "", // 存储输入的评论
             reviewCount: 0, // 评论数量
+            newScore: 0,
         };
     },
     async created() {
@@ -191,7 +197,7 @@ export default {
 .box_7 {
   width: 1160px;
   height: 83px;
-  margin: 20px 0 0 20px;
+  margin: 8px 0 0 20px;
   display: flex; /* 启用 Flex 布局 */
   flex-direction: row; /* 确保子元素横向排列（默认值，可省略） */
 }

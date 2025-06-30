@@ -6,15 +6,28 @@
                 class="comment-avatar"
                 src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
             />
+        <div class="user-info-row">
             <span class="user-name">{{ comment.userName }}</span>
+            <div class="block score-row">
+                <el-rate
+                    v-model="value2"
+                    :colors="colors"
+                    :disabled="true"
+                    style="font-size:20px;"
+                ></el-rate>
+                <span v-if="value2" class="score-text">{{ value2 }} 分</span>
+            </div>
+            </div>
             <div class="header-right">
                 <button @click="toggleReply" class="reply-btn">回复</button>
                 <button v-if="comment.userId === this.userId" class="delete-btn" @click="deleteComment(comment.commentId)">删除</button>
                 <button v-if="comment.userId !== this.userId" class="delete-btn" @click="reportComment()">举报</button>
                 <ReportWindow
                     v-if="showReportWindow"
-                    :comment-id="comment.commentId"
-                    :username="comment.userName"
+                    :commentId="comment.commentId"
+                    :commentAuthor="comment.userName"
+                    :commentContent="comment.commentDetail"
+                    :pageUrl="pageUrl"
                     @close="showReportWindow = false"
                 />
                 <span class="comment-time"
@@ -95,6 +108,9 @@ export default {
             showReportWindow: false, 
             replyContent: "",
             userId: null,
+            pageUrl: window.location.href, // 新增
+            value2: this.comment.score || 5, // 新增
+            colors: ['#99A9BF', '#F7BA2A', '#FF9900'], // 新增
         };
     },
     mounted() {
@@ -301,6 +317,11 @@ export default {
     padding-top: 20px;
 }
 
+.user-info-row {
+  display: flex;
+  align-items: center;
+}
+
 .user-name {
   width: auto;
   height: 20px;
@@ -313,6 +334,22 @@ export default {
   line-height: 20px;
   margin: 6px 0 0 0;
   font-weight: bold;
+}
+
+.score-row {
+  display: flex;
+  align-items: center;
+  margin-left: 30px; /* 可根据需要调整 */
+  margin-top: 1px;    /* 去掉原有的margin-top */
+}
+
+.score-text {
+  margin-left: 10px;
+  color: #F7BA2A;
+  font-size: 16px;
+  line-height: 1;
+  margin-top: 4px;
+  /* 去掉 margin-bottom，避免下沉 */
 }
 
 .comment-time {

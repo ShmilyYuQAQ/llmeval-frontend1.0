@@ -64,12 +64,20 @@ import axios from "axios"; // 引入 axios 库
 export default {
     props: {
     commentId: {
-      type: [String, Number],
-      required: true
+        type: [String, Number],
+        required: true
     },
-    username: {
-      type: String,
-      required: false
+    commentAuthor: {
+        type: String,
+        required: false
+    },
+    commentContent: {
+        type: String,
+        required: false
+    },
+    pageUrl: {
+        type: String,
+        required: false
     }
   },
   data() {
@@ -79,24 +87,80 @@ export default {
     };
   },
   methods: {
+    getReasonText(label) {
+      const map = {
+        1: "违法违规",
+        2: "色情",
+        3: "低俗",
+        4: "赌博诈骗",
+        5: "违法信息外链",
+        6: "涉政谣言",
+        7: "虚假不实信息",
+        8: "涉社会事件谣言",
+        9: "人身攻击",
+        10: "侵犯隐私",
+        11: "青少年不良信息",
+        12: "垃圾广告",
+        13: "刷屏",
+        14: "引战",
+        15: "其他"
+      };
+      return map[label] || "未知";
+    },
+
+    getCurrentTimeString() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = (now.getMonth() + 1).toString().padStart(2, '0');
+      const day = now.getDate().toString().padStart(2, '0');
+      const hour = now.getHours().toString().padStart(2, '0');
+      const minute = now.getMinutes().toString().padStart(2, '0');
+      const second = now.getSeconds().toString().padStart(2, '0');
+      return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+    },
+
     async submitReport() {
       if (this.radio === null) {
         alert("请选择举报理由");
         return;
       }
-      const reportData = {
-        reason: this.radio,
-        otherReason: this.radio === 15 ? this.otherReason : "",
-      };
-      console.log("Submitting report with data:", reportData);
+
+      let reportReason;
+      if (this.radio === 15) {
+        reportReason = this.otherReason || "其他";
+      } else {
+        reportReason = this.getReasonText(this.radio);
+      }
+      const reportTime = this.getCurrentTimeString();
+
       try {
-        console.log("Submitting report with data:", reportData);
-        const response = await axios.post("/api/report", reportData);
+        const response = await axios.post("http://49.233.82.133:9091/api/feedback/submit", 
+          {
+            userName: localStorage.getItem('userName'),
+            userEmail: '123', // 无用可忽略
+            title: '【评论举报】来自用户的评论举报请求',
+            content: `
+              <h2>评论举报通知</h2>
+              <p>有用户提交了一条评论举报，具体内容如下：</p>
+              <ul>
+                <li><strong>举报人用户名：</strong>${localStorage.getItem('userName')}</li>
+                <li><strong>被举报评论ID：</strong>${this.commentId}</li>
+                <li><strong>被举报评论内容：</strong>${this.commentContent}</li>
+                <li><strong>评论发布人：</strong>${this.commentAuthor}</li>
+                <li><strong>所属模型页面：</strong>${this.pageUrl}</li>
+                <li><strong>举报原因：</strong>${reportReason}</li>
+                <li><strong>举报时间：</strong>${reportTime}</li>
+              </ul>
+              <p>请及时处理该评论。</p>
+            `
+          }
+        );
+
         if (response.data.success) {
           this.$message.success("举报成功");
           this.$emit("close");
         } else {
-          this.$message.error("举报失败，请稍后再试");
+          this.$message.success("举报失败，请稍后再试");
         }
       } catch (error) {
         console.error("Error submitting report:", error);
