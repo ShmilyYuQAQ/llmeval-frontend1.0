@@ -1,250 +1,270 @@
 <template>
-    <div class="container">
-        <div class="feature-section">
-            <div class="section-header">
-                <div class="title-container">
-                    <img
-                        src="./images/logo1.png"
-                        alt="Logo"
-                        class="section-logo"
-                    />
-                    <span class="section-title">{{ openSourceTitle }}</span>
-                </div>
-                <featureElement
-                    :title="openSourceTitle"
-                    :checked="openSourceChecked"
-                    :options="openSourceOptions"
-                    @select="parentMethod"
-                    @change="(val) => $emit('change', val)"
-                ></featureElement>
-            </div>
-        </div>
-
-        <div class="feature-section">
-            <div class="section-header">
-                <div class="title-container">
-                    <img
-                        src="./images/logo6.png"
-                        alt="Logo"
-                        class="section-logo"
-                    />
-                    <span class="section-title">{{ tagTitle_4 }}</span>
-                </div>
-                <tagContainter
-                    :tags="tags_4"
-                    :tag-title="''"
-                    :selected-value="selected_org"
-                    @custom-event="selectModel"
-                    @select-parent-tag="activeTagIndex4 = $event"
-                ></tagContainter>
-            </div>
-            <!-- 子标签容器 -->
-            <div
-                v-if="
-                    activeTagIndex4 !== null &&
-                    tags_4[activeTagIndex4]?.subtags &&
-                    tags_4[activeTagIndex4].subtags.length > 0
-                "
-                class="subtags-wrapper"
-            >
-                <div class="subtags-container">
-                    <div class="parent-tag-name">
-                        {{ parentTagName4 + "：" }}
+    <div>
+        <!-- 第一个卡片：是否开源 + 发布机构 -->
+        <div class="feature-card mb-6">
+            <div class="feature-section">
+                <div class="section-header">
+                    <div class="title-container">
+                        <img
+                            src="./images/logo1.png"
+                            alt="Logo"
+                            class="section-logo"
+                        />
+                        <span class="section-title">{{ openSourceTitle }}</span>
                     </div>
-                    <div
-                        v-for="(subtag, subIndex) in tags_4[activeTagIndex4]
-                            .subtags"
-                        :key="subIndex"
-                        class="subtag"
-                        :class="{ active: isSubtagActive4(subtag.value) }"
-                        @click="selectSubTag4(subtag.value)"
-                    >
-                        <span class="subtag-text">{{ subtag.text }}</span>
+                    <featureElement
+                        :title="openSourceTitle"
+                        :checked="openSourceChecked"
+                        :options="openSourceOptions"
+                        @select="parentMethod"
+                        @change="(val) => $emit('change', val)"
+                    ></featureElement>
+                </div>
+            </div>
+            <div class="feature-section">
+                <div class="org-section-row">
+                    <div class="title-container">
+                        <img
+                            src="./images/logo6.png"
+                            alt="Logo"
+                            class="section-logo"
+                        />
+                        <span class="section-title">{{ tagTitle_4 }}</span>
+                    </div>
+                    <div class="org-tag-row-flex">
+                        <tagContainter
+                            :tags="tags_4.slice(0, 8)"
+                            :tag-title="''"
+                            :selected-value="selected_org"
+                            @custom-event="selectModel"
+                            @select-parent-tag="activeTagIndex4 = $event"
+                        ></tagContainter>
+                        <button
+                            v-if="tags_4.length > 8"
+                            class="org-more-btn"
+                            @click="isOrgExpanded = !isOrgExpanded"
+                        >
+                            <span v-if="!isOrgExpanded">更多</span>
+                            <span v-else>收起</span>
+                        </button>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="feature-section">
-            <div class="section-header">
-                <div class="title-container">
-                    <img
-                        src="./images/logo2.png"
-                        alt="Logo"
-                        class="section-logo"
-                    />
-                    <span class="section-title">{{ tagTitle_0 }}</span>
+                <div v-if="isOrgExpanded && tags_4.length > 8" class="org-tag-row-extra">
+                    <div class="title-container" style="visibility: hidden"></div>
+                    <tagContainter
+                        :tags="tags_4.slice(8)"
+                        :tag-title="''"
+                        :selected-value="selected_org"
+                        @custom-event="selectModel"
+                        @select-parent-tag="activeTagIndex4 = $event"
+                    ></tagContainter>
                 </div>
-                <tagContainter
-                    :tags="tags_0"
-                    :tag-title="''"
-                    :selected-value="selectedValue"
-                    @custom-event="selectModel"
-                    @select-parent-tag="activeTagIndex0 = $event"
-                ></tagContainter>
-            </div>
-            <!-- 子标签容器 -->
-            <div
-                v-if="
-                    activeTagIndex0 !== null &&
-                    tags_0[activeTagIndex0]?.subtags &&
-                    tags_0[activeTagIndex0].subtags.length > 0
-                "
-                class="subtags-wrapper"
-            >
-                <div class="subtags-container">
-                    <div class="parent-tag-name">
-                        {{ parentTagName0 + "：" }}
-                    </div>
-                    <div
-                        v-for="(subtag, subIndex) in tags_0[activeTagIndex0]
-                            .subtags"
-                        :key="subIndex"
-                        class="subtag"
-                        :class="{ active: isSubtagActive(subtag.value) }"
-                        @click="selectSubTag(subtag.value)"
-                    >
-                        <span class="subtag-text">{{ subtag.text }}</span>
+                <!-- 子标签容器 -->
+                <div
+                    v-if="
+                        activeTagIndex4 !== null &&
+                        tags_4[activeTagIndex4]?.subtags &&
+                        tags_4[activeTagIndex4].subtags.length > 0
+                    "
+                    class="subtags-wrapper"
+                >
+                    <div class="subtags-container">
+                        <div class="parent-tag-name">
+                            {{ parentTagName4 + "：" }}
+                        </div>
+                        <div
+                            v-for="(subtag, subIndex) in tags_4[activeTagIndex4]
+                                .subtags"
+                            :key="subIndex"
+                            class="subtag"
+                            :class="{ active: isSubtagActive4(subtag.value) }"
+                            @click="selectSubTag4(subtag.value)"
+                        >
+                            <span class="subtag-text">{{ subtag.text }}</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="feature-section">
-            <div class="section-header">
-                <div class="title-container">
-                    <img
-                        src="./images/logo3.png"
-                        alt="Logo"
-                        class="section-logo"
-                    />
-                    <span class="section-title">{{ tagTitle_1 }}</span>
-                </div>
-                <tagContainter
-                    :tags="tags_1"
-                    :tag-title="''"
-                    :selected-value="selectedValue"
-                    @custom-event="selectModel"
-                    @select-parent-tag="activeTagIndex1 = $event"
-                ></tagContainter>
-            </div>
-            <!-- 子标签容器 -->
-            <div
-                v-if="
-                    activeTagIndex1 !== null &&
-                    tags_1[activeTagIndex1]?.subtags &&
-                    tags_1[activeTagIndex1].subtags.length > 0
-                "
-                class="subtags-wrapper"
-            >
-                <div class="subtags-container">
-                    <div class="parent-tag-name">
-                        {{ parentTagName1 + "：" }}
+        <!-- 第二个卡片：其余 feature-section -->
+        <div class="feature-card">
+            <div class="feature-section">
+                <div class="section-header">
+                    <div class="title-container">
+                        <img
+                            src="./images/logo2.png"
+                            alt="Logo"
+                            class="section-logo"
+                        />
+                        <span class="section-title">{{ tagTitle_0 }}</span>
                     </div>
-                    <div
-                        v-for="(subtag, subIndex) in tags_1[activeTagIndex1]
-                            .subtags"
-                        :key="subIndex"
-                        class="subtag"
-                        :class="{ active: isSubtagActive(subtag.value) }"
-                        @click="selectSubTag(subtag.value)"
-                    >
-                        <span class="subtag-text">{{ subtag.text }}</span>
+                    <tagContainter
+                        :tags="tags_0"
+                        :tag-title="''"
+                        :selected-value="selectedValue"
+                        @custom-event="selectModel"
+                        @select-parent-tag="activeTagIndex0 = $event"
+                    ></tagContainter>
+                </div>
+                <!-- 子标签容器 -->
+                <div
+                    v-if="
+                        activeTagIndex0 !== null &&
+                        tags_0[activeTagIndex0]?.subtags &&
+                        tags_0[activeTagIndex0].subtags.length > 0
+                    "
+                    class="subtags-wrapper"
+                >
+                    <div class="subtags-container">
+                        <div class="parent-tag-name">
+                            {{ parentTagName0 + "：" }}
+                        </div>
+                        <div
+                            v-for="(subtag, subIndex) in tags_0[activeTagIndex0]
+                                .subtags"
+                            :key="subIndex"
+                            class="subtag"
+                            :class="{ active: isSubtagActive(subtag.value) }"
+                            @click="selectSubTag(subtag.value)"
+                        >
+                            <span class="subtag-text">{{ subtag.text }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="feature-section">
+                <div class="section-header">
+                    <div class="title-container">
+                        <img
+                            src="./images/logo3.png"
+                            alt="Logo"
+                            class="section-logo"
+                        />
+                        <span class="section-title">{{ tagTitle_1 }}</span>
+                    </div>
+                    <tagContainter
+                        :tags="tags_1"
+                        :tag-title="''"
+                        :selected-value="selectedValue"
+                        @custom-event="selectModel"
+                        @select-parent-tag="activeTagIndex1 = $event"
+                    ></tagContainter>
+                </div>
+                <!-- 子标签容器 -->
+                <div
+                    v-if="
+                        activeTagIndex1 !== null &&
+                        tags_1[activeTagIndex1]?.subtags &&
+                        tags_1[activeTagIndex1].subtags.length > 0
+                    "
+                    class="subtags-wrapper"
+                >
+                    <div class="subtags-container">
+                        <div class="parent-tag-name">
+                            {{ parentTagName1 + "：" }}
+                        </div>
+                        <div
+                            v-for="(subtag, subIndex) in tags_1[activeTagIndex1]
+                                .subtags"
+                            :key="subIndex"
+                            class="subtag"
+                            :class="{ active: isSubtagActive(subtag.value) }"
+                            @click="selectSubTag(subtag.value)"
+                        >
+                            <span class="subtag-text">{{ subtag.text }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="feature-section">
+                <div class="section-header">
+                    <div class="title-container">
+                        <img
+                            src="./images/logo4.png"
+                            alt="Logo"
+                            class="section-logo"
+                        />
+                        <span class="section-title">{{ tagTitle_2 }}</span>
+                    </div>
+                    <tagContainter
+                        :tags="tags_2"
+                        :tag-title="''"
+                        :selected-value="selectedValue"
+                        @custom-event="selectModel"
+                        @select-parent-tag="activeTagIndex2 = $event"
+                    ></tagContainter>
+                </div>
+                <!-- 子标签容器 -->
+                <div
+                    v-if="
+                        activeTagIndex2 !== null &&
+                        tags_2[activeTagIndex2]?.subtags &&
+                        tags_2[activeTagIndex2].subtags.length > 0
+                    "
+                    class="subtags-wrapper"
+                >
+                    <div class="subtags-container">
+                        <div class="parent-tag-name">
+                            {{ parentTagName2 + "：" }}
+                        </div>
+                        <div
+                            v-for="(subtag, subIndex) in tags_2[activeTagIndex2]
+                                .subtags"
+                            :key="subIndex"
+                            class="subtag"
+                            :class="{ active: isSubtagActive(subtag.value) }"
+                            @click="selectSubTag(subtag.value)"
+                        >
+                            <span class="subtag-text">{{ subtag.text }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="feature-section">
+                <div class="section-header">
+                    <div class="title-container">
+                        <img
+                            src="./images/logo5.png"
+                            alt="Logo"
+                            class="section-logo"
+                        />
+                        <span class="section-title">{{ tagTitle_3 }}</span>
+                    </div>
+                    <tagContainter
+                        :tags="tags_3"
+                        :tag-title="''"
+                        :selected-value="selectedValue"
+                        @custom-event="selectModel"
+                        @select-parent-tag="activeTagIndex3 = $event"
+                    ></tagContainter>
+                </div>
+                <!-- 子标签容器 -->
+                <div
+                    v-if="
+                        activeTagIndex3 !== null &&
+                        tags_3[activeTagIndex3]?.subtags &&
+                        tags_3[activeTagIndex3].subtags.length > 0
+                    "
+                    class="subtags-wrapper"
+                >
+                    <div class="subtags-container">
+                        <div class="parent-tag-name">
+                            {{ parentTagName3 + "：" }}
+                        </div>
+                        <div
+                            v-for="(subtag, subIndex) in tags_3[activeTagIndex3]
+                                .subtags"
+                            :key="subIndex"
+                            class="subtag"
+                            :class="{ active: isSubtagActive(subtag.value) }"
+                            @click="selectSubTag(subtag.value)"
+                        >
+                            <span class="subtag-text">{{ subtag.text }}</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="feature-section">
-            <div class="section-header">
-                <div class="title-container">
-                    <img
-                        src="./images/logo4.png"
-                        alt="Logo"
-                        class="section-logo"
-                    />
-                    <span class="section-title">{{ tagTitle_2 }}</span>
-                </div>
-                <tagContainter
-                    :tags="tags_2"
-                    :tag-title="''"
-                    :selected-value="selectedValue"
-                    @custom-event="selectModel"
-                    @select-parent-tag="activeTagIndex2 = $event"
-                ></tagContainter>
-            </div>
-            <!-- 子标签容器 -->
-            <div
-                v-if="
-                    activeTagIndex2 !== null &&
-                    tags_2[activeTagIndex2]?.subtags &&
-                    tags_2[activeTagIndex2].subtags.length > 0
-                "
-                class="subtags-wrapper"
-            >
-                <div class="subtags-container">
-                    <div class="parent-tag-name">
-                        {{ parentTagName2 + "：" }}
-                    </div>
-                    <div
-                        v-for="(subtag, subIndex) in tags_2[activeTagIndex2]
-                            .subtags"
-                        :key="subIndex"
-                        class="subtag"
-                        :class="{ active: isSubtagActive(subtag.value) }"
-                        @click="selectSubTag(subtag.value)"
-                    >
-                        <span class="subtag-text">{{ subtag.text }}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="feature-section">
-            <div class="section-header">
-                <div class="title-container">
-                    <img
-                        src="./images/logo5.png"
-                        alt="Logo"
-                        class="section-logo"
-                    />
-                    <span class="section-title">{{ tagTitle_3 }}</span>
-                </div>
-                <tagContainter
-                    :tags="tags_3"
-                    :tag-title="''"
-                    :selected-value="selectedValue"
-                    @custom-event="selectModel"
-                    @select-parent-tag="activeTagIndex3 = $event"
-                ></tagContainter>
-            </div>
-            <!-- 子标签容器 -->
-            <div
-                v-if="
-                    activeTagIndex3 !== null &&
-                    tags_3[activeTagIndex3]?.subtags &&
-                    tags_3[activeTagIndex3].subtags.length > 0
-                "
-                class="subtags-wrapper"
-            >
-                <div class="subtags-container">
-                    <div class="parent-tag-name">
-                        {{ parentTagName3 + "：" }}
-                    </div>
-                    <div
-                        v-for="(subtag, subIndex) in tags_3[activeTagIndex3]
-                            .subtags"
-                        :key="subIndex"
-                        class="subtag"
-                        :class="{ active: isSubtagActive(subtag.value) }"
-                        @click="selectSubTag(subtag.value)"
-                    >
-                        <span class="subtag-text">{{ subtag.text }}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="selected-tag">
             <span
                 >当前选中的标签是:<span style="color: red; margin-left: 20px">{{
@@ -701,6 +721,7 @@ export default {
             parentTagName2: "实际应用能力",
             parentTagName3: "中文特色能力",
             parentTagName4: "发布机构",
+            isOrgExpanded: false,
         };
     },
     components: { featureElement, tagContainter },
@@ -762,6 +783,20 @@ export default {
     padding-top: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
+}
+
+.feature-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    width: 100%;
+    justify-content: center;
+    z-index: 99;
+    padding-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
+    margin-bottom: 24px;
 }
 
 .feature-section {
@@ -918,5 +953,64 @@ export default {
         margin-bottom: 20px;
         font-size: 13px;
     }
+}
+
+.org-section-row {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: calc(100% - 40px);
+    gap: 0;
+}
+.org-tag-row-flex {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+}
+.org-tag-row-extra {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+    width: auto;
+    margin-right: 20px;
+}
+@media (max-width: 768px) {
+    .org-section-row {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+    }
+    .org-tag-row-extra {
+        margin-right: 8px;
+    }
+}
+.org-more-btn {
+    height: 32px;
+    line-height: 32px;
+    background: #fff;
+    border: 1.5px solid #870066;
+    color: #870066;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 16px;
+    padding: 0 22px;
+    cursor: pointer;
+    margin-left: 12px;
+    box-shadow: 0 1px 4px 0 rgba(135,0,102,0.06);
+    transition: background 0.2s, color 0.2s, border 0.2s;
+    outline: none;
+    display: flex;
+    align-items: center;
+}
+.org-more-btn:hover {
+    background: #870066;
+    color: #fff;
+    border-color: #870066;
 }
 </style>
