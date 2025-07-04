@@ -18,6 +18,7 @@ export default {
         NavBar, // 注册NavBar
     },
     mounted() {
+        this.checkLoginStatus();
         this.checkLoginInterval = setInterval(this.checkLoginStatus, 10000); // 每10秒检测一次
     },
     beforeUnmount() {
