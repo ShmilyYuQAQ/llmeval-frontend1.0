@@ -65,6 +65,18 @@
               >
             </div>
           </div>
+          <div class="text-wrapper_100 flex-col justify-between">
+            <div class="block score-row">
+                <el-rate
+                    v-model="value2"
+                    :colors="colors"
+                    :disabled="true"
+                    style="font-size:20px;"
+                ></el-rate>
+                <span v-if="value2" class="score-text">{{ value2 }}分</span>
+            </div>
+            <span class="text_100">总评分</span>
+          </div>
           <div class="text-wrapper_7 flex-col justify-between">
             <span class="text_45">{{ modelData.data.institution }}</span>
             <span class="text_46">发布机构</span>
@@ -117,6 +129,8 @@ export default{
       isFavorited: false, // 存储收藏状态
       modelId: null,
       showTooltip: false, // 控制提示文本的显示
+      value2:  5, // 新增
+      colors: ['#99A9BF', '#F7BA2A', '#FF9900'], // 新增
     }
   },
 
@@ -1346,7 +1360,7 @@ export default{
 }
 
 .text_44 {
-  max-width: 700px; /* 设置最大宽度 */
+  max-width: 500px; /* 设置最大宽度 */
   height: auto; /* 自动调整高度 */
   overflow-wrap: break-word; /* 自动换行 */
   word-break: break-word; /* 防止长单词溢出 */
@@ -1359,10 +1373,41 @@ export default{
   margin-left: -10px; /* 向左移动 10px */
 }
 
+.text-wrapper_100{
+    width: 64px;
+    height: 54px;
+    margin: 0 0 0 100px; /* 调整左边距 */
+    display: flex; /* 使用 flex 布局 */
+    flex-direction: column; /* 垂直排列子元素 */
+    align-items: center; /* 子元素垂直居中 */
+    justify-content: center; /* 子元素垂直居中 */
+}
+
+.score-row {
+  display: flex;
+  align-items: center;
+  margin-left: 30px; /* 可根据需要调整 */
+  margin-top: 1px;    /* 去掉原有的margin-top */
+}
+
+.score-text {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 3px;
+  color: #F7BA2A;
+  font-size: 16px;
+  line-height: 1;
+  /* 去掉宽高限制，确保内容水平排列 */
+  width: auto;
+  height: auto;
+  white-space: nowrap; /* 关键：防止“5分”换行 */
+  /* 去掉 margin-bottom，避免下沉 */
+}
+
 .text-wrapper_7 {
   width: 64px;
   height: 54px;
-  margin: 5px 15px 0 320px;
+  margin: 5px 15px 0 90px;
   display: flex; /* 使用 flex 布局 */
   flex-direction: column; /* 垂直排列子元素 */
   align-items: center; /* 子元素垂直居中 */
@@ -2696,5 +2741,18 @@ height: 850px;
 justify-content: flex-center;
 margin: 960px 120px 0 -1338px;
 position: absolute; /* 相对于最近的定位父容器 */
+}
+
+.text_100 {
+  width: 56px;
+  height: 20px;
+  overflow-wrap: break-word;
+  color: rgba(143, 148, 164, 1);
+  font-size: 14px;
+  font-weight: normal;
+  text-align: left;
+  white-space: nowrap;
+  line-height: 20px;
+  text-align: center; /* 水平居中对齐 */
 }
 </style>
