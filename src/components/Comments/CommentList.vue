@@ -36,6 +36,7 @@
             <comment
                 v-for="(comment, index) in comments"
                 :key="`root-${index}`"
+                ref="commentRefs"
                 :comment="comment"
                 :depth="0"
                 :user_comment_map="user_comment_map"
@@ -113,44 +114,86 @@ export default {
             return commentMap;
         },
 
-        async postComment() {
-            if (this.newComment.trim()) {
-                try {
-                    const token = localStorage.getItem('token');
-                    console.log(token);
-                    const response = await axios.post(
-                        'http://49.233.82.133:9091/model/comment/add',
-                        {
-                            commentDetail: this.newComment,
-                            modelId: this.modelId,
-                            deep: 0, // 普通评论
-                            answerId: null,
-                            status: true,
-                        },
-                        {
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': `Bearer ${token}`
-                            }
-                        }
-                    );
 
-                    if (response.data.success) {
-                        this.newComment = ""; // 清空输入框
-                        this.showReplies = false; // 隐藏回复框
-                        this.fetchComments(); // 刷新评论列表
-                    } else if (response.data.msg === "Token无效!!") {
-                        alert("请先登录！");
-                    } else {
-                        console.log(response.data);
-                        alert("发表评论失败：" + response.data.errorMsg);
-                    }
-                } catch (error) {
-                    console.error('Error posting comment:', error);
-                    alert("发表评论失败，请稍后再试。");
-                }
-            } else {
+        async postComment() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert("请先登录！");
+                return;
+            }
+            if (!this.newComment.trim()) {
                 alert("评论内容不能为空！");
+                return;
+            }
+            if (!this.newScore) {
+                alert("请先为该模型打分！");
+                return;
+            }
+            try {
+                // 先提交评分
+                const ratingRes = await axios.post(
+                    'http://49.233.82.133:9091/model/rating/add',
+                    {
+                        modelId: this.modelId,
+                        rating: this.newScore
+                    },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        }
+                    }
+                );
+                if (!ratingRes.data.success) {
+                    alert("评分提交失败：" + (ratingRes.data.errorMsg || '未知错误'));
+                    return;
+                }
+
+                // 再提交评论
+                const response = await axios.post(
+                    'http://49.233.82.133:9091/model/comment/add',
+                    {
+                        commentDetail: this.newComment,
+                        modelId: this.modelId,
+                        deep: 0, // 普通评论
+                        answerId: null,
+                        status: true,
+                    },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        }
+                    }
+                );
+
+                if (response.data.success) {
+                    this.newComment = ""; // 清空输入框
+                    this.newScore = 0;    // 清空评分
+                    this.showReplies = false; // 隐藏回复框
+                    await this.fetchComments(); // 刷新评论列表
+                    // 调用所有 Comment 子组件的 fetchUserRating
+                    this.$nextTick(() => {
+                        const refs = this.$refs.commentRefs;
+                        if (Array.isArray(refs)) {
+                            refs.forEach(ref => {
+                                if (ref && typeof ref.fetchUserRating === 'function') {
+                                    ref.fetchUserRating();
+                                }
+                            });
+                        }
+                    });
+                    this.$emit('refresh-model-detail');
+                    alert("评论和评分提交成功！");
+                } else if (response.data.msg === "Token无效!!") {
+                    alert("请先登录！");
+                } else {
+                    console.log(response.data);
+                    alert("发表评论失败：" + response.data.errorMsg);
+                }
+            } catch (error) {
+                console.error('Error posting comment or rating:', error);
+                alert("发表评论或评分失败，请稍后再试。");
             }
         },
 

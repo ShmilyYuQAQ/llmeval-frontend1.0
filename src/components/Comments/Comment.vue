@@ -109,13 +109,14 @@ export default {
             replyContent: "",
             userId: null,
             pageUrl: window.location.href, // 新增
-            value2: this.comment.score || 5, // 新增
+            value2: null, // 新增
             colors: ['#99A9BF', '#F7BA2A', '#FF9900'], // 新增
         };
     },
     mounted() {
         // 在组件加载时解析 token，获取 userId
         this.userId = getUserIdFromToken(localStorage.getItem('token'));
+        this.fetchUserRating();
     },
     methods: {
         reportComment() {
@@ -131,6 +132,24 @@ export default {
         },
         toggleCancel() {
             this.showReplies = false;
+        },
+        async fetchUserRating() {
+            try {
+                // 注意接口参数名大小写需与后端一致
+                const res = await axios.get(`http://49.233.82.133:9091/model/rating/user`, {
+                    params: {
+                        modelId: this.modelId,
+                        userId: this.comment.userId
+                    }
+                });
+                if (res.data && res.data.data) {
+                    this.value2 = res.data.data.rating;
+                } else {
+                    this.value2 = null;
+                }
+            } catch (e) {
+                this.value2 = null;
+            }
         },
         async submitReply(commentId) {
             if (this.replyContent.trim()) {
