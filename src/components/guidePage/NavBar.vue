@@ -3,24 +3,10 @@
         <div class="navbar-wrapper">
             <div class="header-container">
                 <div class="logo-container">
-                    <a href="https://cs.nankai.edu.cn/" target="_blank" class="logo-link">
+                    <a href="https://langyahaiping.com/" target="_blank" class="logo-link">
                         <img
-                            src="./images/nkcs_logo.png"
-                            alt="南开大学软件学院"
-                            class="logo"
-                        />
-                    </a>
-                    <a href="https://www.hl-it.cn/" target="_blank" class="logo-link">
-                        <img
-                            src="./images/xinchuang_logo.png"
-                            alt="信创海河实验室"
-                            class="logo"
-                        />
-                    </a>
-                    <a href="http://www.datum.com.cn/" target="_blank" class="logo-link">
-                        <img
-                            src="./images/diantong_logo.png"
-                            alt="点通"
+                            src="./images/langya.png"
+                            alt="琅琊海评"
                             class="logo"
                         />
                     </a>
@@ -264,7 +250,6 @@ export default {
             localStorage.removeItem('token'); 
             localStorage.removeItem('userName');
             localStorage.removeItem('userAvatar');
-            
             if (this.$route.path === '/center') {
                 this.$router.push('/'); // 重定向到首页
             } else {
@@ -293,7 +278,7 @@ export default {
     font-weight: 400;
     font-family: Inter, Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
         Microsoft YaHei, 微软雅黑, Arial, sans-serif;
-    z-index: 9999;
+    z-index: 1000;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 .navbar-wrapper {
@@ -319,24 +304,24 @@ export default {
     gap: 15px;
 }
 .logo-link {
-    height: 32px; /*从40px减少到32px*/
+    height: 48px; /* 原32px，放大为48px */
     display: flex;
     align-items: center;
 }
 .logo-container > a:first-child {
-    width: 120px; /* 调整第一个 logo 的宽度 */
+    width: 200px; /* 原160px，适当放大 */
 }
 .logo-container > a:nth-child(2) {
     width: 100px; /* 增加第二个 logo (xinchuang) 的宽度，从80px增加到100px */
 }
 .logo-container > a:nth-child(3) {
-    width: 80px; /* 保持第三个 logo 的宽度 */
+    width: 160px; /* 保持第三个 logo 的宽度 */
 }
 .logo {
     position: relative;
-    height: 100%;
-    max-width: 100%;
-    max-height: 100%;
+    height: 48px;    /* 原120%，改为固定48px */
+    max-width: 100%; /* 保证不超出容器 */
+    max-height: 48px;
     object-fit: contain;
 }
 .nav-center {
@@ -544,14 +529,15 @@ export default {
     .user-container {
         flex: 1; /* 在移动端给用户区域较少空间 */
     }
+    .logo-link {
+        height: 36px; /* 移动端适当缩小 */
+    }
+    .logo {
+        height: 36px;
+        max-height: 36px;
+    }
     .logo-container > a:first-child {
-        width: 100px;
-    }
-    .logo-container > a:nth-child(2) {
-        width: 80px;
-    }
-    .logo-container > a:nth-child(3) {
-        width: 60px;
+        width: 120px;
     }
 }
 @media screen and (max-width: 480px) {

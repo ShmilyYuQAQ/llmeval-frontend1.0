@@ -8,6 +8,11 @@
             />
             <span class="text-group_1">用户反馈（{{totalComments}}）</span>
         </div>
+        <div class="score-tip-row" style="display: flex; align-items: center; margin-left: 20px; margin-bottom: 3px; margin-top: 6px;">
+            <span style="font-size: 15px; color: #870066; margin-right: 10px;">请为该模型打分：</span>
+            <el-rate v-model="newScore" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" style="font-size: 22px;"></el-rate>
+            <span v-if="newScore" style="margin-left: 10px; color: #F7BA2A;">{{ newScore }} 分</span>
+        </div>
         <div class="box_7 flex-row justify-between">
             <div class="text-wrapper_3 flex-col">
                 <textarea 
@@ -31,6 +36,7 @@
             <comment
                 v-for="(comment, index) in comments"
                 :key="`root-${index}`"
+                ref="commentRefs"
                 :comment="comment"
                 :depth="0"
                 :user_comment_map="user_comment_map"
@@ -66,6 +72,7 @@ export default {
             userId: 7,
             newComment: "", // 存储输入的评论
             reviewCount: 0, // 评论数量
+            newScore: 0,
         };
     },
     async created() {
@@ -107,44 +114,86 @@ export default {
             return commentMap;
         },
 
-        async postComment() {
-            if (this.newComment.trim()) {
-                try {
-                    const token = localStorage.getItem('token');
-                    console.log(token);
-                    const response = await axios.post(
-                        'http://49.233.82.133:9091/model/comment/add',
-                        {
-                            commentDetail: this.newComment,
-                            modelId: this.modelId,
-                            deep: 0, // 普通评论
-                            answerId: null,
-                            status: true,
-                        },
-                        {
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': `Bearer ${token}`
-                            }
-                        }
-                    );
 
-                    if (response.data.success) {
-                        this.newComment = ""; // 清空输入框
-                        this.showReplies = false; // 隐藏回复框
-                        this.fetchComments(); // 刷新评论列表
-                    } else if (response.data.msg === "Token无效!!") {
-                        alert("请先登录！");
-                    } else {
-                        console.log(response.data);
-                        alert("发表评论失败：" + response.data.errorMsg);
-                    }
-                } catch (error) {
-                    console.error('Error posting comment:', error);
-                    alert("发表评论失败，请稍后再试。");
-                }
-            } else {
+        async postComment() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert("请先登录！");
+                return;
+            }
+            if (!this.newComment.trim()) {
                 alert("评论内容不能为空！");
+                return;
+            }
+            if (!this.newScore) {
+                alert("请先为该模型打分！");
+                return;
+            }
+            try {
+                // 先提交评分
+                const ratingRes = await axios.post(
+                    'http://49.233.82.133:9091/model/rating/add',
+                    {
+                        modelId: this.modelId,
+                        rating: this.newScore
+                    },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        }
+                    }
+                );
+                if (!ratingRes.data.success) {
+                    alert("评分提交失败：" + (ratingRes.data.errorMsg || '未知错误'));
+                    return;
+                }
+
+                // 再提交评论
+                const response = await axios.post(
+                    'http://49.233.82.133:9091/model/comment/add',
+                    {
+                        commentDetail: this.newComment,
+                        modelId: this.modelId,
+                        deep: 0, // 普通评论
+                        answerId: null,
+                        status: true,
+                    },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        }
+                    }
+                );
+
+                if (response.data.success) {
+                    this.newComment = ""; // 清空输入框
+                    this.newScore = 0;    // 清空评分
+                    this.showReplies = false; // 隐藏回复框
+                    await this.fetchComments(); // 刷新评论列表
+                    // 调用所有 Comment 子组件的 fetchUserRating
+                    this.$nextTick(() => {
+                        const refs = this.$refs.commentRefs;
+                        if (Array.isArray(refs)) {
+                            refs.forEach(ref => {
+                                if (ref && typeof ref.fetchUserRating === 'function') {
+                                    ref.fetchUserRating();
+                                }
+                            });
+                        }
+                    });
+                    this.$emit('refresh-model-detail');
+                    alert("评论和评分提交成功！");
+                } else if (response.data.msg === "Token无效!!") {
+                    alert("请先登录！");
+                } else {
+                    console.log(response.data);
+                    alert("发表评论失败：" + response.data.errorMsg);
+                }
+            } catch (error) {
+                console.error('Error posting comment or rating:', error);
+                alert("发表评论或评分失败，请稍后再试。");
             }
         },
 
@@ -191,7 +240,7 @@ export default {
 .box_7 {
   width: 1160px;
   height: 83px;
-  margin: 20px 0 0 20px;
+  margin: 8px 0 0 20px;
   display: flex; /* 启用 Flex 布局 */
   flex-direction: row; /* 确保子元素横向排列（默认值，可省略） */
 }
