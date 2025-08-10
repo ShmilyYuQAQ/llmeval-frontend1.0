@@ -1,4 +1,17 @@
 <template>
+    <span id="components-header-login">
+        {{ languageChos }}
+        <div class="username-float">
+          <div 
+            v-for="lang in languageOptions" 
+            :key="lang.code"
+            class="username-float-item-lang"
+            @click="languageAuto(lang.code, lang.name)"
+          >
+            <i>{{ lang.name }}</i>
+          </div>
+        </div>
+      </span>
     <NavBar></NavBar>
     <main class="page-content">
         <div class="main-content">
@@ -248,6 +261,9 @@
 </template>
 
 <script>
+
+
+
 import GuideCarousel from "@/components/guidePage/GuideCarousel.vue";
 import NavBar from "@/components/guidePage/NavBar.vue";
 import Pyramid from "@/components/guidePage/Pyramid.vue";
@@ -255,6 +271,7 @@ import GuideCard from "@/components/guidePage/guideCard.vue";
 import SponsorCard from "@/components/guidePage/sponsorCard.vue";
 
 export default {
+
     components: {
         NavBar,
         SponsorCard,
@@ -264,6 +281,17 @@ export default {
     },
     data() {
         return {
+            languageChos: "中文", 
+      // 语言选项列表，便于维护和扩展
+            languageOptions: [
+        { code: 'chinese_simplified', name: '中文' },
+        { code: 'english', name: 'English' },
+        { code: 'french', name: 'Français' },
+        { code: 'italian', name: 'Italiano' },
+        { code: 'korean', name: '한어' },
+        { code: 'japanese', name: '日本語' },
+        // ...可以轻松添加更多语言
+      ],
             imgArray: [
                 '/images/guidePage/guide/guide1.png',
                 '/images/guidePage/guide/guide2.png',
@@ -303,9 +331,52 @@ export default {
     },
     mounted() {
         setInterval(() => {
-            this.currentIndex = (this.currentIndex + 1) % this.images.length;
-        }, 3000);
+      this.currentIndex = (this.currentIndex + 1) % this.imgArray.length;
+  }, 3000);
+        this.getLang();
+        // 启动监听，确保动态内容也能翻译（如果你在main.js调用了translate.listener.start()，这步可省）
+        if (this.$translate && this.$translate.listener) {
+            this.$translate.listener.start();
+        }
     },
+    methods: {
+    /**
+     * @description 切换语言的核心方法
+     * @param {string} code - 语言代码 (e.g., 'english')
+     * @param {string} name - 语言显示名称 (e.g., 'English')
+     */
+    languageAuto(code, name) {
+      // 1. 将用户的选择保存到 localStorage，以便下次访问时保留
+      localStorage.setItem("language", code);
+      // 2. 更新 UI 上显示的语言名称
+      this.languageChos = name;
+      // 3. 通知翻译库切换语言
+      //this.$translate.changeLanguage(code);
+      if (this.$translate) {
+        this.$translate.changeLanguage(code);
+      }
+    },
+
+    /**
+     * @description 组件加载时，获取并设置初始语言
+     */
+    getLang() {
+      // 1. 从 localStorage 读取已保存的语言，若没有则默认使用中文
+      const storedLang = localStorage.getItem("language") || "chinese_simplified";
+      
+      // 2. 根据存储的语言代码，找到对应的显示名称
+      const langOption = this.languageOptions.find(lang => lang.code === storedLang);
+      this.languageChos = langOption ? langOption.name : "中文";
+
+      // 3. 初始化时，也需要告诉翻译库使用哪个语言
+      //this.$translate.changeLanguage(storedLang);
+        if (this.$translate) {
+        this.$translate.changeLanguage(storedLang);
+      }
+    },
+    // ... 其他方法
+  }
+
 };
 </script>
 
