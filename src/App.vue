@@ -1,4 +1,27 @@
 <template>
+    <!-- Language Selector -->
+        <div class="language-selector" style="
+            position: absolute;
+            top: 70px;
+            right: 20px;
+            z-index: 1000;
+        ">
+            <select v-model="selectedLang" @change="languageAuto($event.target.value, $event.target.selectedOptions[0].text)"
+                style="
+                    padding: 8px 12px;
+                    width: 130px;
+                    border-radius: 4px;
+                    border: 1px solid #ccc;
+                    background-color: white;
+                    font-size: 14px;
+                    cursor: pointer;
+                    outline: none;
+                ">
+                <option v-for="lang in languageOptions" :key="lang.code" :value="lang.code">
+                    {{ lang.name }}
+                </option>
+            </select>
+        </div>
     <div id="app">
         <router-view />
     </div>
@@ -17,14 +40,48 @@ export default {
         Footer,
         NavBar, // 注册NavBar
     },
+     data() {
+        return {
+            selectedLang: localStorage.getItem("language") || "chinese_simplified",
+            languageOptions: [
+                { code: 'chinese_simplified', name: '中文' },
+                { code: 'english', name: 'English' },
+                { code: 'french', name: 'Français' },
+                { code: 'italian', name: 'Italiano' },
+                { code: 'korean', name: '한어' },
+                { code: 'japanese', name: '日本語' },
+            ],
+            
+        };
+    },
     mounted() {
         this.checkLoginStatus();
         this.checkLoginInterval = setInterval(this.checkLoginStatus, 10000); // 每10秒检测一次
+        this.getLang();
+        if (this.$translate && this.$translate.listener) {
+            this.$translate.listener.start();
+        }
     },
     beforeUnmount() {
         clearInterval(this.checkLoginInterval);
     },
     methods: {
+        languageAuto(code, name) {
+            localStorage.setItem("language", code);
+            this.selectedLang = code;
+            if (this.$translate) {
+                this.$translate.changeLanguage(code);
+            }
+        },
+        getLang() {
+            const storedLang = localStorage.getItem("language") || "chinese_simplified";
+            this.selectedLang = storedLang;
+            if (this.$translate) {
+                this.$translate.changeLanguage(storedLang);
+            }
+        },
+
+
         async checkLoginStatus() {
             const token = localStorage.getItem('token');
             if (!token) return;

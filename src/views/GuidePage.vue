@@ -1,149 +1,71 @@
 <template>
-    <span id="components-header-login">
-        {{ languageChos }}
-        <div class="username-float">
-          <div 
-            v-for="lang in languageOptions" 
-            :key="lang.code"
-            class="username-float-item-lang"
-            @click="languageAuto(lang.code, lang.name)"
-          >
-            <i>{{ lang.name }}</i>
-          </div>
-        </div>
-      </span>
     <NavBar></NavBar>
     <main class="page-content">
         <div class="main-content">
-            <!-- 原有的页面内容 -->
-            <div
-                style="
-                    position: relative;
+            <div style="
+                position: relative;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            ">
+                <div class="home-page" style="
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                "
-            >
-                <div
-                    class="home-page"
-                    style="
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        flex-direction: column;
-                    "
-                >
+                    flex-direction: column;
+                ">
                     <div class="banner">
                         <h1>琅琊海评</h1>
-                        <p>
-                            一个标签化展示大模型能力，为用户提供大模型选择建议的平台
-                        </p>
+                        <p>一个标签化展示大模型能力，为用户提供大模型选择建议的平台</p>
                     </div>
                     <div class="level">
                         <h1>能力等级</h1>
                         <p>Capability level</p>
-                        <div
-                            class="pyramid-container"
-                            style="
-                                width: 80%;
-                                margin-bottom: 100px;
-                                position: relative;
-                            "
-                        >
-                            <img
-                                src="@/components/guidePage/images/level.png"
-                                alt=""
-                                style="width: 90%"
-                            />
+                        <div class="pyramid-container" style="
+                            width: 80%;
+                            margin-bottom: 100px;
+                            position: relative;
+                        ">
+                            <img src="@/components/guidePage/images/level.png" alt="" style="width: 90%" />
                             <div class="level-descriptions">
                                 <div class="level-item">
-                                    <p>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;模型表现明显不足，与平均水平差距较大，需要较大改进
-                                    </p>
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;模型表现明显不足，与平均水平差距较大，需要较大改进</p>
                                 </div>
                                 <div class="level-item">
-                                    <p>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;能力表现略低于平均水平，需要进一步提升。
-                                    </p>
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;能力表现略低于平均水平，需要进一步提升。</p>
                                 </div>
                                 <div class="level-item good">
-                                    <p>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;模型表现尚可，达到一般水平，但仍有一定的提升空间。
-                                    </p>
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;模型表现尚可，达到一般水平，但仍有一定的提升空间。</p>
                                     <h4 class="model-title">代表模型</h4>
                                     <div class="model-list">
-                                        <a
-                                            href="/model-detail/ERNIE 4.0"
-                                            target="_blank"
-                                            class="model-card"
-                                            style="color: #ffcc00"
-                                        >
-                                            ERNIE 4.0<br /><span
-                                                >文本生成较稳定</span
-                                            >
+                                        <a href="/model-detail/ERNIE 4.0" target="_blank" class="model-card" style="color: #ffcc00">
+                                            ERNIE 4.0<br /><span>文本生成较稳定</span>
                                         </a>
-                                        <a
-                                            href="/model-detail/ChatGLM3-6B"
-                                            target="_blank"
-                                            class="model-card"
-                                            style="color: #ffcc00"
-                                        >
-                                            ChatGLM3-6B<br /><span
-                                                >支持多语言</span
-                                            >
+                                        <a href="/model-detail/ChatGLM3-6B" target="_blank" class="model-card" style="color: #ffcc00">
+                                            ChatGLM3-6B<br /><span>支持多语言</span>
                                         </a>
                                     </div>
                                 </div>
                                 <div class="level-item excellent">
-                                    <p>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;模型表现优异，超过大多数模型，仅有一些轻微不足。
-                                    </p>
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;模型表现优异，超过大多数模型，仅有一些轻微不足。</p>
                                     <h4 class="model-title">代表模型</h4>
                                     <div class="model-list">
-                                        <a
-                                            href="/model-detail/Yi-1.5-9B-Chat"
-                                            target="_blank"
-                                            class="model-card"
-                                            style="color: #33cc33"
-                                        >
-                                            Yi-1.5-9B-Chat<br /><span
-                                                >推理速度快</span
-                                            >
+                                        <a href="/model-detail/Yi-1.5-9B-Chat" target="_blank" class="model-card" style="color: #33cc33">
+                                            Yi-1.5-9B-Chat<br /><span>推理速度快</span>
                                         </a>
-                                        <a
-                                            href="/model-detail/DeepSeek-R1"
-                                            target="_blank"
-                                            class="model-card"
-                                            style="color: #33cc33"
-                                        >
-                                            DeepSeek-R1<br /><span
-                                                >语义理解强</span
-                                            >
+                                        <a href="/model-detail/DeepSeek-R1" target="_blank" class="model-card" style="color: #33cc33">
+                                            DeepSeek-R1<br /><span>语义理解强</span>
                                         </a>
                                     </div>
                                 </div>
                                 <div class="level-item top">
-                                    <p>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;模型能力非常出色，远超平均水平，几乎无明显缺陷。
-                                    </p>
+                                    <p>&nbsp;&nbsp;&nbsp;&nbsp;模型能力非常出色，远超平均水平，几乎无明显缺陷。</p>
                                     <h4 class="model-title">代表模型</h4>
                                     <div class="model-list">
-                                        <a
-                                            href="/model-detail/Doubao-pro-32k"
-                                            target="_blank"
-                                            class="model-card"
-                                            style="color: #9933cc"
-                                        >
-                                            Doubao-pro-32k<br /><span
-                                                >综合能力极强</span
-                                            >
+                                        <a href="/model-detail/Doubao-pro-32k" target="_blank" class="model-card" style="color: #9933cc">
+                                            Doubao-pro-32k<br /><span>综合能力极强</span>
                                         </a>
-                                        <a
-                                            href="/model-detail/GPT-4o"
-                                            target="_blank"
-                                            class="model-card"
-                                            style="color: #9933cc"
-                                        >
+                                        <a href="/model-detail/GPT-4o" target="_blank" class="model-card" style="color: #9933cc">
                                             GPT-4o<br /><span>多模态支持</span>
                                         </a>
                                     </div>
@@ -153,81 +75,47 @@
                     </div>
                     <div class="content-container">
                         <div class="cards">
-                            <p class="card-title">
-                                标签识能，交互荐优，个性匹配
-                            </p>
-                            <p class="card-subtitle">
-                                Interactive recommendation, personalized
-                                matching
-                            </p>
+                            <p class="card-title">标签识能，交互荐优，个性匹配</p>
+                            <p class="card-subtitle">Interactive recommendation, personalized matching</p>
                             <div class="guide-card">
                                 <div class="card-body">
                                     <div class="card-icon">
-                                        <img
-                                            src="@/components/guidePage/images/biaoqian.png"
-                                            alt="标签"
-                                        />
+                                        <img src="@/components/guidePage/images/biaoqian.png" alt="标签" />
                                     </div>
                                     <div class="text_container">
                                         <h2>标签化：充分展现各模型特色</h2>
                                         <ul>
-                                            <li>
-                                                没有分数的直观对比，而是以标签的形式去描述模型
-                                            </li>
-                                            <li>
-                                                各模型的能力、特色可以在网站上充分体现出来
-                                            </li>
-                                            <li>
-                                                细粒度的模型能力对比,200+标签
-                                            </li>
+                                            <li>没有分数的直观对比，而是以标签的形式去描述模型</li>
+                                            <li>各模型的能力、特色可以在网站上充分体现出来</li>
+                                            <li>细粒度的模型能力对比,200+标签</li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
-
                             <div class="guide-card">
                                 <div class="card-body">
                                     <div class="card-icon">
-                                        <img
-                                            src="@/components/guidePage/images/jiaohu.png"
-                                            alt="交互"
-                                        />
+                                        <img src="@/components/guidePage/images/jiaohu.png" alt="交互" />
                                     </div>
                                     <div class="text_container">
-                                        <h2>
-                                            交互性：用户导向的评测与推荐网站
-                                        </h2>
+                                        <h2>交互性：用户导向的评测与推荐网站</h2>
                                         <ul>
-                                            <li>
-                                                根据用户搜索、收藏历史个性化推荐模型
-                                            </li>
-                                            <li>
-                                                用户可以输入任务需求，得到模型推荐结果
-                                            </li>
-                                            <li>
-                                                用户可以对各大模型进行评论，交互性强
-                                            </li>
+                                            <li>根据用户搜索、收藏历史个性化推荐模型</li>
+                                            <li>用户可以输入任务需求，得到模型推荐结果</li>
+                                            <li>用户可以对各大模型进行评论，交互性强</li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
-
                             <div class="guide-card">
                                 <div class="card-body">
                                     <div class="card-icon">
-                                        <img
-                                            src="@/components/guidePage/images/gexing.png"
-                                            alt="个性"
-                                        />
+                                        <img src="@/components/guidePage/images/gexing.png" alt="个性" />
                                     </div>
                                     <div class="text_container">
-                                        <h2>
-                                            个性化：给用户提供选择模型的参考
-                                        </h2>
+                                        <h2>个性化：给用户提供选择模型的参考</h2>
                                         <ul>
-                                            <li>
-                                                划分五级能力标签，让用户了解模型能力
-                                            </li>
+                                            <li>划分五级能力标签，让用户了解模型能力</li>
                                             <li>根据用户收藏个性化推荐模型</li>
                                             <li>针对用户特定需求推荐模型</li>
                                         </ul>
@@ -236,34 +124,24 @@
                             </div>
                         </div>
                         <div class="right-content">
-                            <img
-                                src="@\components\guidePage\images\doubao.png"
-                                alt="豆包"
-                                class="pyramid-image"
-                            />
+                            <img src="@\components\guidePage\images\doubao.png" alt="豆包" class="pyramid-image" />
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-    <!-- 页面底部轮播图 -->
-    <div
-        style="
-            display: flex;
-            justify-content: center;
-            background-color: white;
-            margin-bottom: 20px;
-        "
-    >
+    <div style="
+        display: flex;
+        justify-content: center;
+        background-color: white;
+        margin-bottom: 20px;
+    ">
         <GuideCarousel :imgArray="imgArray"></GuideCarousel>
     </div>
 </template>
 
 <script>
-
-
-
 import GuideCarousel from "@/components/guidePage/GuideCarousel.vue";
 import NavBar from "@/components/guidePage/NavBar.vue";
 import Pyramid from "@/components/guidePage/Pyramid.vue";
@@ -271,7 +149,6 @@ import GuideCard from "@/components/guidePage/guideCard.vue";
 import SponsorCard from "@/components/guidePage/sponsorCard.vue";
 
 export default {
-
     components: {
         NavBar,
         SponsorCard,
@@ -281,17 +158,6 @@ export default {
     },
     data() {
         return {
-            languageChos: "中文", 
-      // 语言选项列表，便于维护和扩展
-            languageOptions: [
-        { code: 'chinese_simplified', name: '中文' },
-        { code: 'english', name: 'English' },
-        { code: 'french', name: 'Français' },
-        { code: 'italian', name: 'Italiano' },
-        { code: 'korean', name: '한어' },
-        { code: 'japanese', name: '日本語' },
-        // ...可以轻松添加更多语言
-      ],
             imgArray: [
                 '/images/guidePage/guide/guide1.png',
                 '/images/guidePage/guide/guide2.png',
@@ -303,26 +169,22 @@ export default {
             sponsor: {
                 name: "南开大学软件学院",
                 logo: "./public/images/guidePage/logo.png",
-                description:
-                    "我们是南开大学软件学院，致力于为软件开发者提供优质的软件服务。",
+                description: "我们是南开大学软件学院，致力于为软件开发者提供优质的软件服务。",
             },
             cardData: [
                 {
                     title: "指南",
-                    content:
-                        "了解设计指南，帮助产品设计人员搭建逻辑清晰、结构合理且高效易用的产品。",
+                    content: "了解设计指南，帮助产品设计人员搭建逻辑清晰、结构合理且高效易用的产品。",
                     icon: 0,
                 },
                 {
                     title: "评测",
-                    content:
-                        "评测模型的准确性、鲁棒性、可靠性、效率性，并提供改进建议。",
+                    content: "评测模型的准确性、鲁棒性、可靠性、效率性，并提供改进建议。",
                     icon: 1,
                 },
                 {
                     title: "选择",
-                    content:
-                        "提供模型选择建议，帮助产品设计人员快速、准确地选择最适合的模型。",
+                    content: "提供模型选择建议，帮助产品设计人员快速、准确地选择最适合的模型。",
                     icon: 2,
                 },
             ],
@@ -331,55 +193,13 @@ export default {
     },
     mounted() {
         setInterval(() => {
-      this.currentIndex = (this.currentIndex + 1) % this.imgArray.length;
-  }, 3000);
-        this.getLang();
-        // 启动监听，确保动态内容也能翻译（如果你在main.js调用了translate.listener.start()，这步可省）
-        if (this.$translate && this.$translate.listener) {
-            this.$translate.listener.start();
-        }
+            this.currentIndex = (this.currentIndex + 1) % this.imgArray.length;
+        }, 3000);
     },
     methods: {
-    /**
-     * @description 切换语言的核心方法
-     * @param {string} code - 语言代码 (e.g., 'english')
-     * @param {string} name - 语言显示名称 (e.g., 'English')
-     */
-    languageAuto(code, name) {
-      // 1. 将用户的选择保存到 localStorage，以便下次访问时保留
-      localStorage.setItem("language", code);
-      // 2. 更新 UI 上显示的语言名称
-      this.languageChos = name;
-      // 3. 通知翻译库切换语言
-      //this.$translate.changeLanguage(code);
-      if (this.$translate) {
-        this.$translate.changeLanguage(code);
-      }
-    },
-
-    /**
-     * @description 组件加载时，获取并设置初始语言
-     */
-    getLang() {
-      // 1. 从 localStorage 读取已保存的语言，若没有则默认使用中文
-      const storedLang = localStorage.getItem("language") || "chinese_simplified";
-      
-      // 2. 根据存储的语言代码，找到对应的显示名称
-      const langOption = this.languageOptions.find(lang => lang.code === storedLang);
-      this.languageChos = langOption ? langOption.name : "中文";
-
-      // 3. 初始化时，也需要告诉翻译库使用哪个语言
-      //this.$translate.changeLanguage(storedLang);
-        if (this.$translate) {
-        this.$translate.changeLanguage(storedLang);
-      }
-    },
-    // ... 其他方法
-  }
-
+    }
 };
 </script>
-
 <style scoped>
 /* 原有的样式 */
 .page-content {
