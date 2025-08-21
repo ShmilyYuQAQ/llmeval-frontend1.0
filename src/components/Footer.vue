@@ -42,7 +42,7 @@
   color: white;
   text-align: center;
   padding: 1rem;
-  height:100px;
+  height:auto;
   position: relative; /* 新增 */
 }
 .footer-links {
@@ -52,7 +52,7 @@
 .wechat-link {
   position: absolute;
   right: 150px;
-  top: -75px;
+  top: -60px;
   background: transparent;
 }
 .footer-row {

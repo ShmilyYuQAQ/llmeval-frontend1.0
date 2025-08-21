@@ -918,17 +918,4 @@ li > .outline-item-active {
 }
 
 /* Print-specific styles */
-@media print {
-  .typora-export * {
-    -webkit-print-color-adjust: exact;
-  }
-  :root {
-    --font-size: 14px;
-  }
 
-  body {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 0;
-  }
-}

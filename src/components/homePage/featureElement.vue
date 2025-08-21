@@ -70,28 +70,7 @@ export default {
     flex: 1;
 }
 
-/* 添加响应式布局支持 */
-@media (max-width: 768px) {
-    .ele-container {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: flex-start;
-        gap: 10px;
-    }
-    
-    /* 确保全选复选框占据单独一行 */
-    .ele-container :deep(.el-checkbox) {
-        margin-right: 15px;
-        margin-bottom: 5px;
-    }
-    
-    /* 复选框组在移动设备上的样式 */
-    .ele-container :deep(.el-checkbox-group) {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-    }
-}
+
 </style>
 
 <!-- 添加全局样式来覆盖Element UI的默认颜色 -->
@@ -120,10 +99,5 @@ export default {
     font-size: 14px;
 }
 
-/* 移动设备上复选框文本字体大小调整 */
-@media (max-width: 768px) {
-    .ele-container .el-checkbox__label {
-        font-size: 13px;
-    }
-}
+
 </style>

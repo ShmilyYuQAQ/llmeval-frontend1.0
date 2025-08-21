@@ -91,28 +91,5 @@ export default {
 }
 
 /* 添加响应式样式 */
-@media (max-width: 768px) {
-    .feature-sequencer {
-        width: 100%;
-        text-align: left;
-        padding: 10px 0;
-    }
-    
-    :deep(.el-radio-group) {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 5px;
-    }
-    
-    :deep(.el-radio) {
-        margin-right: 10px;
-        margin-bottom: 5px;
-        font-size: 12px;
-    }
-    
-    :deep(.el-radio__label) {
-        font-size: 12px;
-        padding-left: 4px;
-    }
-}
+
 </style>

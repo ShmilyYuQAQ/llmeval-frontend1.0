@@ -481,6 +481,8 @@ export default {
     position: relative;
     transition: color 0.3s;
     outline: none;
+    white-space: nowrap; /* 不换行，水平排列 */
+    flex-direction: row; /* 保证内容水平排列 */
 }
 .mobile-link-item::after {
     content: none; /* 不显示底部横线 */
@@ -505,62 +507,7 @@ export default {
 .mobile-menu .router-link-exact-active.router-link-active[to="/center"] {
     border-bottom: none;
 }
-@media screen and (max-width: 768px) {
-    .nav-center {
-        display: none;
-    }
-    .menu-toggle {
-        display: flex;
-    }
-    .mobile-menu.active {
-        display: flex;
-    }
-    .user-info .user-details {
-        display: none;
-    }
-    .login-btn {
-        padding: 4px 8px;
-        font-size: 12px;
-    }
-    .logo-container {
-        gap: 8px;
-        flex: 3; /* 在移动端给logo更多空间 */
-    }
-    .user-container {
-        flex: 1; /* 在移动端给用户区域较少空间 */
-    }
-    .logo-link {
-        height: 36px; /* 移动端适当缩小 */
-    }
-    .logo {
-        height: 36px;
-        max-height: 36px;
-    }
-    .logo-container > a:first-child {
-        width: 120px;
-    }
-}
-@media screen and (max-width: 480px) {
-    .navbar-wrapper {
-        padding: 0 12px 0 16px; /* 减小导航栏内边距 */
-    }
-    .logo-container {
-        gap: 6px; /* 在超小屏幕上进一步减小间距 */
-        flex: 2; /* 在超小屏幕上进一步调整比例 */
-    }
-    .user-container {
-        flex: 1;
-    }
-    .logo-container > a:first-child {
-        width: 90px; /* 进一步减小第一个 logo 的宽度 */
-    }
-    .logo-container > a:nth-child(2) {
-        width: 70px; /* 在超小屏幕上仍然保持第二个 logo 足够大 */
-    }
-    .logo-container > a:nth-child(3) {
-        display: none; /* 在非常小的屏幕上隐藏第三个 logo */
-    }
-}
+
 .nav-bar {
     position: sticky;
     top: 0;

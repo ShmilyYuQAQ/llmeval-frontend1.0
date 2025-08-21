@@ -246,10 +246,13 @@ export default {
 .banner > p {
     font-size: 16px;
     color: #870066;
-    margin: -15px;
+    margin: -15px auto 0 auto; /* 水平居中 */
     line-height: 22px;
     font-family: PingFangSC, PingFang SC;
+    max-width: 600px; /* 更窄的最大宽度 */
+    text-align: center;
     font-style: normal;
+    font-weight: 400; /* 保持字体粗细 */
 }
 
 /* 内容容器样式 */
@@ -422,7 +425,7 @@ ul li {
 
 /* 图片样式 */
 .pyramid-image {
-    width: 115%;
+    width: 100%;
     height: auto; /* 放大图片高度 */
     object-fit: contain;
     right: 100px;
@@ -432,21 +435,7 @@ ul li {
 }
 
 /* 响应式设计 */
-@media screen and (max-width: 768px) {
-    .content-container {
-        flex-direction: column;
-    }
 
-    .cards,
-    .right-content {
-        width: 100%;
-        margin-right: 0;
-    }
-
-    .right-content {
-        margin-top: 30px;
-    }
-}
 
 .level {
     display: flex;

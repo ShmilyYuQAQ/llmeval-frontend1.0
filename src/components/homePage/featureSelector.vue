@@ -911,49 +911,7 @@ export default {
     z-index: 1;
 }
 
-/* 响应式调整 */
-@media (max-width: 768px) {
-    .section-header {
-        flex-direction: column;
-        align-items: flex-start;
-        height: auto;
-        padding: 10px 0;
-        gap: 10px;
-    }
 
-    .title-container {
-        margin-bottom: 10px;
-    }
-
-    .subtags-container {
-        width: 95%;
-        padding-left: 12px;
-        padding-right: 12px;
-    }
-
-    .subtag {
-        min-width: calc(50% - 12px); /* 移动设备上两列显示 */
-        font-size: 13px;
-    }
-
-    .parent-tag-name {
-        font-size: 13px;
-        height: auto;
-        min-width: 100px;
-        margin-right: 8px;
-    }
-
-    /* 修复tagContainter在小屏幕上的宽度 */
-    .section-header > *:last-child {
-        width: 100%;
-    }
-
-    /* 隐藏重复的选中标签信息 */
-    .selected-tag {
-        margin-bottom: 20px;
-        font-size: 13px;
-    }
-}
 
 .org-section-row {
     display: flex;
@@ -978,18 +936,7 @@ export default {
     width: auto;
     margin-right: 20px;
 }
-@media (max-width: 768px) {
-    .org-section-row {
-        flex-direction: column;
-        align-items: flex-start;
-        margin-left: 0;
-        margin-right: 0;
-        width: 100%;
-    }
-    .org-tag-row-extra {
-        margin-right: 8px;
-    }
-}
+
 .org-more-btn {
     height: 32px;
     line-height: 32px;
