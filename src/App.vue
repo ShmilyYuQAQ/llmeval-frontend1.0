@@ -50,6 +50,8 @@ export default {
                 { code: 'italian', name: 'Italiano' },
                 { code: 'korean', name: '한어' },
                 { code: 'japanese', name: '日本語' },
+                { code: 'spanish', name: 'Español' },
+                { code: 'russian', name: 'Русский' },
             ],
             
         };
