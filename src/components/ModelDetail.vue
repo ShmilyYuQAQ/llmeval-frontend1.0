@@ -99,7 +99,10 @@
       </div>
       <!-- 在 box_15 后面，加一个新 div 包住评论区 -->
       <div class="comment-wrapper">
-        <CommentList :modelId="modelData.data.modelId" />
+        <CommentList 
+          :modelId="modelData.data.modelId" 
+          @refresh-model-detail="refreshModelDetail" 
+        />
       </div>
     </div>
   </div> 
@@ -129,7 +132,7 @@ export default{
       isFavorited: false, // 存储收藏状态
       modelId: null,
       showTooltip: false, // 控制提示文本的显示
-      value2:  5, // 新增
+      value2:  null, // 新增
       colors: ['#99A9BF', '#F7BA2A', '#FF9900'], // 新增
     }
   },
@@ -142,7 +145,12 @@ export default{
         this.modelData = modelResponse.data;
         this.modelId = modelResponse.data.data.modelId;
       }
-      
+
+      const modelScoreResponse = await axios.get(`http://49.233.82.133:9091/model/rating/stats?modelId=${this.modelId}`);
+      if (modelScoreResponse.data.success) {
+        this.value2 = modelScoreResponse.data.data.averageRating;
+      }
+
       const modelTagResponse = await axios.get(`http://49.233.82.133:9091/tag/model?modelId=${this.modelId}`);
       if (modelTagResponse.data.success){
         this.tags = modelTagResponse.data.data;
@@ -193,6 +201,22 @@ export default{
     Footer,
   },
   methods: {
+    async refreshModelDetail() {
+      this.fetchTotalRate(); // 重新拉取数据
+    },
+
+    fetchTotalRate() {
+      axios.get(`http://49.233.82.133:9091/model/rating/stats?modelId=${this.modelId}`)
+        .then(response => {
+          if (response.data.success) {
+            this.value2 = response.data.data.averageRating;
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching total rating:', error);
+        });
+    },
+
     openModelLink() {
       if (this.modelData && this.modelData.data && this.modelData.data.model_link) {
         window.open(this.modelData.data.model_link, "_blank"); // 在新选项卡中打开链接

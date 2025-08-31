@@ -186,40 +186,4 @@ export default {
     padding: 0 4px;
 }
 
-/* 响应式调整 */
-@media (max-width: 768px) {
-    .tag-list {
-        justify-content: flex-start;
-    }
-    
-    .tag {
-        width: calc(33.33% - 12px);
-    }
-    
-    .tag:hover, .tag.active {
-        width: calc(33.33% - 12px);
-    }
-    
-    /* 子标签在移动设备上的显示 */
-    .subtags-wrapper {
-        width: 100%;
-        margin-top: 15px;
-    }
-    
-    .subtags-container {
-        width: 100%;
-        justify-content: flex-start;
-        padding: 10px;
-    }
-    
-    .subtag {
-        width: calc(50% - 12px);
-        min-width: unset;
-    }
-    
-    .subtag:hover {
-        width: calc(50% - 12px);
-        min-width: unset;
-    }
-}
 </style>

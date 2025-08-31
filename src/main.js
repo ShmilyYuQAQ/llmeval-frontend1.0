@@ -9,11 +9,26 @@ import { setup as setupPlugin } from './plugins';
 import "./assets/iconfont/iconfont.css";
 import mitt from 'mitt';
 
+
+import translate from 'i18n-jsautotranslate'
+
+
+translate.setUseVersion2() //设置使用v2.x 版本
+translate.language.setLocal('chinese_simplified') // 设置默认语言
+translate.selectLanguageTag.show = false //是否显示切换栏
+translate.listener.start() //监控页面动态渲染的文本进行自动翻译
+
+
+
+
 const app = createApp(App);
 setupPlugin(app);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component);
 }
+
+app.config.globalProperties.$translate = translate;
+
 
 const bodyScale = () => {
   const deviceWidth = document.documentElement.clientWidth; // 获取当前分辨率下的可视区域宽度
@@ -35,5 +50,10 @@ app.mixin({
 const eventBus = mitt();
 app.config.globalProperties.$bus = eventBus;
 
+
+
+
 app.use(ElementPlus);
 app.mount("#app");
+
+

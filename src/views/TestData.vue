@@ -1,10 +1,16 @@
 <template>
   <NavBar />
   <div class="dataset-container">
+  
     <el-container>
       <el-main>
+        
         <!-- 标题框 -->
+
         <el-card class="dataset-header-card">
+
+
+
           <h1 class="header-title">琅琊海评评测数据及介绍</h1>
 
           <!-- 数据集介绍 -->
@@ -74,6 +80,15 @@ import Footer from "@/components/Footer.vue";
 export default {
   data() {
     return {
+      selectedLang: localStorage.getItem("language") || "chinese_simplified",
+            languageOptions: [
+                { code: 'chinese_simplified', name: '中文' },
+                { code: 'english', name: 'English' },
+                { code: 'french', name: 'Français' },
+                { code: 'italian', name: 'Italiano' },
+                { code: 'korean', name: '한어' },
+                { code: 'japanese', name: '日本語' },
+            ],
       dataset: {
         count: "30万+",
         cn_count: 48,

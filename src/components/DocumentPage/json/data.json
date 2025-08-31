@@ -1,0 +1,14 @@
+[
+    {
+        "id": 1,
+        "title": "大模型推荐与评测",
+        "abstract": "本文介绍了大模型推荐系统的核心设计理念……",
+        "authors": ["张三"],
+        "date": "2025-08-20",
+        "upvotes": 12,
+        "stars": 34,
+        "github": "https://github.com/example",
+        "arxivUrl": "https://arxiv.org/abs/1234.5678",
+        "imageUrl": "./images/test1.png"
+      }
+]

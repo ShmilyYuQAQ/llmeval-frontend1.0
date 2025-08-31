@@ -58,6 +58,16 @@
                         <span>{{ model.releaseDate }}</span>
                     </div>
                 </div>
+
+                <div class="block score-row">
+                    <el-rate
+                        v-model="averageRating"
+                        :colors="colors"
+                        :disabled="true"
+                        style="font-size:12px;"
+                    ></el-rate>
+                    <span  class="score-text">{{ averageRating }}分</span>
+                </div>
             </div>
         </div>
 
@@ -116,8 +126,14 @@ export default {
             favoriteIcon,
             companyIcon,
             arrowRightIcon,
-            timeIcon
+            timeIcon,
+            colors: ['#99A9BF', '#F7BA2A', '#FF9900'], 
+            averageRating: 0,
         };
+    },
+
+    mounted() {
+        this.fetchAverageRating();
     },
     
     computed: {
@@ -134,6 +150,18 @@ export default {
     },
     
     methods: {
+        async fetchAverageRating() {
+            try {
+                const modelId = this.model.modelId;
+                if (!modelId) return;
+                const res = await axios.get(`http://49.233.82.133:9091/model/rating/stats?modelId=${modelId}`);
+                // 假设返回结构为 { data: { averageRating: 4.5 } }
+                this.averageRating = res.data?.data?.averageRating ?? 0;
+            } catch (e) {
+                this.averageRating = 0;
+            }
+        },
+
         // 获取认证Token
         getAuthToken() {
             return localStorage.getItem('token');
@@ -360,6 +388,27 @@ export default {
     flex-shrink: 0; /* 防止图标被压缩 */
 }
 
+.score-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* 评分内容靠右显示 */
+  margin-top: 1px;    /* 去掉原有的margin-top */
+}
+
+.score-text {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 3px;
+  color: #F7BA2A;
+  font-size: 15px;
+  line-height: 1;
+  /* 去掉宽高限制，确保内容水平排列 */
+  width: auto;
+  height: auto;
+  white-space: nowrap; /* 关键：防止“5分”换行 */
+  /* 去掉 margin-bottom，避免下沉 */
+}
+
 .favorite-count {
     display: flex;
     align-items: center;
@@ -514,63 +563,7 @@ export default {
     transform: translateX(3px); /* 悬停时箭头向右移动效果 */
 }
 
-/* 大屏幕优化 */
-@media (min-width: 1280px) {
-    .content {
-        line-height: 1.7;
-        font-size: 14.5px;
-    }
 
-    .model-name {
-        font-size: 17px;
-    }
-
-    .model-institution,
-    .favorite-count {
-        font-size: 13.5px;
-    }
-
-    .release-date {
-        font-size: 12.5px;
-    }
-}
-
-/* 移动端适配 */
-@media (max-width: 480px) {
-    .model-card {
-        height: 242px; /* 在移动端同样增加高度 */
-        padding: 16px 16px 16px 16px; /* 移动端略微减小内边距 */
-    }
-
-    .card-header {
-        height: 70px; /* 保持固定高度 */
-    }
-
-    .card-body {
-        flex: 1; /* 占据剩余空间 */
-    }
-
-    .card-footer {
-        height: 45px; /* 保持固定高度 */
-        width: calc(100% + 32px); /* 适应移动端边距 */
-        margin-left: -16px;
-        margin-bottom: -16px;
-    }
-
-    .model-name {
-        font-size: 15px;
-    }
-
-    .model-institution,
-    .release-date,
-    .favorite-count {
-        font-size: 12px;
-    }
-
-    .content {
-        line-height: 1.5;
-    }
-}
 
 /* 添加收藏按钮禁用状态 */
 .favorite-count.disabled {
