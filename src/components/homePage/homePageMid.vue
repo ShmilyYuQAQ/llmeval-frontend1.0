@@ -124,6 +124,26 @@
                 </div>
             </div>
         </div>
+        <!-- 模型分类Tab筛选器 -->
+        <div class="category-tab-bar content-container">
+            <div class="category-tabs" ref="categoryTabs">
+                <span
+                    v-for="(item, idx) in categoryList"
+                    :key="item.value"
+                    :class="['category-tab', { active: selectedCategory === item.value }]"
+                    @click="handleCategoryTabClick(item, idx)"
+                    ref="categoryTab"
+                >
+                    {{ item.label }}
+                </span>
+                <div class="category-tab-underline">
+                    <div
+                        class="category-tab-underline-active"
+                        :style="underlineStyle"
+                    ></div>
+                </div>
+            </div>
+        </div>
         <!-- FeatureSelector 组件 -->
         <div class="feature-selector-wrapper content-container">
             <FeatureSelector
@@ -177,6 +197,18 @@ export default {
             sequencerValue: 0,
             isRestoringState: false,
             isLoading: true,
+            categoryList: [
+                { label: "全部", value: "0" },
+                { label: "基础", value: "1" },
+                { label: "专业", value: "2" },
+                { label: "多模态", value: "3" },
+                { label: "智能体", value: "4" },
+            ],
+            selectedCategory: "1",
+            underline: {
+                left: 0,
+                width: 0,
+            },
         };
     },
     components: {
@@ -215,14 +247,21 @@ export default {
                 return data; // 如果出错则返回原始数据
             }
         },
-        async fetchData() {
+        async fetchData(tag = this.selectedCategory) {
             this.isLoading = true;
             try {
-                const {
-                    data: { data },
-                } = await axiosInstance.get("/model/");
+                let data;
+                if(tag !== "0"){
+                    const response = await axiosInstance.get(
+                        `/model/tag?tag=${tag}`
+                    );
+                    data = response.data.data;
+                } else {
+                    const response = await axiosInstance.get(`/model/`);
+                    data = response.data.data;
+                }
+                console.log(data, "ssssdata");
                 const processedData = this.processImagePath(data);
-                // 只在初次加载时赋值 originDatas
                 this.originDatas = [...processedData];
                 this.datas = this.sortByJsonOrder(processedData);
                 console.log(this.datas, "datas");
@@ -252,6 +291,24 @@ export default {
             } finally {
                 this.isLoading = false;
             }
+        },
+        async handleCategoryChange() {
+            // 切换分类时重置所有筛选项
+            this.selected_tag = ["", ""];
+            this.selected_org = ["", ""];
+            this.activeSearchQuery = "";
+            this.searchQuery = "";
+            this.activeFilters = ["开源", "不开源"];
+            this.tag_description = "";
+            this.tagDatas = [];
+            this.searchDatas = [];
+            this.sequencerValue = 0;
+            // 拉取新分类下的数据
+            await this.fetchData(this.selectedCategory);
+            // 重新过滤和分页
+            this.filterAndSetDatas();
+            // 更新URL参数
+            this.$nextTick(() => this.updateUrlParams());
         },
         filterAndSetDatas() {
             let filtered = [...this.originDatas];
@@ -699,11 +756,49 @@ export default {
                     });
             });
         },
+        async handleCategoryTabClick(item, idx) {
+            if (this.selectedCategory === item.value) return;
+            this.selectedCategory = item.value;
+            this.$nextTick(() => this.updateUnderline());
+            // 切换分类时重置所有筛选项
+            this.selected_tag = ["", ""];
+            this.selected_org = ["", ""];
+            this.activeSearchQuery = "";
+            this.searchQuery = "";
+            this.activeFilters = ["开源", "不开源"];
+            this.tag_description = "";
+            this.tagDatas = [];
+            this.searchDatas = [];
+            this.sequencerValue = 0;
+            // 拉取新分类下的数据
+            await this.fetchData(this.selectedCategory);
+            console.log(this.selectedCategory);
+            // 重新过滤和分页
+            this.filterAndSetDatas();
+            // 更新URL参数
+            this.$nextTick(() => this.updateUrlParams());
+        },
+        updateUnderline() {
+            // 计算高亮横线的位置和宽度，使用offsetLeft/offsetWidth保证精确
+            this.$nextTick(() => {
+                const tabs = this.$refs.categoryTab;
+                let tabEl = null;
+                if (Array.isArray(tabs)) {
+                    tabEl = tabs[this.categoryList.findIndex(i => i.value === this.selectedCategory)];
+                } else {
+                    tabEl = tabs;
+                }
+                if (tabEl) {
+                    this.underline.left = tabEl.offsetLeft;
+                    this.underline.width = tabEl.offsetWidth;
+                }
+            });
+        },
     },
     created() {
         // 设置初始筛选器状态
         this.activeFilters = ["开源", "不开源"];
-
+        this.selectedCategory = this.categoryList[0].value;
         // 添加路由变化监听
         this.$watch(
             () => this.$route.query,
@@ -715,9 +810,9 @@ export default {
     },
     mounted() {
         // 先获取数据，然后在回调中处理URL参数恢复
-        this.fetchData().then(() => {
-            // 确保组件已经挂载且数据已加载完成后再恢复URL参数
+        this.fetchData(this.selectedCategory).then(() => {
             this.$nextTick(() => {
+                this.updateUnderline();
                 // 确保排序组件已初始化
                 if (this.$refs.featureSequencer) {
                     this.sequencerValue =
@@ -755,6 +850,9 @@ export default {
         });
     },
     watch: {
+        selectedCategory() {
+            this.$nextTick(() => this.updateUnderline());
+        },
         models: function (newVal, oldVal) {
             if (this.$refs.modelCardContainer) {
                 this.$refs.modelCardContainer.models = newVal;
@@ -777,6 +875,12 @@ export default {
                 this.selected_tag[0] ||
                 this.activeFilters.length > 0
             );
+        },
+        underlineStyle() {
+            return {
+                left: this.underline.left + 'px',
+                width: this.underline.width + 'px',
+            };
         },
     },
 };
@@ -1143,5 +1247,196 @@ export default {
     border-color: #6c0052;
 }
 
+/* 新增的模型分类Tab样式 */
+.category-tab-bar {
+    width: 95%;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 16px;
+    position: relative;
+}
+.category-tabs {
+    display: flex;
+    position: relative;
+    border-bottom: 2px solid #e5e7eb;
+    height: 44px;
+    align-items: flex-end;
+}
+.category-tab {
+    display: inline-block;
+    font-size: 16px;
+    color: #666a75;
+    font-weight: 500;
+    padding: 0 32px 10px 32px;
+    cursor: pointer;
+    position: relative;
+    background: none;
+    border: none;
+    outline: none;
+    transition: color 0.2s;
+    user-select: none;
+}
+.category-tab.active {
+    color: #870066;
+    font-weight: 600;
+}
+.category-tab-underline {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background: #e5e7eb;
+    z-index: 1;
+}
+.category-tab-underline-active {
+    position: absolute;
+    top: 0;
+    height: 2px;
+    background: #870066;
+    border-radius: 1px;
+    transition: left 0.3s cubic-bezier(.4,0,.2,1), width 0.3s cubic-bezier(.4,0,.2,1);
+    z-index: 2;
+}
+@media (max-width: 768px) {
+    .hero-section {
+        justify-content: center;
+        padding-left: 0;
+    }
 
+    .hero-content {
+        padding-left: 0;
+        width: 90%; /* 在移动设备上减小宽度 */
+    }
+
+    .text-container {
+        align-self: center;
+        width: 100%;
+    }
+
+    .hero-title {
+        text-align: center;
+        margin: 0 auto 10px;
+        white-space: nowrap; /* 确保在移动设备上也不换行 */
+    }
+
+    .divider {
+        margin: 0 auto 10px;
+        width: 180px; /* 保持与桌面版一致 */
+    }
+
+    .hero-description {
+        width: 100%;
+        text-align: center;
+    }
+
+    .search-container {
+        width: 100%;
+        align-self: center;
+        max-width: 100%;
+        padding: 0 15px;
+    }
+
+    .search-input :deep(.el-input__wrapper) {
+        height: 40px;
+        border-radius: 20px !important;
+    }
+
+    .search-button {
+        height: 34px;
+    }
+
+    /* 标签和描述在移动设备上的样式调整 */
+    .tag-description {
+        max-width: 100%;
+        text-align: left;
+        padding: 0;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        align-items: flex-start; /* 在移动设备上左对齐 */
+        margin: 10px;
+    }
+
+    .description-content {
+        width: 100%; /* 内容宽度充满容器 */
+        word-break: break-word; /* 长文本换行 */
+        justify-content: flex-start; /* 在移动设备上左对齐 */
+    }
+
+    .filter-info-container {
+        width: 95%;
+    }
+
+    .filter-info-top,
+    .filter-info-bottom {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+
+    .filter-tags {
+        margin: 15px 10px 5px 10px;
+        width: calc(100% - 20px);
+    }
+
+    .description-label {
+        margin-bottom: 4px; /* 减小标签和内容之间的距离 */
+    }
+
+    .result-count {
+        margin-left: 10px;
+        margin-bottom: 10px;
+    }
+
+    .sequencer-wrapper {
+        width: 100%;
+        justify-content: flex-start;
+        margin-right: 0;
+        margin-left: 10px;
+        margin-bottom: 10px;
+    }
+
+    /* 新增 FeatureSelector 响应式样式 */
+    .feature-selector-wrapper,
+    .filter-info-container,
+    .model-card-container-wrapper {
+        width: 95%;
+        padding: 0;
+    }
+
+    .feature-selector-wrapper :deep(.container) {
+        width: 100% !important;
+        padding: 10px !important;
+    }
+
+    .model-card-container-wrapper {
+        padding: 0;
+    }
+
+    .filter-info-container {
+        padding: 10px 0;
+    }
+
+    /* 新增的模型分类筛选器响应式样式 */
+    .category-selector-wrapper {
+        width: 95%;
+        padding: 0;
+    }
+
+    .category-select {
+        width: 100%;
+    }
+    .category-tab-bar {
+        width: 95%;
+        padding: 0;
+    }
+    .category-tabs {
+        height: 40px;
+    }
+    .category-tab {
+        font-size: 14px;
+        padding: 0 16px 8px 16px;
+    }
+}
 </style>
