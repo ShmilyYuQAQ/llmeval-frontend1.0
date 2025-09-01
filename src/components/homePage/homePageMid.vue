@@ -314,21 +314,31 @@ export default {
             let filtered = [...this.originDatas];
 
             // 标签筛选（用 tagDatas 里的 name 做交集）
-            if (this.selected_tag[0] && this.tagDatas.length > 0) {
-                filtered = filtered.filter((item) =>
-                    this.tagDatas.some(
-                        (tagItem) => String(tagItem.name) === String(item.name)
-                    )
-                );
+            if (this.selected_tag[0]) {
+                if (this.tagDatas.length > 0) {
+                    filtered = filtered.filter((item) =>
+                        this.tagDatas.some(
+                            (tagItem) => String(tagItem.name) === String(item.name)
+                        )
+                    );
+                } else {
+                    // 如果选择了标签但没有对应的模型数据，则返回空数组
+                    filtered = [];
+                }
             }
             // 搜索筛选
-            if (this.activeSearchQuery && this.searchDatas.length > 0) {
-                filtered = filtered.filter((item) =>
-                    this.searchDatas.some(
-                        (searchItem) =>
-                            String(searchItem.name) === String(item.name)
-                    )
-                );
+            if (this.activeSearchQuery) {
+                if (this.searchDatas.length > 0) {
+                    filtered = filtered.filter((item) =>
+                        this.searchDatas.some(
+                            (searchItem) =>
+                                String(searchItem.name) === String(item.name)
+                        )
+                    );
+                } else {
+                    // 如果有搜索关键词但没有对应的模型数据，则返回空数组
+                    filtered = [];
+                }
             }
             // 机构筛选
             // 假设 mainstreamOrgs 是主流机构名称数组
