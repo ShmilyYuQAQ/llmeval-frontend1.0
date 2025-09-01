@@ -2,11 +2,13 @@
   <div class="page-container">
     <NavBar />
     <div class="text-wrapper_2 flex-col">
+      <div class="text-wrapper">
       <div>
         <span class="text_7">相关文章</span>
       </div>
       <div>
         <span class="text_8">聚焦领域：相关文章及技术报告专栏</span>
+      </div>
       </div>
     </div>
     <div class="content-wrapper">
@@ -60,6 +62,10 @@ export default defineComponent({
   align-items: flex-start;
   padding-left: 145px;
   margin: 0 auto;
+}
+.text-wrapper {
+  margin-bottom: 20px;
+  margin-left: 65%;
 }
 .text_7 {
   font-size: 32px;

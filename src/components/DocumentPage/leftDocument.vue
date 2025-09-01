@@ -51,6 +51,7 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 import orderData from "./json/data.json";
 import testImg from './images/test1.png';
+import testImg2 from './images/test2.png';
 export default {
   name: "LeftDocument",
   setup() {
@@ -61,28 +62,28 @@ export default {
     const mockPapers = [
       {
         id: 1,
-        title: "大模型推荐与评测",
+        title: "Physics: Benchmarking Foundation Models for PhD-Qualifying Exam Physics Problem Solving",
         imageUrl: testImg,
-        abstract: "本文介绍了大模型推荐系统的核心设计理念……",
-        tag: "推荐系统,fuwu",
-        authors: ["张三"],
-        date: "2025-08-20",
-        upvotes: 12,
-        github: "https://github.com/example",
-        arxivUrl: "https://arxiv.org/abs/1234.5678",
-        webUrl: "https://www.example.com"
+        abstract: "基于物理问题对基础模型进行基准测试，并包含评估指标。",
+        tag: "物理,基础模型",
+        authors: ["Kaiyue Feng，Yilun Zhao, Yixin Liu, Tianyu Yang, Chen Zhao, John Sous, Arman Cohan"],
+        date: "2025-05-05",
+        upvotes: 0,
+        github: "https://github.com/yale-nlp/Physics",
+        arxivUrl: "https://openreview.net/forum?id=ssCw35Jl44",
       },
       {
         id: 2,
-        title: "微服务监控与故障检测",
-        abstract: "基于 Prometheus + Grafana 的微服务监控实践……",
-        tag: "微服务",
-        authors: ["李四"],
+        title: "ProBench: Judging Multimodal Foundation Models on Open-ended Multi-domain Expert Tasks",
+        imageUrl: testImg2,
+        abstract: "对多模态模型在专家任务上进行基准测试，与性能排行榜相关。",
+        tag: "多模态模型,专家任务",
+        authors: ["Yan Yang, Dongxu Li, Haoning Wu, Bei Chen, Liu Liu, Liyuan Pan, Junnan Li"],
         date: "2025-08-21",
-        upvotes: 7,
-        github: "https://github.com/example2",
-        arxivUrl: "https://arxiv.org/abs/2345.6789",
-        webUrl: "https://www.example2.com"
+        upvotes: 0,
+        github: "https://github.com/Yan98/ProBench_eval",
+        arxivUrl: "https://arxiv.org/pdf/2503.06885",
+        webUrl: "https://yan98.github.io/ProBench/index.html#leaderboard"
         
       },
     ];
