@@ -254,32 +254,28 @@ export default {
         const dataWithScore = await Promise.all(
           processedData.map(async (item) => {
             try {
-              // 替换为你的实际评分接口（需传modelId）
               const scoreRes = await axiosInstance.get(
                 `/model/rating/stats?modelId=${item.modelId}`
               );
-              // 假设接口返回格式：{ success: true, data: { averageRating: 4.8 } }
               const averageRating = scoreRes.data.data?.averageRating || 0; // 默认0分避免排序出错
-              return { ...item, averageRating }; // 为模型添加averageRating字段
+              return { ...item, averageRating }; 
             } catch (err) {
               console.error(`获取模型${item.modelId}评分失败:`, err);
               return { ...item, averageRating: 0 }; // 失败时赋默认值
             }
           })
         );
-        // 3. 替换为带评分的数据（覆盖原逻辑）
+        // 3. 替换为带评分的数据
         this.originDatas = [...dataWithScore];
         this.datas = this.sortByJsonOrder(dataWithScore);
         // console.log(dataWithScore, "aaaadatas");
 
         //
         const codeAbilityRes = await axiosInstance.get(`/model/sorted-by-code`);
-        // 待补充代码
-        // console.log(codeAbilityRes.data.data, "codeAbilityRes.data.data");
         // 处理按代码能力评分排序的数据
         const codeAbilityData = codeAbilityRes.data.data; // 获取返回的评分数据数组
 
-        // 创建一个modelId到codeAbilityScore的映射，方便快速查找
+        // 创建一个modelId到codeAbilityScore的映射
         const codeScoreMap = {};
         codeAbilityData.forEach((item) => {
           codeScoreMap[item.modelId] = item.codeAbilityScore;
@@ -630,11 +626,13 @@ export default {
             // 开源模型大小从小到大
             return a.size - b.size;
           case 6:
+            //模型评分从高到低
             return (b.averageRating || 0) - (a.averageRating || 0);
           case 7:
-            // console.log("评分排序", b.averageRating, a.averageRating);
+            //代码能力从高到低
             return (b.codeAbilityScore || 0) - (a.codeAbilityScore || 0);
           case 8:
+            //价钱从高到低
             return (b.priceNew || 0) - (a.priceNew || 0);
           default:
             return 0;
