@@ -132,9 +132,9 @@ export default {
         };
     },
 
-    mounted() {
-        this.fetchAverageRating();
-    },
+    // mounted() {
+    //     this.fetchAverageRating();
+    // },
     
     computed: {
         // 计算收藏状态
@@ -146,21 +146,26 @@ export default {
         displayFavoriteCount() {
             const baseCount = this.model.favoritesCount || 0;
             return this.isFavorited ? baseCount : baseCount;
-        }
+        },
+        averageRating() {
+    // 直接返回 props 中的值，确保实时同步
+    return this.model.averageRating || 0; 
+  }
     },
     
     methods: {
-        async fetchAverageRating() {
-            try {
-                const modelId = this.model.modelId;
-                if (!modelId) return;
-                const res = await axios.get(`http://49.233.82.133:9091/model/rating/stats?modelId=${modelId}`);
-                // 假设返回结构为 { data: { averageRating: 4.5 } }
-                this.averageRating = res.data?.data?.averageRating ?? 0;
-            } catch (e) {
-                this.averageRating = 0;
-            }
-        },
+        // async fetchAverageRating() {
+        //     try {
+        //         const modelId = this.model.modelId;
+        //         if (!modelId) return;
+        //         const res = await axios.get(`http://49.233.82.133:9091/model/rating/stats?modelId=${modelId}`);
+        //         // 假设返回结构为 { data: { averageRating: 4.5 } }
+        //         console.log(res.data.data.modelId);
+        //         this.averageRating = res.data?.data?.averageRating ?? 0;
+        //     } catch (e) {
+        //         this.averageRating = 0;
+        //     }
+        // },
 
         // 获取认证Token
         getAuthToken() {

@@ -7,6 +7,9 @@
             <el-radio :label="3">收藏量排序</el-radio>
             <el-radio :label="4">开源模型大小从大到小</el-radio>
             <el-radio :label="5">开源模型大小从小到大</el-radio>
+            <el-radio :label="6">模型评分</el-radio>
+            <el-radio :label="7">代码能力</el-radio>
+            <el-radio :label="8">价格从高到低</el-radio>
         </el-radio-group>
     </div>
 </template>
