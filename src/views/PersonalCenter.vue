@@ -1020,7 +1020,7 @@ export default {
     display: flex;
     flex-direction: column;
     height: calc(100vh - 200px);
-    min-height: 500px;
+    min-height: 653px;
 }
 
 .favorites-content {
