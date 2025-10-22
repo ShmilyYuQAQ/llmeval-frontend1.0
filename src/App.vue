@@ -26,12 +26,17 @@
         <router-view />
     </div>
     <Footer />
+    <NewbieGuide 
+      v-if="!isGuideDone" 
+      style="z-index: 99999;" 
+    />
 </template>
 
 <script>
 import GuidePage from "./views/GuidePage.vue";
 import Footer from "./components/Footer.vue";
 import NavBar from "./components/guidePage/NavBar.vue"; // 导入NavBar
+import NewbieGuide from "./components/guidePage/NewbieGuide.vue";
 
 export default {
     name: "App",
@@ -39,6 +44,7 @@ export default {
         GuidePage,
         Footer,
         NavBar, // 注册NavBar
+        NewbieGuide,
     },
      data() {
         return {
