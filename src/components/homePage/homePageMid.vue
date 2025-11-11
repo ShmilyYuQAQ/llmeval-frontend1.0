@@ -82,6 +82,7 @@
           </template>
         </div>
 
+
         <!-- 右上：标签简介 -->
         <div class="tag-description" v-if="tag_description">
           <p class="description-content">
@@ -152,6 +153,7 @@
         <modelCardContainer
           v-if="datas.length > 0"
           :datas="datas"
+          :activeSearchQuery=selected_tag[0]
           ref="modelCardContainer"
         ></modelCardContainer>
         <EmptyResult v-else />
@@ -204,6 +206,17 @@ export default {
     modelCardContainer,
     EmptyResult,
   },
+  watch: {
+  // ... 原有监听
+  activeSearchQuery(newVal) {
+    console.log("activeSearchQuery是",activeSearchQuery);
+    this.activeSearchQuery = newVal; // 搜索关键词变化时更新
+  },
+  selected_tag(newVal) {
+    // 标签筛选时，用标签名作为高亮关键词
+    this.activeSearchQuery = newVal[0] || "";
+  },
+},
   methods: {
     processImagePath(data) {
       return data.map((item) => ({
@@ -254,6 +267,7 @@ export default {
         const dataWithScore = await Promise.all(
           processedData.map(async (item) => {
             try {
+              // 替换为实际评分接口
               const scoreRes = await axiosInstance.get(
                 `/model/rating/stats?modelId=${item.modelId}`
               );
@@ -265,7 +279,7 @@ export default {
             }
           })
         );
-        // 3. 替换为带评分的数据
+        //  替换为带评分的数据
         this.originDatas = [...dataWithScore];
         this.datas = this.sortByJsonOrder(dataWithScore);
         // console.log(dataWithScore, "aaaadatas");
@@ -275,7 +289,7 @@ export default {
         // 处理按代码能力评分排序的数据
         const codeAbilityData = codeAbilityRes.data.data; // 获取返回的评分数据数组
 
-        // 创建一个modelId到codeAbilityScore的映射
+        // 创建一个modelId到codeAbilityScore的映射，方便快速查找
         const codeScoreMap = {};
         codeAbilityData.forEach((item) => {
           codeScoreMap[item.modelId] = item.codeAbilityScore;
@@ -291,7 +305,6 @@ export default {
         // 更新数据为包含代码能力评分的数据
         this.originDatas = [...dataWithCodeAbility];
         this.datas = this.sortByJsonOrder(dataWithCodeAbility);
-        // console.log(this.datas, "datas 整合版");
 
         const prieRes = await axiosInstance.get(`/model/sorted-by-price`);
         const datawithPrice = prieRes.data.data;
@@ -626,13 +639,13 @@ export default {
             // 开源模型大小从小到大
             return a.size - b.size;
           case 6:
-            //模型评分从高到低
+            // 评分排序从高到低
             return (b.averageRating || 0) - (a.averageRating || 0);
           case 7:
-            //代码能力从高到低
+            // 代码能力从高到低
             return (b.codeAbilityScore || 0) - (a.codeAbilityScore || 0);
           case 8:
-            //价钱从高到低
+            // 价格排序从高到低
             return (b.priceNew || 0) - (a.priceNew || 0);
           default:
             return 0;

@@ -8,6 +8,7 @@
       >
         <ModelCard
           :model="item"
+          :highlightKeyword="activeSearchQuery"
           @favorite-change="handleFavoriteChange"
         ></ModelCard>
       </div>
@@ -62,9 +63,21 @@ export default {
       isDevelopment: process.env.NODE_ENV === "development",
     };
   },
-  props: ["datas"],
+  props: {
+  datas: {
+    type: Array, // 必须是数组类型
+    required: true, // 父组件必须传递
+    default: () => [] // 兜底默认值（防止父组件没传时 this.datas 是 undefined）
+  },
+  activeSearchQuery: {
+    type: String, // 必须是字符串类型
+    required: false, // 父组件可选传递
+    default: "" // 兜底默认值（没搜索时是空字符串）
+  }
+},
   methods: {
     updatePaginatedModel(newModels) {
+      console.log(this.activeSearchQuery);
       if (newModels) {
         this.models = newModels;
         // console.log("子组件接收的全量排序数据:", this.models, "条"); // 验证：与父组件排序后的数据量一致
