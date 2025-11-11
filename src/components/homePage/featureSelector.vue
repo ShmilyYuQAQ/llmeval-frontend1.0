@@ -86,6 +86,7 @@
                 </div>
             </div>
         </div>
+
         <!-- 第二个卡片：其余 feature-section -->
         <div class="feature-card">
             <div class="feature-section">
@@ -132,6 +133,54 @@
                     </div>
                 </div>
             </div>
+
+
+
+            <!-- 新增：代码能力独立分类 -->
+            <div class="feature-section">
+                <div class="section-header">
+                    <div class="title-container">
+                        <img
+                            src="./images/logo2.png"
+                            alt="代码能力Logo"
+                            class="section-logo"
+                        />
+                        <span class="section-title">{{ codeTitle }}</span>
+                    </div>
+                    <tagContainter
+                        :tags="codeTags"
+                        :tag-title="''"
+                        :selected-value="selectedValue"
+                        @custom-event="selectModel"
+                        @select-parent-tag="activeTagIndex5 = $event"
+                    ></tagContainter>
+                </div>
+                <!-- 代码能力子标签容器 -->
+                <div
+                    v-if="
+                        activeTagIndex5 !== null &&
+                        codeTags[activeTagIndex5]?.subtags &&
+                        codeTags[activeTagIndex5].subtags.length > 0
+                    "
+                    class="subtags-wrapper"
+                >
+                    <div class="subtags-container">
+                        <div class="parent-tag-name">
+                            {{ parentTagName5 + "：" }}
+                        </div>
+                        <div
+                            v-for="(subtag, subIndex) in codeTags[activeTagIndex5].subtags"
+                            :key="subIndex"
+                            class="subtag"
+                            :class="{ active: isSubtagActive(subtag.value) }"
+                            @click="selectSubTag(subtag.value)"
+                        >
+                            <span class="subtag-text">{{ subtag.text }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="feature-section">
                 <div class="section-header">
                     <div class="title-container">
@@ -265,6 +314,7 @@
                 </div>
             </div>
         </div>
+
         <div class="selected-tag">
             <span
                 >当前选中的标签是:<span style="color: red; margin-left: 20px">{{
@@ -292,6 +342,7 @@ export default {
             activeTagIndex2: null,
             activeTagIndex3: null,
             activeTagIndex4: null,
+            activeTagIndex5: null, // 新增代码能力激活索引
             selectedSubTag: null,
             openSourceTitle: "是否开源",
             openSourceChecked: ["开源", "不开源"],
@@ -308,6 +359,22 @@ export default {
             yearTitle: "年份",
             yearChecked: ["2024", "2023"],
             yearOptions: ["2024", "2023", "2022", "2021"],
+            // 新增代码能力独立配置
+            codeTitle: "代码能力",
+            parentTagName5: "代码能力",
+            codeTags: [
+                {
+                    text: "代码能力",
+                    value: ["代码能力", 27],
+                    subtags: [
+                        { text: "代码理解", value: ["代码理解", 28] },
+                        { text: "代码纠错", value: ["代码纠错", 29] },
+                        { text: "代码补全", value: ["代码补全", 30] },
+                        { text: "代码生成", value: ["代码生成", 31] },
+                    ],
+                },
+            ],
+            // 原tags_0已移除代码能力对象
             tags_0: [
                 {
                     text: "知识记忆及应用",
@@ -366,16 +433,6 @@ export default {
                         { text: "结构化生成", value: ["结构化生成", 24] },
                         { text: "创意生成", value: ["创意生成", 25] },
                         { text: "角色扮演", value: ["角色扮演", 26] },
-                    ],
-                },
-                {
-                    text: "代码能力",
-                    value: ["代码能力", 27],
-                    subtags: [
-                        { text: "代码理解", value: ["代码理解", 28] },
-                        { text: "代码纠错", value: ["代码纠错", 29] },
-                        { text: "代码补全", value: ["代码补全", 30] },
-                        { text: "代码生成", value: ["代码生成", 31] },
                     ],
                 },
                 {
@@ -738,6 +795,7 @@ export default {
                 tagName = value[0];
                 tagValue = value[1];
             }
+            console.log(tagName, tagValue);
             // 机构判断
             if (tagValue >= 200) {
                 this.$emit("select-org", [tagName, tagValue]);
@@ -761,6 +819,17 @@ export default {
                 this.selectedSubTag[0] === value[0] &&
                 this.selectedSubTag[1] === value[1]
             );
+        },
+        // 代码能力子标签激活判断（复用原有方法，无需新增）
+        isSubtagActive4(value) {
+            return (
+                this.selectedSubTag &&
+                this.selectedSubTag[0] === value[0] &&
+                this.selectedSubTag[1] === value[1]
+            );
+        },
+        selectSubTag4(value) {
+            this.selectModel(value);
         },
         parentMethod(value) {
             console.log(value);
@@ -910,8 +979,6 @@ export default {
     font-weight: 600;
     z-index: 1;
 }
-
-
 
 .org-section-row {
     display: flex;
