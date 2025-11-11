@@ -9,7 +9,7 @@
       <a href="/opinion" style="color: white; text-decoration: none;">意见反馈</a>
       <br>
       <br>
-      <span>Copyright ©南开大学, All Rights Reserved</span>
+      <span>版权所有 © 深圳点通数据有限公司 | 技术指导：南开大学</span>
       <span style="margin: 0 10px;">|</span>
       <img src="/images/gongan.png" alt="公安备案" style="width: 20px; height: 20px; vertical-align: middle; margin-bottom: 3px;" />
       <a href="https://beian.mps.gov.cn/#/query/webSearch?code=44030002007126" rel="noreferrer" target="_blank" class="beian-link">

@@ -18,7 +18,7 @@
         <p class="introduce2">我们不是简单评分的裁判，而是致力于成为精准的能力翻译官。琅琊海评团队以专业视角深入剖析模型能力，将其转化为用户易懂的标签与信息，让技术选择回归本质，助力用户在复杂模型市场中迅速找到契合业务需求的理想方案，为行业发展贡献力量。</p>
         
         <h2 class="introduce">支持与合作</h2>
-        <p class="introduce2">平台由南开大学软件学院、信创海河实验室与点通数据有限公司联合支持，持续优化服务体验。我们欢迎更多合作，共同推进大模型评测落地与应用。</p>
+        <p class="introduce2">平台由南开大学软件学院、信创海河实验室与深圳市点通数据有限公司联合支持，持续优化服务体验。我们欢迎更多合作，共同推进大模型评测落地与应用。</p>
         <p class="introduce2">如您对平台有任何建议或想法，欢迎通过以下方式联系我们：</p>
         <p class="introduce2">电子邮箱：langyayaiping@datumdata.com</p>
         <p class="introduce2">微信公众号：琅琊海评 - 大模型评测（微信号：datum2025）</p>
@@ -27,7 +27,7 @@
         <p class="introduce2">网站链接：https://langyahaiping.com</p>
         <p class="introduce2">琅琊海评，助您精准探索大模型世界，携手迈向智能未来。</p>
      
-        <h2 class="introduce" style="margin-top: 30px;">深圳点通数据有限公司联系方式</h2>
+        <h2 class="introduce" style="margin-top: 30px;">深圳市点通数据有限公司联系方式</h2>
         <p class="introduce2">地 址：广东省深圳市梅林路梅林阁南三楼</p>
         <p class="introduce2">邮 编：518049</p>
         <p class="introduce2">电 话：(86) 0755-83970989,0755-83177010</p>
