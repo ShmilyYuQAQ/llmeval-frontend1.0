@@ -94,7 +94,7 @@
           referrerpolicy="no-referrer"
           src="https://lanhu-oss-2537-2.lanhuapp.com/SketchPng37f956792f11a6fcb3dbabde47cafdb68f75a42243075563f119ecaccf221fc5"
         />
-        <ShowTag :tags="tags"></ShowTag>
+        <ShowTag :tags="tags" :highlightKeyword="highlightKeyword"></ShowTag>
 
       </div>
       <!-- 在 box_15 后面，加一个新 div 包住评论区 -->
@@ -118,7 +118,7 @@ import CommentList from './Comments/CommentList.vue';
 import Footer from './Footer.vue';
 import { useRouter } from "vue-router";
 export default{
-  props: ['name'], // 接收路由参数
+  props: ['name','highlightKeyword'], // 接收路由参数
   data() {
     return {
       modelData: null,
@@ -134,6 +134,7 @@ export default{
       showTooltip: false, // 控制提示文本的显示
       value2:  null, // 新增
       colors: ['#99A9BF', '#F7BA2A', '#FF9900'], // 新增
+      highlightKeyword:""
     }
   },
 
@@ -199,6 +200,10 @@ export default{
     ShowReviews,
     CommentList,
     Footer,
+  },
+  mounted() {
+    this.highlightKeyword = this.$route.query.highlight || "";
+    console.log("highlightKeyword:", this.highlightKeyword);
   },
   methods: {
     async refreshModelDetail() {
