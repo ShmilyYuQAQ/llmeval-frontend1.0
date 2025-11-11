@@ -1,14 +1,20 @@
 <template>
   <div class="newbie-guide">
     <!-- 开发环境调试按钮 -->
-    <button 
+    <!-- <button 
       @click="resetGuide" 
       class="reset-guide-btn"
     >
       重置引导（调试用）
-    </button>
+    </button> -->
 
-    <!-- 引导遮罩层 -->
+    <!-- 全屏遮罩容器（拦截所有点击，除了高亮区域和提示框）- 不影响原有定位 -->
+    <div 
+      v-if="currentStep < steps.length" 
+      class="fullscreen-mask"
+    ></div>
+
+    <!-- 引导遮罩层（目标高亮区域，允许点击）- 保留原有定位 -->
     <div 
       v-if="currentStep < steps.length" 
       class="guide-mask" 
@@ -21,7 +27,7 @@
       }"
     ></div>
 
-    <!-- 引导提示框 -->
+    <!-- 引导提示框 - 保留原有定位 -->
     <transition name="guide-fade">
       <div 
         v-if="currentStep < steps.length" 
@@ -87,7 +93,7 @@ export default {
         targetPath: '/home'
       },
       {
-        pageTop: 613,
+        pageTop: 664,
         pageLeft: 80,
         width: 1450,
         height: 450,
@@ -97,7 +103,7 @@ export default {
         scene: 'home'
       },
       {
-        pageTop: 1100,
+        pageTop: 1148,
         pageLeft: 109,
         width: 474,
         height: 302,
@@ -160,27 +166,23 @@ export default {
         this.originPath = this.$route.path;
         this.steps[3].targetPath = this.originPath;
         this.bindTargetClick();
-        // 首次加载时滚动到第一个引导位置
-        this.scrollToCurrentStep();
       });
     }
   },
   watch: {
-    // 步骤变化时自动滚动到对应位置
+    // 步骤变化时绑定点击事件
     currentStep() {
       this.bindTargetClick();
-      this.scrollToCurrentStep();
     }
   },
   methods: {
     nextStep() {
       const currentStep = this.steps[this.currentStep];
       if (currentStep.targetPath) {
-        // 路由跳转后，确保滚动到目标步骤位置
+        // 路由跳转后更新步骤
         this.$router.push(currentStep.targetPath).then(() => {
           this.$nextTick(() => {
             this.currentStep++;
-            this.scrollToCurrentStep(); // 跳转后补充滚动
           });
         });
       } else {
@@ -191,31 +193,36 @@ export default {
       }
     },
     skipGuide() {
-      this.finishGuide();
+      this.finishGuide(); // 跳过引导也执行相同逻辑：标记完成 + 跳回指南页
     },
     finishGuide() {
+      // 1. 标记引导已完成（存入本地存储，避免再次触发）
       localStorage.setItem('newbieGuideDone', 'true');
-      this.currentStep = this.steps.length;
+      // 2. 引导完成后跳回指南页面（替换成你的指南页真实路由，如 '/guide-page'）
+      this.$router.push('/').then(() => {
+        // 3. 重置步骤（可选，不影响后续逻辑）
+        this.currentStep = this.steps.length;
+      });
     },
     resetGuide() {
+      // 调试用：清除本地存储，重置引导状态
       localStorage.removeItem('newbieGuideDone');
       this.currentStep = 0;
       this.$nextTick(() => {
         this.bindTargetClick();
-        this.scrollToCurrentStep(); // 重置后滚动到第一步
       });
     },
-    // 核心：滚动到当前步骤的目标位置
+    // 滚动相关方法（已注释，保留代码）
     scrollToCurrentStep() {
       if (this.currentStep >= this.steps.length) return;
       
       const currentStep = this.steps[this.currentStep];
-      // 计算滚动位置：目标元素top - 导航栏高度（避免被顶部导航遮挡）
-      const scrollTop = currentStep.pageTop - this.navHeight-200;
+      const targetTop = currentStep.pageTop - this.navHeight;
+      const viewportCenter = window.innerHeight / 2;
+      const scrollTop = targetTop - viewportCenter + currentStep.height / 2;
       
-      // 平滑滚动到目标位置（behavior: 'smooth' 实现动画效果）
       window.scrollTo({
-        top: scrollTop,
+        top: Math.max(scrollTop, 0),
         behavior: 'smooth'
       });
     },
@@ -223,7 +230,6 @@ export default {
       if (this.currentStep >= this.steps.length) return;
       
       const step = this.steps[this.currentStep];
-      // 创建临时元素计算目标位置
       const tempEl = document.createElement('div');
       tempEl.style.position = 'absolute';
       tempEl.style.top = step.pageTop + 'px';
@@ -232,7 +238,6 @@ export default {
       tempEl.style.height = step.height + 'px';
       document.body.appendChild(tempEl);
       
-      // 找到目标元素并绑定点击事件
       const targetEls = document.elementsFromPoint(
         tempEl.getBoundingClientRect().left + 10,
         tempEl.getBoundingClientRect().top + 10
@@ -341,13 +346,25 @@ export default {
   font-size: 12px;
 }
 
-/* 引导遮罩层样式 */
+/* 全屏遮罩（拦截所有点击，除了高亮区域和提示框）- 不影响原有定位 */
+.fullscreen-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: transparent; /* 透明，仅拦截点击 */
+  pointer-events: auto; /* 拦截所有点击 */
+  z-index: 9998; /* 低于高亮遮罩和提示框，不影响定位 */
+}
+
+/* 引导遮罩层样式（目标高亮区域，允许点击）- 保留原有定位 */
 .guide-mask {
   position: absolute;
-  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0 9999px rgba(117, 112, 112, 0.5);
   border-radius: 6px;
-  pointer-events: auto;
-  z-index: 9999;
+  pointer-events: auto; /* 允许点击目标元素 */
+  z-index: 9999; /* 高于全屏遮罩，低于提示框 */
   animation: breath 3s infinite ease-in-out;
 }
 .guide-mask.mask-home {
@@ -360,10 +377,10 @@ export default {
 /* 呼吸动画 */
 @keyframes breath {
   0%, 100% {
-    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5), 0 0 10px rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 0 9999px rgba(117, 112, 112, 0.5), 0 0 10px rgba(255, 255, 255, 0.8);
   }
   50% {
-    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 1);
+    box-shadow: 0 0 0 9999px rgba(117, 112, 112, 0.5), 0 0 20px rgba(255, 255, 255, 1);
   }
 }
 
@@ -376,7 +393,7 @@ export default {
   transform: scale(0.9);
 }
 
-/* 引导提示框样式 */
+/* 引导提示框样式 - 保留原有定位 */
 .guide-tooltip {
   position: absolute;
   background: white;
@@ -384,8 +401,8 @@ export default {
   border-radius: 10px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
   width: 280px;
-  pointer-events: auto;
-  z-index: 99999;
+  pointer-events: auto; /* 允许点击按钮 */
+  z-index: 99999; /* 最高层级，不影响定位 */
   transition: all 0.3s ease;
 }
 .guide-tooltip.tooltip-home {
@@ -468,8 +485,9 @@ export default {
   transform: translateY(-2px);
 }
 
-/* 基础容器样式 */
+/* 基础容器样式 - 恢复原有static定位，确保引导位置不变 */
 .newbie-guide {
   position: static;
+  border: 1px solid #000;
 }
 </style>
