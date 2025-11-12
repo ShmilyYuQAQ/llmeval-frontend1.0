@@ -565,4 +565,12 @@ img[alt="用户头像"], img[alt="AI头像"] {
 ::v-deep .reset-guide-btn {
     z-index: 999999 !important;
 }
+.logo {
+  width: 60px !important;
+  height: 60px !important;
+  object-fit: contain !important;
+  display: block !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+}
 </style>
