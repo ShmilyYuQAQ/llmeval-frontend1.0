@@ -16,7 +16,7 @@
         粤公网安备 44030002007126号
       </a>
       <span style="margin: 0 10px;">|</span>
-      <a href="https://beian.miit.gov.cn" target="_blank" class="beian-link">
+      <a href="https://beian.miit.gov.cn/" target="_blank" class="beian-link">
         粤ICP备16101032号-4
       </a>
       <br>
