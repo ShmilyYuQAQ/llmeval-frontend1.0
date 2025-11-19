@@ -141,9 +141,10 @@
                 <div class="section-header">
                     <div class="title-container">
                         <img
-                            src="./images/logo2.png"
+                            src="./images/3c9460ec72c8ff83cb6c48a7d49ac114.jpg"
                             alt="代码能力Logo"
                             class="section-logo"
+                            style="border-radius: 50%;"
                         />
                         <span class="section-title">{{ codeTitle }}</span>
                     </div>
