@@ -218,123 +218,130 @@ export default {
   },
 },
   methods: {
-    processImagePath(data) {
-      return data.map((item) => ({
-        ...item,
-        model_image_path: item.model_image_path
-          ? `/images/${item.model_image_path.split("/images/")[1]}` // 提取 /images/ 后面的部分并拼接
-          : "",
-      }));
+    processImagePath(list) {
+      return (list || []).map(item => {
+        let img = "";
+        if (item.model_image_path) {
+          const idx = item.model_image_path.indexOf("/images/");
+          if (idx !== -1) {
+            img = "/images/" + item.model_image_path.split("/images/")[1];
+          }
+        }
+        return {
+          ...item,
+          model_image_path: img
+        };
+      });
     },
     sortByJsonOrder(data) {
       try {
-        // 创建一个 model_id 到 id（顺序）的映射
         const orderMap = new Map();
-
-        // 使用导入的 JSON 数据
-        orderData.forEach((item) => {
-          orderMap.set(item.model_id, item.id);
+        (orderData || []).forEach(o => orderMap.set(o.model_id, o.id));
+        return [...(data || [])].sort((a, b) => {
+          const aOrder = orderMap.get(a.modelId) ?? Infinity;
+          const bOrder = orderMap.get(b.modelId) ?? Infinity;
+          return aOrder - bOrder;
         });
-
-        // 对数据进行排序，使用 modelId 而不是 model_id
-        return [...data].sort((a, b) => {
-          const orderA = orderMap.get(a.modelId) ?? Infinity;
-          const orderB = orderMap.get(b.modelId) ?? Infinity;
-          return orderA - orderB;
-        });
-      } catch (error) {
-        console.error("排序失败:", error);
-        return data; // 如果出错则返回原始数据
+      } catch (e) {
+        console.error("排序失败:", e);
+        return data;
       }
     },
     async fetchData(tag = this.selectedCategory) {
       this.isLoading = true;
       try {
-        let data;
+        let raw = [];
         if (tag !== "0") {
-          const response = await axiosInstance.get(`/model/tag?tag=${tag}`);
-          data = response.data.data;
+          const res = await axiosInstance.get(`/model/tag?tag=${tag}`);
+          raw = res.data.data || [];
         } else {
-          const response = await axiosInstance.get(`/model/`);
-          data = response.data.data;
+          const res = await axiosInstance.get(`/model/all`);
+          raw = res.data.data || [];
         }
 
-        // console.log(data, "ssssdata");
-        const processedData = this.processImagePath(data);
-        this.originDatas = [...processedData];
-        this.datas = this.sortByJsonOrder(processedData);
+        // 合并评分：后端已在每个模型对象里提供 ratingStats，若为 null 评分记为 0
+        const normalized = raw.map(item => {
+          const stats = item.ratingStats;
+          const averageRating = stats?.averageRating ? Number(stats.averageRating) : 0;
 
-        const dataWithScore = await Promise.all(
-          processedData.map(async (item) => {
-            try {
-              // 替换为实际评分接口
-              const scoreRes = await axiosInstance.get(
-                `/model/rating/stats?modelId=${item.modelId}`
-              );
-              const averageRating = scoreRes.data.data?.averageRating || 0; // 默认0分避免排序出错
-              return { ...item, averageRating }; 
-            } catch (err) {
-              console.error(`获取模型${item.modelId}评分失败:`, err);
-              return { ...item, averageRating: 0 }; // 失败时赋默认值
-            }
-          })
-        );
-        //  替换为带评分的数据
-        this.originDatas = [...dataWithScore];
-        this.datas = this.sortByJsonOrder(dataWithScore);
-        // console.log(dataWithScore, "aaaadatas");
+          // 时间格式统一：替换 'T'
+          const createdTime = item.createdTime
+            ? item.createdTime.replace("T", " ")
+            : "";
+          const updateTime = item.updateTime
+            ? item.updateTime.replace("T", " ")
+            : "";
 
-        //
-        const codeAbilityRes = await axiosInstance.get(`/model/sorted-by-code`);
-        // 处理按代码能力评分排序的数据
-        const codeAbilityData = codeAbilityRes.data.data; // 获取返回的评分数据数组
-
-        // 创建一个modelId到codeAbilityScore的映射，方便快速查找
-        const codeScoreMap = {};
-        codeAbilityData.forEach((item) => {
-          codeScoreMap[item.modelId] = item.codeAbilityScore;
+          return {
+            modelId: item.modelId,
+              name: item.name,
+              description: item.description,
+              tag: item.tag,
+              institution: item.institution,
+              isOpenSource: item.isOpenSource,
+              favoritesCount: item.favoritesCount,
+              createdTime,
+              updateTime,
+              releaseDate: item.releaseDate,
+              model_link: item.model_link,
+              size: item.size,
+              averageRating,
+              model_image_path: item.model_image_path
+          };
         });
 
-        // 将代码能力评分合并到现有数据中
-        const dataWithCodeAbility = this.originDatas.map((item) => ({
-          ...item,
-          // 如果有对应的代码能力评分则使用，否则默认为0
-          codeAbilityScore: codeScoreMap[item.modelId] || 0,
-        }));
+        // 处理图片路径
+        const withImg = this.processImagePath(normalized);
 
-        // 更新数据为包含代码能力评分的数据
-        this.originDatas = [...dataWithCodeAbility];
-        this.datas = this.sortByJsonOrder(dataWithCodeAbility);
+        this.originDatas = [...withImg];
+        this.datas = this.sortByJsonOrder(withImg);
 
-        const prieRes = await axiosInstance.get(`/model/sorted-by-price`);
-        const datawithPrice = prieRes.data.data;
-        const priceMap = {};
-        datawithPrice.forEach((item) => {
-          priceMap[item.modelId] = item.priceNew;
-        });
-        const dataWithPrice = this.originDatas.map((item) => ({
-          ...item,
-          priceNew: priceMap[item.modelId] || 0,
-        }));
-        this.originDatas = [...dataWithPrice];
-        this.datas = this.sortByJsonOrder(dataWithPrice);
-        console.log(this.datas, "datas 添加价格");
+        // 保留后续代码能力与价格数据整合（如果后端仍是分接口）
+        try {
+          const codeAbilityRes = await axiosInstance.get(`/model/sorted-by-code`);
+          const codeMap = {};
+          (codeAbilityRes.data.data || []).forEach(c => {
+            codeMap[c.modelId] = c.codeAbilityScore;
+          });
+          const mergedCode = this.originDatas.map(m => ({
+            ...m,
+            codeAbilityScore: codeMap[m.modelId] || 0
+          }));
+          this.originDatas = mergedCode;
+          this.datas = this.sortByJsonOrder(mergedCode);
+        } catch (e) {
+          console.warn("代码能力数据获取失败", e);
+        }
+
+        try {
+          const priceRes = await axiosInstance.get(`/model/sorted-by-price`);
+          const priceMap = {};
+          (priceRes.data.data || []).forEach(p => {
+            priceMap[p.modelId] = p.priceNew;
+          });
+          const mergedPrice = this.originDatas.map(m => ({
+            ...m,
+            priceNew: priceMap[m.modelId] || 0
+          }));
+          this.originDatas = mergedPrice;
+          this.datas = this.sortByJsonOrder(mergedPrice);
+        } catch (e) {
+          console.warn("价格数据获取失败", e);
+        }
 
         this.$nextTick(() => {
           if (this.$refs.modelCardContainer) {
-            // console.log("更新分页数据，总数据量:", this.datas.length);
             this.$refs.modelCardContainer.updatePaginatedModel(this.datas);
-
             if (this.$refs.modelCardContainer.pagination.currentPage !== 1) {
               this.$refs.modelCardContainer.pagination.currentPage = 1;
               this.$refs.modelCardContainer.updatePaginatedModel();
             }
           }
         });
-      } catch (error) {
-        console.log(error, "error");
-        this.datas = [];
+      } catch (err) {
+        console.error(err);
         this.originDatas = [];
+        this.datas = [];
       } finally {
         this.isLoading = false;
       }
