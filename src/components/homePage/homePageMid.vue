@@ -252,7 +252,7 @@ export default {
       try {
         let raw = [];
         if (tag !== "0") {
-          const res = await axiosInstance.get(`/model/tag?tag=${tag}`);
+          const res = await axiosInstance.get(`/model/tag_with_rating?tag=${tag}`);
           raw = res.data.data || [];
         } else {
           const res = await axiosInstance.get(`/model/all`);
